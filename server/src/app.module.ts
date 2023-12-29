@@ -4,6 +4,8 @@ import { MongooseModule } from '@nestjs/mongoose';
 import * as dotenv from 'dotenv';
 import * as process from 'process';
 
+import { CommonConfigModule } from './config/commonConfig/config.module';
+import { CommonConfigService } from './config/commonConfig/config.service';
 import { AuthModule } from './modules/auth/auth.module';
 import { OrderModule } from './modules/order/order.module';
 import { UserModule } from './modules/user/user.module';
@@ -17,7 +19,13 @@ dotenv.config({ path: `environments/${environment}.env` });
       envFilePath: `.env.${environment}`,
       isGlobal: true,
     }),
-    MongooseModule.forRoot(process.env.MONGODB_CONNECTION_STRING),
+    MongooseModule.forRootAsync({
+      imports: [CommonConfigModule],
+      useFactory: async (configService: CommonConfigService) => ({
+        uri: configService.mongo_db_url,
+      }),
+      inject: [CommonConfigService],
+    }),
     UserModule,
     OrderModule,
     AuthModule,

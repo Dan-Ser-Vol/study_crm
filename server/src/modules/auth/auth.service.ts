@@ -33,8 +33,13 @@ export class AuthService {
       password: hashPassword,
     });
     const tokens = await this.signIn({ email: newUser.email });
-    await this.redisClient.setEx(tokens.access, 1000000000, tokens.access);
-    await this.redisClient.setEx(tokens.refresh, 1000000000, tokens.refresh);
+    await this.redisClient.setEx(
+      newUser.email.toString(),
+      1000000000,
+      JSON.stringify(tokens),
+    );
+    // await this.redisClient.setEx(tokens.access, 10000000, tokens.access);
+    // await this.redisClient.setEx(tokens.refresh, 10000000, tokens.refresh);
     return tokens;
   }
 

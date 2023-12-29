@@ -6,6 +6,8 @@ export default registerAs('common', () => ({
   app_port: process.env.APP_PORT,
   redis_url: process.env.REDIS_URl,
 
+  mongo_db_url: process.env.MONGODB_CONNECTION_STRING,
+
   jwt_access_secret: process.env.JWT_ACCESS_SECRET,
   jwt_refresh_secret: process.env.JWT_REFRESH_SECRET,
 

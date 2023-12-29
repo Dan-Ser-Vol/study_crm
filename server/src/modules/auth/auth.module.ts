@@ -17,7 +17,6 @@ import { AuthService } from './auth.service';
   imports: [
     UserModule,
     CommonConfigModule,
-    MongooseModule.forFeature([{ name: User.name, schema: UserSchema }]),
     PassportModule.register({
       defaultStrategy: 'bearer',
       property: 'user',

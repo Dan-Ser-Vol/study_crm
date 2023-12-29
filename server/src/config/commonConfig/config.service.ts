@@ -20,6 +20,12 @@ export class CommonConfigService {
   get redis_url(): string {
     return this.commonConfiguration.redis_url;
   }
+
+  get mongo_db_url(): string {
+    return this.commonConfiguration.mongo_db_url;
+  }
+
+
   get jwt_access_secret(): string {
     return this.commonConfiguration.jwt_access_secret;
   }
