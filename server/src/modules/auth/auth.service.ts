@@ -1,11 +1,11 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import { JwtService } from '@nestjs/jwt';
-import { InjectRedisClient, RedisClient } from '@webeleon/nestjs-redis';
+import { HttpException, HttpStatus, Injectable, Logger } from '@nestjs/common';
 import * as bcrypt from 'bcrypt';
 
 import { ITokens } from '../../common/interfaces/tokens-interface';
 import { CommonConfigService } from '../../config/commonConfig/config.service';
+import { TokenService } from '../token/token.service';
 import { UserService } from '../user/user.service';
+import { UserLoginDto } from './dto/user.login-dto';
 import { UserRegisterDto } from './dto/user.register-dto';
 
 @Injectable()
@@ -13,53 +13,57 @@ export class AuthService {
   constructor(
     private userService: UserService,
     private commonConfigService: CommonConfigService,
-    @InjectRedisClient()
-    private readonly redisClient: RedisClient,
-    private readonly jwtService: JwtService,
+    private tokenService: TokenService,
   ) {}
 
   public async register(dto: UserRegisterDto): Promise<ITokens> {
-    const findUser = await this.userService.findUserByEmail(dto.email);
-    if (findUser) {
-      throw new HttpException(
-        'User already exist',
-        HttpStatus.UNPROCESSABLE_ENTITY,
-      );
-    }
-
-    const hashPassword = await bcrypt.hash(dto.password, 5);
+    await this.userService.checkIfUserExists(dto.email);
     const newUser = await this.userService.create({
       ...dto,
-      password: hashPassword,
+      password: await this.hashPassword(dto),
     });
-    const tokens = await this.signIn({ email: newUser.email });
-    await this.redisClient.setEx(
-      newUser.email.toString(),
-      1000000000,
-      JSON.stringify(tokens),
-    );
-    // await this.redisClient.setEx(tokens.access, 10000000, tokens.access);
-    // await this.redisClient.setEx(tokens.refresh, 10000000, tokens.refresh);
+    const tokens = await this.tokenService.signTokens({ email: newUser.email });
+    await this.tokenService.saveTokensToRedis(newUser.email, tokens);
     return tokens;
   }
 
-  public async signIn(data: any): Promise<ITokens> {
-    const [access, refresh] = await Promise.all([
-      this.jwtService.signAsync(
-        { sub: data },
-        {
-          secret: this.commonConfigService.jwt_access_secret,
-          expiresIn: this.commonConfigService.jwt_access_expires_in,
-        },
-      ),
-      this.jwtService.signAsync(
-        { sub: data },
-        {
-          secret: this.commonConfigService.jwt_refresh_secret,
-          expiresIn: this.commonConfigService.jwt_refresh_expires_in,
-        },
-      ),
-    ]);
-    return { access, refresh };
+  public async login(dto: UserLoginDto): Promise<ITokens> {
+    const findUser = await this.userService.findUserByEmail(dto.email);
+    await this.comparePassword(dto.password, findUser.password);
+    const tokens = await this.tokenService.signTokens(dto.email);
+    await this.tokenService.saveTokensToRedis(findUser.email, tokens);
+    return tokens;
+  }
+
+  private async hashPassword(data): Promise<string> {
+    try {
+      if (!data || !data.password) {
+        throw new Error('Invalid data for password hashing');
+      }
+
+      const salt = await bcrypt.genSalt(5);
+      return await bcrypt.hash(data.password, salt);
+    } catch (err) {
+      Logger.log(err);
+      throw new HttpException(
+        'Wrong email  or password ',
+        HttpStatus.UNAUTHORIZED,
+      );
+    }
+  }
+
+  private async comparePassword(
+    newPassword: string,
+    oldPassword: string,
+  ): Promise<boolean> {
+    try {
+      return await bcrypt.compare(newPassword, oldPassword);
+    } catch (err) {
+      Logger.log(err);
+      throw new HttpException(
+        'Wrong email  or password ',
+        HttpStatus.UNAUTHORIZED,
+      );
+    }
   }
 }

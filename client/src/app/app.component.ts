@@ -6,9 +6,12 @@ import { RouterOutlet } from '@angular/router';
   selector: 'app-root',
   standalone: true,
   imports: [CommonModule, RouterOutlet],
-  templateUrl: './app.component.html',
-  styleUrl: './app.component.scss'
+  template: `<ul>
+    @for (item of items; track item) {
+      <li>{{item}}</li>
+    }
+  </ul>`,
 })
 export class AppComponent {
-  title = 'client';
+  items = ['Bob', 'Gig', 'Loch']
 }
