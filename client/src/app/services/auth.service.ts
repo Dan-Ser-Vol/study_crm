@@ -2,10 +2,10 @@ import { Injectable, signal } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { ToastrService } from 'ngx-toastr';
 import { Router } from '@angular/router';
-import { IUserAuth, IUserAuthRes } from '../interfaces';
-import { urls } from '../constants/urls';
+import { urls } from '../constants';
 import { catchError } from 'rxjs';
 import { tap } from 'rxjs';
+import {IAuth, IAuthRes} from "../interfaces";
 
 @Injectable({
   providedIn: 'root',
@@ -22,7 +22,7 @@ export class AuthService {
     this.isAuthSig.set(!!token);
   }
 
-  signup(userData: IUserAuth) {
+  signup(userData: IAuth) {
     return this.httpClient
       .post(urls.auth.register, userData)
       .pipe(
@@ -39,11 +39,11 @@ export class AuthService {
       );
   }
 
-  login(userData: IUserAuth) {
+  login(userData: IAuth) {
     return this.httpClient
-      .post<IUserAuthRes>(urls.auth.login, userData)
+      .post<IAuthRes>(urls.auth.login, userData)
       .pipe(
-        tap((res: IUserAuthRes) => {
+        tap((res: IAuthRes) => {
           localStorage.setItem('token', res.token);
           this.isAuthSig.set(true);
         }),
