@@ -7,6 +7,7 @@ import { SwaggerHelper } from './helpers/swagger.helper';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+  app.enableCors();
   app.useGlobalPipes(new ValidationPipe({ transform: true }));
 
   const config = new DocumentBuilder()
