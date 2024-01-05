@@ -5,13 +5,16 @@
 
 @layer base {
   body {
-    @apply text-neutral-900
+    @apply text-neutral-900 bg-slate-100
   }
 }
 
 @layer components {
   .input {
     @apply rounded-sm text-sm border border-transparent bg-slate-700 p-2 outline-none focus:border-blue-500;
+  }
+  .form_bg {
+    @apply  bg-slate-500;
   }
   .btn {
     @apply text-sm p-2 px-4 rounded-sm text-white transition-colors disabled:bg-gray-300 disabled:cursor-not-allowed;
@@ -54,3 +57,4 @@
 
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+

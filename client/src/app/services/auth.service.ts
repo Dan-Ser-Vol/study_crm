@@ -1,86 +1,98 @@
-import { Injectable, signal } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { ToastrService } from 'ngx-toastr';
-import { Router } from '@angular/router';
 import { urls } from '../constants';
-import { catchError } from 'rxjs';
-import { tap } from 'rxjs';
-import {IAuth, IAuthRes} from "../interfaces";
+import { BehaviorSubject, Observable, tap } from 'rxjs';
+import { IAuth, ITokens } from '../interfaces';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
-  isAuthSig = signal<boolean>(false);
+  private readonly _accessTokenKey: string = 'access';
+  private readonly _refreshTokenKey: string = 'refresh';
+  private authUserSubject: BehaviorSubject<IAuth> = new BehaviorSubject(null);
 
-  constructor(
-    private readonly httpClient: HttpClient,
-    private readonly router: Router,
-    private readonly toastrService: ToastrService
-  ) {
-    const token = localStorage.getItem('token');
-    this.isAuthSig.set(!!token);
+  constructor(private httpClient: HttpClient) {}
+
+  // signup(userData: IAuth) {
+  //   return this.httpClient
+  //     .post(urls.auth.register, userData)
+  //     .pipe(
+  //       tap(() => {
+  //         this.login(userData);
+  //       }),
+  //       catchError(err => {
+  //         this.handeError(err);
+  //         throw new Error(err.message);
+  //       })
+  //     )
+  //     .subscribe(() =>
+  //       this.toastrService.success('The user has been successfully registered')
+  //     );
+  // }
+
+  login(userData: IAuth): Observable<ITokens> {
+    return this.httpClient.post<ITokens>(urls.auth.login, userData).pipe(
+      tap(tokens => {
+        this._setTokens(tokens);
+        this.me().subscribe(user => {
+          this.setAuthUser(user);
+        });
+      })
+    );
   }
 
-  signup(userData: IAuth) {
-    return this.httpClient
-      .post(urls.auth.register, userData)
-      .pipe(
-        tap(() => {
-          this.login(userData);
-        }),
-        catchError((err) => {
-          this.handeError(err);
-          throw new Error(err.message);
-        })
-      )
-      .subscribe(() =>
-        this.toastrService.success('The user has been successfully registered')
-      );
+  me(): Observable<IAuth> {
+    return this.httpClient.get<IAuth>(urls.auth.me);
   }
 
-  login(userData: IAuth) {
-    return this.httpClient
-      .post<IAuthRes>(urls.auth.login, userData)
-      .pipe(
-        tap((res: IAuthRes) => {
-          localStorage.setItem('token', res.token);
-          this.isAuthSig.set(true);
-        }),
-        catchError((err) => {
-          this.handeError(err);
-          throw new Error(err.message);
-        })
-      )
-      .subscribe(() => {
-        this.toastrService.success('User is successfully authorized');
-        void this.router.navigate(['/home']);
-      });
+  refresh(refresh: string): Observable<ITokens> {
+    return this.httpClient.post<ITokens>(urls.auth.refresh, { refresh }).pipe(
+      tap(tokens => {
+        this._setTokens(tokens);
+      })
+    );
   }
 
-  logout() {
-    return this.httpClient
-      .post(urls.auth.logout, {})
-      .pipe(
-        tap(() => {
-          localStorage.removeItem('token');
-          this.isAuthSig.set(false);
-          void this.router.navigate(['/login']);
-          this.toastrService.success('You have successfully logged out');
-        }),
-        catchError((err) => {
-          this.handeError(err);
-          if(err.status === 401) {
-            void this.router.navigate(['/login']);
-          }
-          throw new Error(err.message);
-        })
-      )
-      .subscribe();
+  // logout() {
+  //   return this.httpClient.post(urls.auth.logout, {}).pipe(
+  //     tap(() => {
+  //       this.deleteTokens();
+  //       void this.router.navigate(['/login']);
+  //       this.toastrService.success('You have successfully logged out');
+  //     }),
+  //     catchError(err => {
+  //       this.handeError(err);
+  //       if (err.status === 401) {
+  //         void this.router.navigate(['/login']);
+  //       }
+  //       throw new Error(err.message);
+  //     })
+  //   );
+  // }
+
+  private _setTokens({ access, refresh }: ITokens): void {
+    localStorage.setItem(this._accessTokenKey, access);
+    localStorage.setItem(this._refreshTokenKey, refresh);
+  }
+  getAccessToken(): string {
+    return localStorage.getItem(this._accessTokenKey) || '';
   }
 
-  private handeError(err: HttpErrorResponse) {
-    console.log('console',err.error.message);
-    this.toastrService.error(err.error.message);
+  getRefreshToken(): string {
+    return localStorage.getItem(this._refreshTokenKey) || '';
+  }
+  deleteTokens() {
+    localStorage.removeItem(this._accessTokenKey);
+    localStorage.removeItem(this._refreshTokenKey);
+  }
+
+  getAuthUser(): Observable<IAuth> {
+    return this.authUserSubject.asObservable();
+  }
+
+  setAuthUser(user: IAuth) {
+    this.authUserSubject.next(user);
   }
 }
