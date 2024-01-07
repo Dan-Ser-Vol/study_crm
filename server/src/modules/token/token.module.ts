@@ -22,9 +22,7 @@ import { TokenService } from './token.service';
       imports: [CommonConfigModule],
       useFactory: async (commonConfigService: CommonConfigService) => ({
         secret: commonConfigService.jwt_secret,
-        signOptions: {
-          expiresIn: commonConfigService.jwt_expires_in,
-        },
+        expiresIn: commonConfigService.jwt_expires_in,
       }),
       inject: [CommonConfigService],
     }),

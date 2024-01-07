@@ -20,8 +20,8 @@ export class UserService {
     return newUser.save();
   }
 
-  public async validateUser(data): Promise<User> {
-    const findUser = await this.findUserByEmail(data.email);
+  public async validateUser(data: any): Promise<User> {
+    const findUser = await this.findUserByEmail(data);
     if (!findUser) {
       throw new UnprocessableEntityException('User entity not found');
     }
@@ -30,7 +30,10 @@ export class UserService {
 
   public async findUserByEmail(email: string): Promise<User> {
     try {
-      return await this.userModel.findOne({ email }).populate('roles').exec();
+      return await this.userModel
+        .findOne({ email })
+        .populate({ path: 'roles' })
+        .exec();
     } catch (err) {
       throw new UnprocessableEntityException('User entity not found');
     }

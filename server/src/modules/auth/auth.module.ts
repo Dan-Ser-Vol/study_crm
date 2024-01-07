@@ -7,6 +7,7 @@ import { UserModule } from '../user/user.module';
 import { AuthController } from './auth.controller';
 import {UserService} from "../user/user.service";
 import {AuthService} from "./auth.service";
+import {BearerStrategy} from "../../common/bearer.strategy";
 
 @Module({
   imports: [
@@ -20,7 +21,7 @@ import {AuthService} from "./auth.service";
     }),
   ],
   controllers: [AuthController],
-  providers: [UserService, AuthService],
+  providers: [UserService, AuthService, BearerStrategy],
   exports: [PassportModule, AuthService],
 })
 export class AuthModule {}

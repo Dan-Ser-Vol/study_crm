@@ -6,10 +6,14 @@ import {
   IsNotEmpty,
   IsString,
 } from 'class-validator';
+import {UserRoleEnum} from "../../../role/enum/role-enum";
 
-import { UserRoleEnum } from '../../role/enum/role-enum';
 
 export class UserBaseDto {
+  @ApiProperty()
+  @IsString()
+  id: string;
+
   @ApiProperty()
   @IsNotEmpty()
   @IsString()
@@ -30,5 +34,5 @@ export class UserBaseDto {
   @ApiProperty()
   @IsNotEmpty()
   @IsEnum({ enum: UserRoleEnum.ADMIN })
-  role: UserRoleEnum;
+  roles: string[];
 }

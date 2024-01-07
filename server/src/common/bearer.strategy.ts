@@ -21,11 +21,12 @@ export class BearerStrategy extends PassportStrategy(Strategy, 'bearer') {
   async validate(token: string): Promise<User> {
     let user = null;
     try {
-      if (!(await this.redisClient.exists(token))) {
-        throw new UnauthorizedException();
-      }
       await this.jwtService.verifyAsync(token);
       const tokenPayload = this.jwtService.decode(token);
+
+      if (!(await this.redisClient.exists(tokenPayload))) {
+        throw new UnauthorizedException();
+      }
       user = await this.userService.validateUser(tokenPayload);
     } catch (err) {
       Logger.error(err);

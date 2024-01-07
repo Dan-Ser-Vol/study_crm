@@ -54,6 +54,7 @@ export class LoginFormComponent implements OnInit {
   login() {
     this.authService.login(this.form.value).subscribe({
       next: () => {
+        this.authService.me().subscribe();
         this.router.navigate(['orders']);
         this.dialogRef.close();
       },
