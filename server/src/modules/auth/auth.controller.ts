@@ -1,18 +1,8 @@
-import {
-  BadRequestException,
-  Body,
-  Controller,
-  Get,
-  Logger,
-  Post,
-  UseGuards,
-} from '@nestjs/common';
+import { Body, Controller, Get, Logger, Post, UseGuards } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { ApiOperation, ApiResponse } from '@nestjs/swagger';
 
-import { CurrentUser } from '../../common/decorators/current-user.decorator';
-import { RefreshTokenGuard } from '../../common/guards/refresh-token-guard';
-import { ITokens } from '../../common/interfaces/tokens-interface';
+import { CurrentUser, RefreshTokenGuard, ITokens } from '../../common';
 import { User } from '../../database/schemas/user.schema';
 import { MeResponseDto } from '../user/dto/response/me.response-dto';
 import { MeResponseMapper } from '../user/mappers/me-response.mapper';

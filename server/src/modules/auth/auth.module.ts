@@ -7,7 +7,7 @@ import { UserModule } from '../user/user.module';
 import { AuthController } from './auth.controller';
 import {UserService} from "../user/user.service";
 import {AuthService} from "./auth.service";
-import {BearerStrategy} from "../../common/bearer.strategy";
+import {BearerStrategy} from "../../common";
 
 @Module({
   imports: [
