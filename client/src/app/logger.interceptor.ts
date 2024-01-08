@@ -89,8 +89,8 @@ export class LoggerInterceptor implements HttpInterceptor {
     return this.authService.refresh(refreshToken).pipe(
       switchMap(tokens => {
         this.isRefreshing = false;
-        this.waitRefreshSubj.next(tokens.access);
-        return next.handle(this.addToken(req, tokens.access));
+        this.waitRefreshSubj.next(tokens.accessToken);
+        return next.handle(this.addToken(req, tokens.accessToken));
       })
     );
   }

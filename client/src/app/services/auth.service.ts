@@ -9,8 +9,8 @@ import { IUser } from '../interfaces/user.interface';
   providedIn: 'root',
 })
 export class AuthService {
-  private readonly _accessTokenKey: string = 'access';
-  private readonly _refreshTokenKey: string = 'refresh';
+  private readonly _accessTokenKey: string = 'accessToken';
+  private readonly _refreshTokenKey: string = 'refreshToken';
   isAuthSubj = new BehaviorSubject<boolean>(false);
   trigger = new BehaviorSubject<boolean>(false);
   meSubj = new BehaviorSubject<IUser>(null);
@@ -34,17 +34,21 @@ export class AuthService {
       .pipe(tap(value => this.meSubj.next(value)));
   }
 
-  refresh(refresh: string): Observable<ITokens> {
-    return this.httpClient.post<ITokens>(urls.auth.refresh, { refresh }).pipe(
-      tap(tokens => {
-        this._setTokens(tokens);
-      })
-    );
+  refresh(refreshToken: string): Observable<ITokens> {
+    console.log(refreshToken, 'service');
+    return this.httpClient
+      .post<ITokens>(urls.auth.refresh, { refreshToken })
+      .pipe(
+        tap(tokens => {
+          console.log('In service', tokens);
+          this._setTokens(tokens);
+        })
+      );
   }
 
-  private _setTokens({ access, refresh }: ITokens): void {
-    localStorage.setItem(this._accessTokenKey, access);
-    localStorage.setItem(this._refreshTokenKey, refresh);
+  private _setTokens({ accessToken, refreshToken }: ITokens): void {
+    localStorage.setItem(this._accessTokenKey, accessToken);
+    localStorage.setItem(this._refreshTokenKey, refreshToken);
   }
 
   getAccessToken(): string {

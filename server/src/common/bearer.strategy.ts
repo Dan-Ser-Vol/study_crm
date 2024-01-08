@@ -24,10 +24,10 @@ export class BearerStrategy extends PassportStrategy(Strategy, 'bearer') {
       await this.jwtService.verifyAsync(token);
       const tokenPayload = this.jwtService.decode(token);
 
-      if (!(await this.redisClient.exists(tokenPayload))) {
+      if (!(await this.redisClient.exists(tokenPayload.email))) {
         throw new UnauthorizedException();
       }
-      user = await this.userService.validateUser(tokenPayload);
+      user = await this.userService.validateUser(tokenPayload.email);
     } catch (err) {
       Logger.error(err);
       throw new UnauthorizedException();

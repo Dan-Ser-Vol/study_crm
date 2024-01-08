@@ -1,18 +1,27 @@
-import { Body, Controller, Get, Post, UseGuards } from '@nestjs/common';
+import {
+  BadRequestException,
+  Body,
+  Controller,
+  Get,
+  Logger,
+  Post,
+  UseGuards,
+} from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { ApiOperation, ApiResponse } from '@nestjs/swagger';
 
+import { CurrentUser } from '../../common/decorators/current-user.decorator';
+import { RefreshTokenGuard } from '../../common/guards/refresh-token-guard';
 import { ITokens } from '../../common/interfaces/tokens-interface';
 import { User } from '../../database/schemas/user.schema';
+import { MeResponseDto } from '../user/dto/response/me.response-dto';
+import { MeResponseMapper } from '../user/mappers/me-response.mapper';
 import { AuthService } from './auth.service';
-import { UserLoginDto } from './dto/user.login-dto';
-import { UserRegisterDto } from './dto/user.register-dto';
-import {CurrentUser} from "../../common/decorators/current-user.decorator";
-import {MeResponseDto} from "../user/dto/response/me.response-dto";
-import {MeResponseMapper} from "../user/mappers/me-response.mapper";
+import { LoginDto, RegisterDto } from './dto';
 
 @Controller('auth')
 export class AuthController {
+  private readonly logger = new Logger(AuthService.name);
   constructor(private readonly authService: AuthService) {}
 
   @ApiOperation({ summary: 'Register new user' })
@@ -22,7 +31,7 @@ export class AuthController {
     type: User,
   })
   @Post('register')
-  async register(@Body() dto: UserRegisterDto): Promise<ITokens> {
+  async register(@Body() dto: RegisterDto): Promise<ITokens> {
     return await this.authService.register(dto);
   }
 
@@ -32,13 +41,26 @@ export class AuthController {
     description: 'Successful response',
   })
   @Post('login')
-  async login(@Body() dto: UserLoginDto): Promise<ITokens> {
+  async login(@Body() dto: LoginDto): Promise<ITokens> {
     return await this.authService.login(dto);
   }
+
   @UseGuards(AuthGuard())
   @Get('me')
   async me(@CurrentUser() user: User): Promise<MeResponseDto> {
-    const result = await this.authService.getMe(user.email)
+    const result = await this.authService.getMe(user.email).catch((err) => {
+      this.logger.error(err);
+      return null;
+    });
     return MeResponseMapper.meDto(result);
+  }
+
+  @UseGuards(RefreshTokenGuard)
+  @Post('refresh')
+  async getRefreshToken(@CurrentUser() user: User): Promise<ITokens> {
+    return await this.authService.getRefreshToken(user).catch((err) => {
+      this.logger.error(err);
+      return null;
+    });
   }
 }
