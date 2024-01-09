@@ -13,6 +13,10 @@
   .input {
     @apply rounded-sm text-sm border border-transparent bg-slate-700 p-2 outline-none focus:border-blue-500;
   }
+  .header-bg {
+    @apply flex h-14 justify-between items-center bg-gradient-to-b from-slate-800 via-slate-900 to-slate-600 px-8;
+
+  }
   .form_bg {
     @apply  bg-slate-500;
   }
@@ -28,6 +32,10 @@
   .btn-red {
     @apply bg-red-600  hover:bg-red-500;
   }
+}
+
+.text-shadow {
+  text-shadow:  0.5px 0.5px 2px orange;
 }
 
 //.custom-file-input::-webkit-file-upload-button {

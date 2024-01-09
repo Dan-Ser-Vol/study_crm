@@ -12,17 +12,24 @@ export class AuthService {
   private readonly _accessTokenKey: string = 'accessToken';
   private readonly _refreshTokenKey: string = 'refreshToken';
   isAuthSubj = new BehaviorSubject<boolean>(false);
-  trigger = new BehaviorSubject<boolean>(false);
+  // trigger = new BehaviorSubject<boolean>(false);
   meSubj = new BehaviorSubject<IUser>(null);
+  accessTokenSubj = new BehaviorSubject<string>(null);
 
   constructor(private httpClient: HttpClient) {
     this.isAuthSubj.next(!!this.getAccessToken());
+    this.accessTokenSubj.next(this.getRefreshToken());
+
+    if (this.accessTokenSubj.value !== this.getAccessToken()) {
+      this.isAuthSubj.next(false);
+    }
   }
 
   login(userData: IAuth): Observable<ITokens> {
     return this.httpClient.post<ITokens>(urls.auth.login, userData).pipe(
       tap(tokens => {
         this._setTokens(tokens);
+        this.accessTokenSubj.next(tokens.accessToken);
         this.isAuthSubj.next(true);
       })
     );
@@ -68,17 +75,21 @@ export class AuthService {
     return this.isAuthSubj.asObservable();
   }
 
+  setIsAuth() {
+    return this.isAuthSubj.next(!this.isAuthSubj);
+  }
+
   getMe() {
     return this.meSubj.asObservable();
   }
 
-  getTrigger() {
-    return this.trigger.asObservable();
-  }
-
-  setTrigger() {
-    return this.trigger.next(!this.trigger);
-  }
+  // getTrigger() {
+  //   return this.trigger.asObservable();
+  // }
+  //
+  // setTrigger() {
+  //   return this.trigger.next(!this.trigger);
+  // }
 
   // logout() {
   //   return this.httpClient.post(urls.auth.logout, {}).pipe(

@@ -16,10 +16,10 @@ import {
   take,
   throwError,
 } from 'rxjs';
-import { AuthService } from './services';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
-import { urls } from './constants';
+import { AuthService } from '../services';
+import { urls } from '../constants';
 
 @Injectable()
 export class LoggerInterceptor implements HttpInterceptor {

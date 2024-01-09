@@ -1,1 +1,13 @@
-<p>orders-page works!</p>
+@if (!isOrders) {
+  <div class="fa-pull-left my-8">
+    <h1 class="font-extrabold text-center text-indigo-700 shadow">
+      While not orders
+    </h1>
+    <h3 class="font-bold text-center text-amber-400 shadow">
+      We are currently in the process of development, everything will appear in
+      the near future!
+    </h3>
+  </div>
+} @else {
+  <p>orders-page works!</p>
+}

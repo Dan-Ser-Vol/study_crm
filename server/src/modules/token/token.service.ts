@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { InjectRedisClient, RedisClient } from '@webeleon/nestjs-redis';
 
-import { ITokens } from '../../common/interfaces/tokens-interface';
+import { ITokens } from '../../common';
 import { User } from '../../database/schemas/user.schema';
 
 @Injectable()
@@ -24,6 +24,7 @@ export class TokenService {
       email: data.email,
       roles: data.roles,
     });
+    await this.saveTokensToRedis(data.email, { accessToken, refreshToken });
     return { accessToken, refreshToken };
   }
 
@@ -33,5 +34,13 @@ export class TokenService {
   ): Promise<void> {
     await this.redisClient.setEx(email, 6000, tokens.accessToken);
     await this.redisClient.setEx(email, 604800, tokens.refreshToken);
+  }
+
+  public async findToken(email): Promise<void> {
+    await this.redisClient.exists(email);
+  }
+
+  public async deleteToken(email: string): Promise<void> {
+    await this.redisClient.del(email);
   }
 }

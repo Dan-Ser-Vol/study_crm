@@ -1,7 +1,7 @@
 import { HttpException, HttpStatus, Injectable, Logger } from '@nestjs/common';
 import * as bcrypt from 'bcrypt';
 
-import { ITokens } from '../../common/interfaces/tokens-interface';
+import { ITokens } from '../../common';
 import { User } from '../../database/schemas/user.schema';
 import { TokenService } from '../token/token.service';
 import { UserService } from '../user/user.service';

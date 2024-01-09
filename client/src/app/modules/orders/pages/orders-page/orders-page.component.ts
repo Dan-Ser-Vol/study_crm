@@ -9,5 +9,6 @@ import { AuthService } from '../../../../services';
   styleUrl: './orders-page.component.scss',
 })
 export class OrdersPageComponent {
+  isOrders: boolean;
   constructor(private authService: AuthService) {}
 }
