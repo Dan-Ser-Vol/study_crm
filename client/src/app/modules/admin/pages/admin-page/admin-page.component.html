@@ -1,3 +1,16 @@
-<div class="p-1">
-  <app-orders-statistic></app-orders-statistic>
+<div class="grid p-1 grid-cols-5">
+  <div class="col-span-4 mr-1">
+    <div class="flex justify-end">
+      <div></div>
+      <button
+        class="px-2 py-1 bg-teal-700 hover:bg-teal-800 text-white rounded">
+        create new manager
+      </button>
+    </div>
+
+    <div class="mt-1"><app-manager-item /></div>
+    <div class="mt-1"><app-manager-item /></div>
+    <div class="mt-1"><app-manager-item /></div>
+  </div>
+  <div class="col-span-1"><app-orders-statistic /></div>
 </div>

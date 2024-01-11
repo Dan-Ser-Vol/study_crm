@@ -1,13 +1,25 @@
-
-
 <mat-card>
-  <mat-card-header>
-    <mat-card-title>Manager</mat-card-title>
-    <mat-card-subtitle>End</mat-card-subtitle>
-  </mat-card-header>
-  <mat-card-actions align="end">
-    <button mat-button class="activate-button">ACTIVATE</button>
-    <button mat-button class="red-button">BAN</button>
-    <button mat-button class="yellow-button">UNBAN</button>
+  <mat-card-actions class="text-slate-700" align="start">
+    <div class="w-2/6">
+      <mat-card-title>Manager info</mat-card-title>
+      <div>
+        <div><span>ID: 45</span></div>
+        <div><span> EMAIL: dan&#64;gmail.com</span></div>
+        <div><span>NAME: Dan</span></div>
+        <div><span>SURNAME: Danny</span></div>
+        <div><span>IS ACTIVE: false</span></div>
+        <div><span>LAST LOGIN: JULY 09, 2023</span></div>
+      </div>
+    </div>
+    <div class="w-1/6">
+      <span>TOTAL: 0</span>
+    </div>
+    <div class="flex w-3/6">
+      <button mat-button style="color: #0f766e">RECOVERY PASSWORD</button>
+      <button mat-button color="primary">ACTIVATE</button>
+      <button mat-button color="accent">UNBAN</button>
+      <button mat-button color="warn">BAN</button>
+      <!--      <a mat-button routerLink=".">Link</a>-->
+    </div>
   </mat-card-actions>
 </mat-card>
