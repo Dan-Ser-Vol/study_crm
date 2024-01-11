@@ -8,6 +8,7 @@ import {
   withInterceptorsFromDi,
 } from '@angular/common/http';
 import { errorInterceptor, loggerInterceptor } from './interceptors';
+import { provideToastr } from 'ngx-toastr';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -16,5 +17,10 @@ export const appConfig: ApplicationConfig = {
     provideHttpClient(withInterceptorsFromDi()),
     loggerInterceptor,
     errorInterceptor,
+    provideToastr({
+      timeOut: 5000,
+      positionClass: 'toast-bottom-center',
+      preventDuplicates: true,
+    }),
   ],
 };

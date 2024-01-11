@@ -1,16 +1,13 @@
 <form [formGroup]="form" (ngSubmit)="login()" class="flex flex-col gap-1">
-  <mat-card class="flex justify-center">
+  <mat-card class="flex justify-center login_card">
     <mat-card-header>
-      <mat-card-title><span class="text-slate-600">Login</span></mat-card-title>
+      <mat-card-title><span class="text-amber-400">Login</span></mat-card-title>
     </mat-card-header>
     <mat-card-content>
       <div>
         <mat-form-field class="w-full">
           <mat-label>Enter your email</mat-label>
           <input matInput formControlName="email" />
-          @if (error) {
-            <mat-error>password or email is wrong</mat-error>
-          }
         </mat-form-field>
       </div>
       <div>

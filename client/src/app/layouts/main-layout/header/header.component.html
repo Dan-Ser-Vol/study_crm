@@ -13,16 +13,25 @@
       <div class="flex items-center">
         <div mat-card-avatar class="example-header-image"></div>
         <div class="flex justify-center items-center gap-3">
+          <div>
+            <button
+              matTooltip="to the previous page"
+              class="btn text-amber-400 text-xl text-shadow"
+              (click)="goBack()">
+              BACK
+            </button>
+          </div>
           <mat-card-title>
             <span class="text-sky-400 text-xl">
               {{ user?.roles[0] }}
-            </span></mat-card-title
-          >
+            </span>
+          </mat-card-title>
           <div class="example-button-container">
             <button
               mat-mini-fab
               routerLink="admin"
               class="w-2 h-2 hover:bg-amber-400"
+              matTooltip="admin panel"
               color="accent"
               aria-label="Example icon button with settings icon">
               <mat-icon style="width: 22px">
@@ -39,10 +48,11 @@
           </div>
           <div class="example-button-container">
             <button
-              (click)="goBack()"
+              (click)="logout()"
               mat-mini-fab
               class="w-2 h-2 hover:bg-amber-400"
               color="accent"
+              matTooltip="Loguot"
               aria-label="Example icon button with a exit icon">
               <mat-icon style="width: 22px">
                 <svg

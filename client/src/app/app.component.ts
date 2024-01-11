@@ -2,8 +2,9 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { NavigationStart, Router, RouterOutlet } from '@angular/router';
 import { MainLayoutComponent } from './layouts/main-layout/main-layout.component';
-import { MatDialog } from '@angular/material/dialog';
+import {MatDialog, MatDialogConfig} from '@angular/material/dialog';
 import { filter } from 'rxjs';
+import {LoginFormComponent} from "./modules/auth/components/login-form/login-form.component";
 
 @Component({
   selector: 'app-root',
@@ -22,4 +23,5 @@ export class AppComponent {
         this.matDialog.closeAll();
       });
   }
+
 }

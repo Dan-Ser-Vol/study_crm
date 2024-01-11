@@ -7,15 +7,14 @@ export class LogoutGuard implements CanActivate {
 
   async canActivate(context: ExecutionContext) {
     const request = context.switchToHttp().getRequest();
-
-    if (request.headers && request.headers.authorization) {
+    if (request.user?.email && request.headers.authorization) {
       const token = request.headers.authorization.split(' ');
       if (token[0] == 'Bearer' && token[1] != '') {
-        const jwtToken = token[1];
-        if (!(await this.redisClient.exists(jwtToken))) {
+        const { email } = request.user;
+        if (!(await this.redisClient.exists(email))) {
           return false;
         } else {
-          await this.redisClient.del(jwtToken);
+          await this.redisClient.del(email);
 
           return true;
         }

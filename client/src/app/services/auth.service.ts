@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { urls } from '../constants';
-import { BehaviorSubject, Observable, tap } from 'rxjs';
+import { BehaviorSubject, catchError, Observable, tap } from 'rxjs';
 import { IAuth, ITokens } from '../interfaces';
 import { IUser } from '../interfaces/user.interface';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root',
@@ -12,11 +13,14 @@ export class AuthService {
   private readonly _accessTokenKey: string = 'accessToken';
   private readonly _refreshTokenKey: string = 'refreshToken';
   isAuthSubj = new BehaviorSubject<boolean>(false);
-  // trigger = new BehaviorSubject<boolean>(false);
+  trigger = new BehaviorSubject<boolean>(false);
   meSubj = new BehaviorSubject<IUser>(null);
   accessTokenSubj = new BehaviorSubject<string>(null);
 
-  constructor(private httpClient: HttpClient) {
+  constructor(
+    private httpClient: HttpClient,
+    private router: Router
+  ) {
     this.isAuthSubj.next(!!this.getAccessToken());
     this.accessTokenSubj.next(this.getRefreshToken());
 
@@ -53,6 +57,22 @@ export class AuthService {
       );
   }
 
+  logout() {
+    return this.httpClient.post(urls.auth.logout, {}).pipe(
+      tap(() => {
+        this.deleteTokens();
+        this.isAuthSubj.next(false);
+        void this.router.navigate(['/login']);
+      }),
+      catchError(err => {
+        if (err.status === 401) {
+          void this.router.navigate(['/login']);
+        }
+        throw new Error(err.message);
+      })
+    );
+  }
+
   private _setTokens({ accessToken, refreshToken }: ITokens): void {
     localStorage.setItem(this._accessTokenKey, accessToken);
     localStorage.setItem(this._refreshTokenKey, refreshToken);
@@ -83,30 +103,13 @@ export class AuthService {
     return this.meSubj.asObservable();
   }
 
-  // getTrigger() {
-  //   return this.trigger.asObservable();
-  // }
-  //
-  // setTrigger() {
-  //   return this.trigger.next(!this.trigger);
-  // }
+  getTrigger() {
+    return this.trigger.asObservable();
+  }
 
-  // logout() {
-  //   return this.httpClient.post(urls.auth.logout, {}).pipe(
-  //     tap(() => {
-  //       this.deleteTokens();
-  //       void this.router.navigate(['/login']);
-  //       this.toastrService.success('You have successfully logged out');
-  //     }),
-  //     catchError(err => {
-  //       this.handeError(err);
-  //       if (err.status === 401) {
-  //         void this.router.navigate(['/login']);
-  //       }
-  //       throw new Error(err.message);
-  //     })
-  //   );
-  // }
+  changeTrigger() {
+    return this.trigger.next(!this.trigger);
+  }
 
   // signup(userData: IAuth) {
   //   return this.httpClient

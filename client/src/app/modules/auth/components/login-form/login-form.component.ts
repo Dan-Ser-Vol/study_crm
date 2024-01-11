@@ -14,6 +14,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { AuthService } from '../../../../services';
 import { Router } from '@angular/router';
 import { MatDialogRef } from '@angular/material/dialog';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-login-form',
@@ -28,16 +29,18 @@ import { MatDialogRef } from '@angular/material/dialog';
     MatButtonModule,
   ],
   templateUrl: './login-form.component.html',
+  styleUrl: './login-form.component.scss',
 })
 export class LoginFormComponent implements OnInit {
   hide = true;
-  error = false;
+  error: boolean;
   form: FormGroup;
 
   constructor(
     private authService: AuthService,
     private router: Router,
-    private dialogRef: MatDialogRef<LoginFormComponent>
+    private dialogRef: MatDialogRef<LoginFormComponent>,
+    protected toastr: ToastrService
   ) {}
 
   ngOnInit() {
@@ -52,19 +55,37 @@ export class LoginFormComponent implements OnInit {
   }
 
   login() {
-    this.authService.login(this.form.value).subscribe({
-      next: () => {
-        this.authService.me().subscribe();
-        this.router.navigate(['orders']);
-        this.dialogRef.close();
-      },
-      error: err => {
-        console.log(err);
-        this.error = true;
-      },
-      complete: () => {
-        this.error = false;
-      },
-    });
+    if (this.form.valid) {
+      this.authService.login(this.form.value).subscribe({
+        next: () => {
+          this.authService.me().subscribe();
+          this.router.navigate(['orders']);
+          this.dialogRef.close();
+        },
+        error: err => {
+          console.log(err);
+          this.error = err;
+          this.toastr.error('Password or Email is wrong!', 'Login Error');
+        },
+        complete: () => {
+          this.error = false;
+          this.toastr.success('Success', 'Login status');
+        },
+      });
+    } else {
+      this.errorHandler();
+    }
+  }
+
+  errorHandler() {
+    if (this.form.controls['email'].hasError('required')) {
+      this.toastr.error('Email is required', 'Login Error');
+    }
+    if (this.form.controls['email'].hasError('email')) {
+      this.toastr.error(' Please enter a valid email address', 'Login Error');
+    }
+    if (this.form.controls['password'].hasError('required')) {
+      this.toastr.error('Password is required', 'Login Error');
+    }
   }
 }

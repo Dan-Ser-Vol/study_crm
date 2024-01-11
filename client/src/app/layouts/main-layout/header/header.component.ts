@@ -6,6 +6,7 @@ import { MatCardModule } from '@angular/material/card';
 import { IUser } from '../../../interfaces/user.interface';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 @Component({
   selector: 'app-header',
@@ -17,6 +18,7 @@ import { MatButtonModule } from '@angular/material/button';
     MatCardModule,
     MatIconModule,
     MatButtonModule,
+    MatTooltipModule,
   ],
   templateUrl: './header.component.html',
 })
@@ -35,6 +37,11 @@ export class HeaderComponent implements OnInit {
     if (this.isAuth && !this.user) {
       this.authService.me().subscribe();
     }
+  }
+
+  logout() {
+    this.authService.logout().subscribe();
+    this.authService.getTrigger().subscribe();
   }
 
   goBack(): void {

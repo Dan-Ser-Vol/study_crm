@@ -1,8 +1,21 @@
-import { Body, Controller, Get, Logger, Post, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  HttpStatus,
+  Logger,
+  Post,
+  UseGuards,
+} from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { ApiOperation, ApiResponse } from '@nestjs/swagger';
 
-import { CurrentUser, ITokens, RefreshTokenGuard } from '../../common';
+import {
+  CurrentUser,
+  ITokens,
+  LogoutGuard,
+  RefreshTokenGuard,
+} from '../../common';
 import { User } from '../../database/schemas/user.schema';
 import { MeResponseDto } from '../user/dto/response/me.response-dto';
 import { MeResponseMapper } from '../user/mappers/me-response.mapper';
@@ -52,5 +65,22 @@ export class AuthController {
       this.logger.error(err);
       return null;
     });
+  }
+
+  @UseGuards(AuthGuard(), LogoutGuard)
+  @ApiResponse({
+    status: HttpStatus.NO_CONTENT,
+    description: 'Successful response',
+    type: 'The user is logout',
+  })
+  @ApiOperation({ summary: 'Logout user' })
+  @ApiResponse({
+    status: 200,
+    description: 'Successful response',
+    type: 'The user is logout',
+  })
+  @Post('logout')
+  public async logout() {
+    return;
   }
 }
