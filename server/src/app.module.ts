@@ -6,8 +6,8 @@ import * as process from 'process';
 
 import { CommonConfigModule } from './config/commonConfig/config.module';
 import { CommonConfigService } from './config/commonConfig/config.service';
+import { ApplicationModule } from './modules/application/application.module';
 import { AuthModule } from './modules/auth/auth.module';
-import { OrderModule } from './modules/order/order.module';
 import { TokenModule } from './modules/token/token.module';
 import { UserModule } from './modules/user/user.module';
 
@@ -29,8 +29,8 @@ dotenv.config({ path: `environments/${environment}.env` });
     }),
     UserModule,
     TokenModule,
-    OrderModule,
     AuthModule,
+    ApplicationModule,
   ],
 })
 export class AppModule {}

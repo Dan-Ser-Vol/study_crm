@@ -1,4 +1,4 @@
 export interface IList<T> {
-    model: T[]
-    total: number
+  model: T[];
+  total: number;
 }

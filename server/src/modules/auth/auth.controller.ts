@@ -8,7 +8,7 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
-import { ApiOperation, ApiResponse } from '@nestjs/swagger';
+import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 
 import {
   CurrentUser,
@@ -16,12 +16,13 @@ import {
   LogoutGuard,
   RefreshTokenGuard,
 } from '../../common';
-import { User } from '../../database/schemas/user.schema';
+import { User } from '../../database/schemas';
 import { MeResponseDto } from '../user/dto/response/me.response-dto';
 import { MeResponseMapper } from '../user/mappers/me-response.mapper';
 import { AuthService } from './auth.service';
 import { LoginDto, RegisterDto } from './dto';
 
+@ApiTags('Auth')
 @Controller('auth')
 export class AuthController {
   private readonly logger = new Logger(AuthService.name);
