@@ -4,6 +4,7 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { Application, ApplicationSchema } from '../../database/schemas';
 import { ApplicationController } from './application.controller';
 import { ApplicationService } from './application.service';
+import { ApplicationRepository } from './application-repository';
 
 @Module({
   imports: [
@@ -12,6 +13,6 @@ import { ApplicationService } from './application.service';
     ]),
   ],
   controllers: [ApplicationController],
-  providers: [ApplicationService],
+  providers: [ApplicationService, ApplicationRepository],
 })
 export class ApplicationModule {}

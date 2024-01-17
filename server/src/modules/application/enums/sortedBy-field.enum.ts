@@ -1,6 +1,6 @@
-export enum OrderFieldEnum {
-  createdAt = 'createdAt',
-  id = 'age',
+export enum SortedByFieldEnum {
+  _id = '_id',
+  age = 'age',
   name = 'name',
   surname = 'surname',
   email = 'email',
@@ -11,4 +11,5 @@ export enum OrderFieldEnum {
   status = 'status',
   sum = 'sum',
   alreadyPaid = 'alreadyPaid',
+  created_at = 'created_at',
 }

@@ -1,4 +1,8 @@
 export interface IList<T> {
-  model: T[];
-  total: number;
+  data: T[];
+  page: number;
+  limit: number;
+  itemsFound: number;
+  totalCount: number;
+  totalPages: number;
 }

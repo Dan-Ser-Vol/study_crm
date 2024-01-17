@@ -6,9 +6,6 @@ import { ECurses, ECursesFormat, ECursesType, EStatus } from './enums';
 
 @Schema({ timestamps: true })
 export class Application {
-  @Prop({ type: Number, unique: true, index: true, default: 1 })
-  id: number;
-
   @Prop({ type: String, required: true })
   name: string;
 
