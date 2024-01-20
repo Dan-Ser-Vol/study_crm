@@ -5,20 +5,25 @@ export abstract class PaginationQueryDto {
   @Type(() => Number)
   @IsInt()
   @IsOptional()
-  readonly page?: number = 1;
+  readonly page?: number;
 
   @Type(() => Number)
   @IsInt()
   @IsOptional()
-  readonly limit?: number = 25;
+  readonly limit?: number;
 
   @Type(() => Number)
   @IsInt()
   @IsOptional()
-  readonly total_pages?: number;
+  readonly totalPages?: number;
 
   @Type(() => Number)
   @IsInt()
   @IsOptional()
-  readonly total_count?: number;
+  readonly itemsFound?: number;
+
+  @Type(() => Number)
+  @IsInt()
+  @IsOptional()
+  readonly totalCount?: number;
 }

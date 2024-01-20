@@ -15,7 +15,7 @@ export enum ECourses {
   PCX = 'PCX',
 }
 
-export enum ECursesType {
+export enum ECoursesType {
   PRO = 'pro',
   MINIMAL = 'minimal',
   PREMIUM = 'premium',
@@ -23,7 +23,7 @@ export enum ECursesType {
   VIP = 'vip',
 }
 
-export enum ECursesFormat {
+export enum ECoursesFormat {
   STATIC = 'static',
   ONLINE = 'online',
 }

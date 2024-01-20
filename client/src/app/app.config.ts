@@ -9,7 +9,6 @@ import {
 } from '@angular/common/http';
 import { errorInterceptor, loggerInterceptor } from './interceptors';
 import { provideToastr } from 'ngx-toastr';
-
 export const appConfig: ApplicationConfig = {
   providers: [
     provideRouter(routes),

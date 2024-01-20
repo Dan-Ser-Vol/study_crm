@@ -1,0 +1,18 @@
+<div class="p-1">
+  <app-filter-form></app-filter-form>
+  <app-applications-list [applications]="applications" />
+  <div>
+    <mat-paginator
+      class="demo-paginator"
+      (page)="handlePageEvent($event)"
+      [length]="length"
+      [pageSize]="pageSize"
+      [disabled]="false"
+      [showFirstLastButtons]="true"
+      [pageSizeOptions]="showPageSizeOptions ? pageSizeOptions : []"
+      [hidePageSize]="hidePageSize"
+      [pageIndex]="pageIndex"
+      aria-label="Select page">
+    </mat-paginator>
+  </div>
+</div>

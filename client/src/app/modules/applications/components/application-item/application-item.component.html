@@ -1,0 +1,18 @@
+<mat-accordion>
+  <mat-expansion-panel
+    (opened)="panelOpenState = true"
+    (closed)="panelOpenState = false">
+    <mat-expansion-panel-header>
+      <mat-panel-title> Self aware panel </mat-panel-title>
+      <mat-panel-description>
+        Currently I am {{ panelOpenState ? 'open' : 'closed' }}
+      </mat-panel-description>
+    </mat-expansion-panel-header>
+    <mat-card-content>
+      <p>I'm visible because I am open</p>
+      <div class="bg-emerald-500">content</div>
+      <div class="bg-cyan-600">content</div>
+      <div class="bg-emerald-500">content</div>
+    </mat-card-content>
+  </mat-expansion-panel>
+</mat-accordion>

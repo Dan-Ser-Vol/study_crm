@@ -1,11 +1,10 @@
+import { environment } from '../environments';
 
-import {environment} from "../environments"
+const { BASE_API } = environment;
 
-const {BASE_API} = environment;
-
-const auth:string = `${BASE_API}auth`;
-const users:string = `${BASE_API}users`;
-const orders:string = `${BASE_API}orders`;
+const auth: string = `${BASE_API}auth`;
+const users: string = `${BASE_API}users`;
+const applications: string = `${BASE_API}applications`;
 
 const urls = {
   auth: {
@@ -18,15 +17,17 @@ const urls = {
   users: {
     base: users,
   },
-  orders: {
-    getAll: orders,
-    create: `${orders}/create`,
-    addImage: (orderId: number):string => `${orders}/image/${orderId}`,
-    deleteImage: (orderId: number):string => `${orders}/image/${orderId}`,
-    getById: (orderId: number):string => `${orders}/${orderId}`,
-    deleteById: (orderId: number):string => `${orders}/${orderId}`,
-    updateById: (orderId: number):string => `${orders}/update/${orderId}`,
+  applications: {
+    getAll: applications,
+    create: `${applications}/create`,
+    addImage: (orderId: number): string => `${applications}/image/${orderId}`,
+    deleteImage: (orderId: number): string =>
+      `${applications}/image/${orderId}`,
+    getById: (orderId: number): string => `${applications}/${orderId}`,
+    deleteById: (orderId: number): string => `${applications}/${orderId}`,
+    updateById: (orderId: number): string =>
+      `${applications}/update/${orderId}`,
   },
 };
 
-export {urls};
+export { urls };

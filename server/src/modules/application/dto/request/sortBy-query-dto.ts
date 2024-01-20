@@ -1,9 +1,7 @@
 import { Transform } from 'class-transformer';
 import { IsOptional, IsString } from 'class-validator';
 
-import { PaginationQueryDto } from '../../../../common';
-
-export class SortByQueryDto extends PaginationQueryDto {
+export class SortByQueryDto {
   @Transform(({ value }) => value.toLowerCase())
   @IsString()
   @IsOptional()

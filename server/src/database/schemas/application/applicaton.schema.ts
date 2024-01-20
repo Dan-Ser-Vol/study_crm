@@ -2,7 +2,7 @@ import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { SchemaTypes, Types } from 'mongoose';
 
 import { Manager } from '../manager.schema';
-import { ECurses, ECursesFormat, ECursesType, EStatus } from './enums';
+import { ECourses, ECursesFormat, ECursesType, EStatus } from './enums';
 
 @Schema({ timestamps: true })
 export class Application {
@@ -23,11 +23,11 @@ export class Application {
 
   @Prop({
     type: String,
-    enum: Object.values(ECurses),
+    enum: Object.values(ECourses),
     required: true,
-    default: ECurses.FS,
+    default: ECourses.FS,
   })
-  course: ECurses;
+  course: ECourses;
 
   @Prop({
     type: String,
