@@ -1,7 +1,12 @@
-<div class="flex gap-1">
-  <div class="flex flex-col items-center justify-center">
-    <app-text-input [data]="'Email'"></app-text-input>
-    <app-select-input [dataEnums]="'courseFormat'"> </app-select-input>
-    <app-select-input [dataEnums]="'coursesType'"> </app-select-input>
+<div class="flex flex-col gap-1">
+  <div class="mx-auto">
+    <app-text-input />
+  </div>
+  <div class="flex mx-auto gap-1">
+    <app-select-input [dataEnums]="'All formats'"> </app-select-input>
+    <app-select-input [dataEnums]="'All types'"> </app-select-input>
+    <app-select-input [dataEnums]="'All statuses'"> </app-select-input>
+    <app-select-input [dataEnums]="'All groups'"> </app-select-input>
+    <app-select-input [dataEnums]="'All courses'"> </app-select-input>
   </div>
 </div>

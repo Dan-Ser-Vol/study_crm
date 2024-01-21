@@ -4,6 +4,7 @@ import { ApplicationsPageComponent } from './modules/applications/pages/applicat
 import { RegisterPageComponent } from './modules/auth/pages/register-page/register-page.component';
 import { ErrorPageComponent } from './modules/error-page/error-page.component';
 import { AdminPageComponent } from './modules/admin/pages/admin-page/admin-page.component';
+import { authGuard } from './guards/auth-guard';
 
 export const routes: Routes = [
   {
@@ -14,6 +15,7 @@ export const routes: Routes = [
   {
     path: 'applications',
     component: ApplicationsPageComponent,
+    canActivate: [authGuard()],
   },
   {
     path: 'login',
@@ -26,6 +28,7 @@ export const routes: Routes = [
   {
     path: 'admin',
     component: AdminPageComponent,
+    canActivate: [authGuard()],
   },
   {
     path: '**',

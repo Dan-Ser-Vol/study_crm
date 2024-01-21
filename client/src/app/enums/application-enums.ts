@@ -27,3 +27,8 @@ export enum ECoursesFormat {
   STATIC = 'static',
   ONLINE = 'online',
 }
+
+export enum EGroups {
+  MARCH = 'march-2023',
+  DEC = 'dec-2022',
+}

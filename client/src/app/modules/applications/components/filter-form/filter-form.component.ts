@@ -4,12 +4,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatInputModule } from '@angular/material/input';
 import { TextInputComponent } from './text-input/text-input.component';
 import { SelectInputComponent } from './select-input/select-input.component';
-import {
-  ECourses,
-  ECoursesFormat,
-  ECoursesType,
-  EStatus,
-} from '../../../../enums/application-enums';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-filter-form',
@@ -20,15 +15,9 @@ import {
     MatSelectModule,
     TextInputComponent,
     SelectInputComponent,
+    FormsModule,
   ],
   templateUrl: './filter-form.component.html',
   styleUrl: './filter-form.component.scss',
 })
-export class FilterFormComponent {
-  label: string;
-  coursesFormat: ECoursesFormat;
-  coursesType: ECoursesType;
-  courses: ECourses;
-  status: EStatus;
-  protected readonly ECoursesFormat = ECoursesFormat;
-}
+export class FilterFormComponent {}

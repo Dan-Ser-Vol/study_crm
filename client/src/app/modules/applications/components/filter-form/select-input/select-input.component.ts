@@ -1,8 +1,11 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { MatSelectModule } from '@angular/material/select';
 import {
+  ECourses,
   ECoursesFormat,
   ECoursesType,
+  EGroups,
+  EStatus,
 } from '../../../../../enums/application-enums';
 import { MatFormFieldModule } from '@angular/material/form-field';
 
@@ -11,39 +14,39 @@ import { MatFormFieldModule } from '@angular/material/form-field';
   standalone: true,
   imports: [MatSelectModule, MatFormFieldModule],
   template: `
-    <mat-form-field>
-      <mat-label>{{ label }}</mat-label>
-      <mat-select class="flex items-start">
-        @for (format of selectedValue; track format) {
+    <mat-form-field style="margin-bottom: -22px ">
+      <mat-label id="{{ dataEnums }}">{{ dataEnums }}</mat-label>
+      <mat-select id="{{ dataEnums }}" class="flex items-start">
+        @for (format of getEnumValues(dataEnums); track format) {
           <mat-option value="selectedValue">{{ format }}</mat-option>
         }
       </mat-select>
     </mat-form-field>
   `,
 })
-export class SelectInputComponent implements OnInit {
+export class SelectInputComponent {
   @Input()
   dataEnums: string;
 
-  label: string;
-  selectedValue: string[];
+  getEnumValues(enumName: string): string[] {
+    const enumObject = this.getEnumByName(enumName);
+    return Object.values(enumObject);
+  }
 
-  someArray = ['online', 'offline'];
-
-  ngOnInit() {
-    switch (this.dataEnums) {
-      case 'courseFormat':
-        this.label = 'All formats';
-        this.selectedValue = Object.keys(ECoursesFormat).map(
-          key => ECoursesFormat[key]
-        );
-        break;
-      case 'coursesType':
-        this.label = 'All types';
-        this.selectedValue = Object.keys(ECoursesType).map(
-          key => ECoursesType[key]
-        );
-        break;
+  getEnumByName(enumName: string): any {
+    switch (enumName) {
+      case 'All formats':
+        return ECoursesFormat;
+      case 'All types':
+        return ECoursesType;
+      case 'All statuses':
+        return EStatus;
+      case 'All groups':
+        return EGroups;
+      case 'All courses':
+        return ECourses;
+      default:
+        return {};
     }
   }
 }
