@@ -3,7 +3,7 @@
     (opened)="panelOpenState = true"
     (closed)="panelOpenState = false">
     <mat-expansion-panel-header class="bg-sky-100">
-      <mat-panel-title> Self aware panel </mat-panel-title>
+      <mat-panel-title> {{app.name}} </mat-panel-title>
       <mat-panel-description>
         Currently I am {{ panelOpenState ? 'open' : 'closed' }}
       </mat-panel-description>
