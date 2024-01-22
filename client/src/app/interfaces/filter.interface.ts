@@ -6,4 +6,9 @@ export interface IFilter {
   age?: number;
   startDate?: number;
   endDate?: number;
+  course_format?: string;
+  course_type?: string;
+  status?: string;
+  group?: string;
+  course?: string;
 }

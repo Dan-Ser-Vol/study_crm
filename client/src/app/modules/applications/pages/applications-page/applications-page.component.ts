@@ -33,7 +33,7 @@ export class ApplicationsPageComponent implements OnInit {
     this.activatedRoute.queryParams.subscribe(({ page, limit }) => {
       this.appService.getAll(page, limit).subscribe(value => {
         this.applications = value.data;
-        this.length = value.totalCount;
+        this.length = value.itemsFound;
       });
     });
 

@@ -5,7 +5,7 @@
 
 @layer base {
   body {
-    @apply text-neutral-900 bg-slate-300
+    @apply text-neutral-900 bg-gradient-to-b from-slate-500 via-slate-900 to-slate-500
   }
 }
 

@@ -36,12 +36,12 @@ export class TextInputComponent implements OnInit {
       const newFilter = {};
       for (const key in this.formData.value) {
         const value = this.formData.value[key];
-        if (value !== '') {
+        if (value) {
           newFilter[key] = value;
         }
       }
       this.applicationsService.setFilterItems(newFilter);
-      console.log(newFilter);
+      this.formData.reset();
     } else {
       console.log('Form is not valid');
     }

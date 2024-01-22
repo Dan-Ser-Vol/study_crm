@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { MatSelectModule } from '@angular/material/select';
 import {
   ECourses,
@@ -8,25 +8,44 @@ import {
   EStatus,
 } from '../../../../../enums/application-enums';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import {
+  FormBuilder,
+  FormGroup,
+  FormsModule,
+  ReactiveFormsModule,
+} from '@angular/forms';
+import { ApplicationsService } from '../../../../../services';
 
 @Component({
   selector: 'app-select-input',
   standalone: true,
-  imports: [MatSelectModule, MatFormFieldModule],
-  template: `
-    <mat-form-field style="margin-bottom: -22px ">
-      <mat-label id="{{ dataEnums }}">{{ dataEnums }}</mat-label>
-      <mat-select id="{{ dataEnums }}" class="flex items-start">
-        @for (format of getEnumValues(dataEnums); track format) {
-          <mat-option value="selectedValue">{{ format }}</mat-option>
-        }
-      </mat-select>
-    </mat-form-field>
-  `,
+  imports: [
+    MatSelectModule,
+    MatFormFieldModule,
+    FormsModule,
+    ReactiveFormsModule,
+  ],
+  templateUrl: './select-input.component.html',
 })
-export class SelectInputComponent {
+export class SelectInputComponent implements OnInit {
   @Input()
   dataEnums: string;
+  formData: FormGroup;
+
+  constructor(
+    private formBuilder: FormBuilder,
+    private applicationsService: ApplicationsService
+  ) {}
+
+  ngOnInit() {
+    this.formData = this.formBuilder.group({
+      course_format: [''],
+      course_type: [''],
+      status: [''],
+      group: [''],
+      course: [''],
+    });
+  }
 
   getEnumValues(enumName: string): string[] {
     const enumObject = this.getEnumByName(enumName);
@@ -48,5 +67,24 @@ export class SelectInputComponent {
       default:
         return {};
     }
+  }
+
+  onsubmit() {
+    if (this.formData.valid) {
+      const newFilter = {};
+      for (const key in this.formData.value) {
+        const value = this.formData.value[key];
+        if (value) {
+          newFilter[key] = value;
+          console.log(newFilter);
+        }
+      }
+      this.applicationsService.setFilterItems(newFilter);
+    }
+  }
+
+  resetForm() {
+    this.formData.reset();
+    this.applicationsService.setFilterItems(null);
   }
 }
