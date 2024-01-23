@@ -22,14 +22,15 @@ export class ApplicationRepository {
         queryStr.replace(/\b(gte|lte|gt|lt)\b/, (match) => `$${match}`),
       );
 
-      const { limit, page, ...searchObj} = queryObj;
+      const { limit, page, ...searchObj } = queryObj;
       const skip = limit * (page - 1);
 
       const queryBuilder = this.applicationModel
-        .find(searchObj).collation({locale: 'en', strength:2 })
+        .find(searchObj)
+        .collation({ locale: 'en', strength: 2 })
         .limit(limit)
         .skip(skip)
-        .sort(query.sortedBy).exec();
+        .sort(query.sortedBy);
 
       const [data, itemsFound, totalCount] = await Promise.all([
         queryBuilder.exec(),
