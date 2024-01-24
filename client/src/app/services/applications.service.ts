@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { urls } from '../constants';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { IApplication, IPagination } from '../interfaces';
-import { IFilter } from '../interfaces/filter.interface';
+import { IFilter } from '../interfaces';
 
 @Injectable({
   providedIn: 'root',

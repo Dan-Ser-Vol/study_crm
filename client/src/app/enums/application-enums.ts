@@ -4,6 +4,7 @@ export enum EStatus {
   AGREE = 'Agree',
   DISAGREE = 'Disagree',
   DUBBING = 'Dubbing',
+  ALL_STATUSES = 'All statuses',
 }
 
 export enum ECourses {
@@ -13,6 +14,7 @@ export enum ECourses {
   JSCX = 'JSCX',
   FE = 'FE',
   PCX = 'PCX',
+  ALL_COURSES = 'All courses',
 }
 
 export enum ECoursesType {
@@ -21,14 +23,17 @@ export enum ECoursesType {
   PREMIUM = 'premium',
   INCUBATOR = 'incubator',
   VIP = 'vip',
+  ALL_TYPES = 'All types',
 }
 
 export enum ECoursesFormat {
   STATIC = 'static',
   ONLINE = 'online',
+  ALL_FORMATS = 'All formats',
 }
 
 export enum EGroups {
   MARCH = 'march-2023',
   DEC = 'dec-2022',
+  ALL_GROUPS = 'All groups',
 }

@@ -2,7 +2,7 @@ import { HttpException, HttpStatus, Injectable, Logger } from '@nestjs/common';
 import * as bcrypt from 'bcrypt';
 
 import { ITokens } from '../../common';
-import { User } from '../../database/schemas/user.schema';
+import { User } from '../../database/schemas';
 import { TokenService } from '../token/token.service';
 import { UserService } from '../user/user.service';
 import { LoginDto, RegisterDto } from './dto';
@@ -27,10 +27,20 @@ export class AuthService {
 
   public async login(dto: LoginDto): Promise<ITokens> {
     const findUser = await this.userService.findUserByEmail(dto.email);
-    await this.comparePassword(dto.password, findUser.password);
-    const tokens = await this.tokenService.signTokens(findUser);
-    await this.tokenService.saveTokensToRedis(dto.email, tokens);
-    return tokens;
+    const isMatched = await this.comparePassword(
+      dto.password,
+      findUser.password,
+    );
+    if (isMatched) {
+      const tokens = await this.tokenService.signTokens(findUser);
+      await this.tokenService.saveTokensToRedis(dto.email, tokens);
+      return tokens;
+    } else {
+      throw new HttpException(
+        'Wrong email  or password ',
+        HttpStatus.UNAUTHORIZED,
+      );
+    }
   }
 
   public async getMe(email: string): Promise<User> {

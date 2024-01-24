@@ -5,14 +5,13 @@ import { ApplicationsService } from '../../../../services';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { FilterFormComponent } from '../../components/filter-form/filter-form.component';
-import { IFilter } from '../../../../interfaces/filter.interface';
+import { IFilter } from '../../../../interfaces';
 
 @Component({
   selector: 'app-applications-page',
   standalone: true,
   imports: [ApplicationsListComponent, MatPaginatorModule, FilterFormComponent],
   templateUrl: './applications-page.component.html',
-  styleUrl: './applications-page.component.scss',
 })
 export class ApplicationsPageComponent implements OnInit {
   applications: IApplication[];
@@ -30,10 +29,13 @@ export class ApplicationsPageComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.activatedRoute.queryParams.subscribe(({ page, limit }) => {
-      this.appService.getAll(page, limit).subscribe(value => {
+    this.activatedRoute.queryParams.subscribe(queryObj => {
+      this.appService.getAll().subscribe(value => {
         this.applications = value.data;
         this.length = value.itemsFound;
+        this.pageIndex = value.page;
+
+        this.appService.setFilterItems(queryObj);
       });
     });
 
@@ -41,7 +43,8 @@ export class ApplicationsPageComponent implements OnInit {
       this.filters = value;
       this.appService.getAll().subscribe(value => {
         this.applications = value.data;
-        this.length = value.totalCount;
+        this.length = value.itemsFound;
+        this.pageIndex = value.page;
         this.router.navigate([], {
           queryParams: { ...this.filters },
         });

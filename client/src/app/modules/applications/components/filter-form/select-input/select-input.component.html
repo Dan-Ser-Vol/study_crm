@@ -1,63 +1,128 @@
-<form
-  [formGroup]="formData"
-  action=""
-  class="flex gap-1"
-  style="margin-bottom: -21px">
-  <mat-form-field>
-    <mat-label id="all formats">All formats</mat-label>
-    <mat-select formControlName="course_format" class="flex items-start">
-      @for (format of getEnumValues('All formats'); track format) {
-        <mat-option (click)="onsubmit()" [value]="format">{{
-          format
-        }}</mat-option>
-      }
-    </mat-select>
-  </mat-form-field>
+<form [formGroup]="formData" class="flex flex-col gap-1">
+  <div class="flex gap-1">
+    <mat-form-field style="margin-bottom: -22px; width: 170px">
+      <mat-label id="name">Name</mat-label>
+      <input
+        type="text"
+        formControlName="name"
+        matInput
+        #input
+        maxlength="50" />
+    </mat-form-field>
+    <mat-form-field style="margin-bottom: -22px; width: 170px">
+      <mat-label id="surname">Surname</mat-label>
+      <input
+        type="text"
+        formControlName="surname"
+        matInput
+        #input
+        maxlength="50" />
+    </mat-form-field>
+    <mat-form-field style="margin-bottom: -22px; width: 170px">
+      <mat-label id="phone">Phone</mat-label>
+      <input
+        type="tel"
+        formControlName="phone"
+        matInput
+        #input
+        maxlength="15" />
+    </mat-form-field>
+    <mat-form-field style="margin-bottom: -22px; width: 170px">
+      <mat-label id="age">Age</mat-label>
+      <input
+        type="number"
+        formControlName="age"
+        matInput
+        #input
+        maxlength="10" />
+    </mat-form-field>
+    <mat-form-field style="margin-bottom: -22px; width: 170px">
+      <mat-label id="start">Start date</mat-label>
+      <input
+        type="date"
+        formControlName="startDate"
+        matInput
+        #input
+        maxlength="15" />
+    </mat-form-field>
+    <mat-form-field style="margin-bottom: -22px; width: 170px">
+      <mat-label id="end">End date</mat-label>
+      <input
+        type="date"
+        formControlName="endDate"
+        matInput
+        #input
+        maxlength="15" />
+    </mat-form-field>
+    <div class="flex gap-1">
+      <button
+        class="p-2 bg-amber-300 rounded shadow text-slate-600 text-xl hover:bg-amber-400"
+        (click)="onSubmit()">
+        Search
+      </button>
+      <button
+        class="p-3.5 bg-cyan-700 text-white rounded text-xl hover:bg-cyan-900"
+        (click)="resetForm()">
+        Reset
+      </button>
+    </div>
+  </div>
+  <div class="flex gap-1">
+    <mat-form-field>
+      <mat-label id="all formats">Formats</mat-label>
+      <mat-select
+        formControlName="course_format"
+        (selectionChange)="onselect($event)">
+        @for (format of getEnumValues('Formats'); track format) {
+          <mat-option (click)="onSubmit()" [value]="format"
+            >{{ format }}
+          </mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
 
-  <mat-form-field>
-    <mat-label id="all types">All types</mat-label>
-    <mat-select formControlName="course_type" class="flex items-start">
-      @for (type of getEnumValues('All types'); track type) {
-        <mat-option (click)="onsubmit()" [value]="type">{{ type }}</mat-option>
-      }
-    </mat-select>
-  </mat-form-field>
+    <mat-form-field>
+      <mat-label id="all types">Types</mat-label>
+      <mat-select
+        formControlName="course_type"
+        (selectionChange)="onselect($event)">
+        @for (type of getEnumValues('Types'); track type) {
+          <mat-option (click)="onSubmit()" [value]="type">{{
+            type
+          }}</mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
 
-  <mat-form-field>
-    <mat-label id="All statuses">All statuses</mat-label>
-    <mat-select formControlName="status" class="flex items-start">
-      @for (status of getEnumValues('All statuses'); track status) {
-        <mat-option (click)="onsubmit()" [value]="status">{{
-          status
-        }}</mat-option>
-      }
-    </mat-select>
-  </mat-form-field>
-  <mat-form-field>
-    <mat-label id="All groups">All groups</mat-label>
-    <mat-select formControlName="group" class="flex items-start">
-      @for (group of getEnumValues('All groups'); track group) {
-        <mat-option (click)="onsubmit()" [value]="group">{{
-          group
-        }}</mat-option>
-      }
-    </mat-select>
-  </mat-form-field>
-  <mat-form-field>
-    <mat-label id="All courses">All courses</mat-label>
-    <mat-select formControlName="course" class="flex items-start">
-      @for (course of getEnumValues('All courses'); track course) {
-        <mat-option (click)="onsubmit()" [value]="course">{{
-          course
-        }}</mat-option>
-      }
-    </mat-select>
-  </mat-form-field>
-  <div style="margin-bottom: -21px">
-    <button
-      class="p-3.5 bg-sky-500 text-slate-700 rounded text-xl hover:bg-sky-600"
-      (click)="resetForm()">
-      Reset
-    </button>
+    <mat-form-field>
+      <mat-label id="All statuses">Statuses</mat-label>
+      <mat-select formControlName="status" (selectionChange)="onselect($event)">
+        @for (status of getEnumValues('Statuses'); track status) {
+          <mat-option (click)="onSubmit()" [value]="status"
+            >{{ status }}
+          </mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label id="All groups">Groups</mat-label>
+      <mat-select formControlName="group" (selectionChange)="onselect($event)">
+        @for (group of getEnumValues('Groups'); track group) {
+          <mat-option (click)="onSubmit()" [value]="group"
+            >{{ group }}
+          </mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label id="All courses">Courses</mat-label>
+      <mat-select formControlName="course" (selectionChange)="onselect($event)">
+        @for (course of getEnumValues('Courses'); track course) {
+          <mat-option (click)="onSubmit()" [value]="course"
+            >{{ course }}
+          </mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
   </div>
 </form>

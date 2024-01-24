@@ -1,4 +1,4 @@
-<form [formGroup]="form" (ngSubmit)="login()" class="flex flex-col gap-1">
+<form [formGroup]="form" class="flex flex-col gap-1">
   <mat-card class="flex justify-center login_card">
     <mat-card-header>
       <mat-card-title><span class="text-amber-400">Login</span></mat-card-title>
@@ -29,7 +29,7 @@
       </div>
     </mat-card-content>
     <mat-card-actions class="flex justify-center">
-      <button mat-raised-button color="accent">Login</button>
+      <button (click)="login()" mat-raised-button color="accent">Login</button>
     </mat-card-actions>
   </mat-card>
 </form>

@@ -15,6 +15,7 @@ import { AuthService } from '../../../../services';
 import { Router } from '@angular/router';
 import { MatDialogRef } from '@angular/material/dialog';
 import { ToastrService } from 'ngx-toastr';
+import { min } from 'rxjs';
 
 @Component({
   selector: 'app-login-form',
@@ -50,7 +51,11 @@ export class LoginFormComponent implements OnInit {
   _initForm(): void {
     this.form = new FormGroup({
       email: new FormControl('', [Validators.email, Validators.required]),
-      password: new FormControl('', [Validators.required]),
+      password: new FormControl('', [
+        Validators.required,
+        Validators.min(4),
+        Validators.max(8),
+      ]),
     });
   }
 
@@ -63,7 +68,6 @@ export class LoginFormComponent implements OnInit {
           this.dialogRef.close();
         },
         error: err => {
-          console.log(err);
           this.error = err;
           this.toastr.error('Password or Email is wrong!', 'Login Error');
         },
@@ -86,6 +90,12 @@ export class LoginFormComponent implements OnInit {
     }
     if (this.form.controls['password'].hasError('required')) {
       this.toastr.error('Password is required', 'Login Error');
+    }
+    if (this.form.controls['password'].hasError('min')) {
+      this.toastr.error('Password must have min 4 symbol', 'Login Error');
+    }
+    if (this.form.controls['password'].hasError('max')) {
+      this.toastr.error('Password must have max 8 symbol', 'Login Error');
     }
   }
 }

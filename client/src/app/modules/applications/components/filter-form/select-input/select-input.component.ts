@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { MatSelectModule } from '@angular/material/select';
+import { MatSelectChange, MatSelectModule } from '@angular/material/select';
 import {
   ECourses,
   ECoursesFormat,
@@ -15,6 +15,7 @@ import {
   ReactiveFormsModule,
 } from '@angular/forms';
 import { ApplicationsService } from '../../../../../services';
+import { MatInputModule } from '@angular/material/input';
 
 @Component({
   selector: 'app-select-input',
@@ -24,6 +25,7 @@ import { ApplicationsService } from '../../../../../services';
     MatFormFieldModule,
     FormsModule,
     ReactiveFormsModule,
+    MatInputModule,
   ],
   templateUrl: './select-input.component.html',
 })
@@ -31,6 +33,14 @@ export class SelectInputComponent implements OnInit {
   @Input()
   dataEnums: string;
   formData: FormGroup;
+
+  formOptions = [
+    { controlName: 'course_format', label: 'All formats' },
+    { controlName: 'course_type', label: 'All types' },
+    { controlName: 'status', label: 'All statuses' },
+    { controlName: 'group', label: 'All groups' },
+    { controlName: 'course', label: 'All courses' },
+  ];
 
   constructor(
     private formBuilder: FormBuilder,
@@ -44,7 +54,24 @@ export class SelectInputComponent implements OnInit {
       status: [''],
       group: [''],
       course: [''],
+      name: [''],
+      surname: [''],
+      email: [''],
+      phone: [''],
+      age: [''],
+      startDate: [''],
+      endDate: [''],
     });
+  }
+
+  onselect(event: MatSelectChange) {
+    if (event.value) {
+      this.formOptions.forEach(option => {
+        if (event.value === option.label) {
+          this.formData.get(option.controlName)?.setValue('');
+        }
+      });
+    }
   }
 
   getEnumValues(enumName: string): string[] {
@@ -54,29 +81,28 @@ export class SelectInputComponent implements OnInit {
 
   getEnumByName(enumName: string): any {
     switch (enumName) {
-      case 'All formats':
+      case 'Formats':
         return ECoursesFormat;
-      case 'All types':
+      case 'Types':
         return ECoursesType;
-      case 'All statuses':
+      case 'Statuses':
         return EStatus;
-      case 'All groups':
+      case 'Groups':
         return EGroups;
-      case 'All courses':
+      case 'Courses':
         return ECourses;
       default:
         return {};
     }
   }
 
-  onsubmit() {
+  onSubmit() {
     if (this.formData.valid) {
       const newFilter = {};
       for (const key in this.formData.value) {
         const value = this.formData.value[key];
         if (value) {
           newFilter[key] = value;
-          console.log(newFilter);
         }
       }
       this.applicationsService.setFilterItems(newFilter);
