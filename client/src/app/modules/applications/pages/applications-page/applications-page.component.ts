@@ -26,7 +26,7 @@ export class ApplicationsPageComponent implements OnInit {
   length: number;
   pageSize: number = 25;
   hidePageSize = false;
-  pageSizeOptions = [5, 10, 25, 50, 100];
+  pageSizeOptions = [10, 25, 50, 100];
   showPageSizeOptions = true;
   page: number;
   filters: IFilter;
@@ -51,15 +51,25 @@ export class ApplicationsPageComponent implements OnInit {
 
     this.appService.getFilterItems().subscribe(value => {
       this.filters = value;
-      this.router.navigate([], {
-        queryParams: { ...this.filters },
-      });
+      const queryParams = { ...this.filters };
+      this.router.navigate([], { queryParams });
     });
   }
 
   handlePageEvent(event: PageEvent) {
-    this.router.navigate([], {
-      queryParams: { page: event.pageIndex, limit: event.pageSize },
-    });
+    const queryParams = this.buildQueryParams(this.filters, event);
+    this.router.navigate([], { queryParams });
+  }
+
+  private buildQueryParams(filters: IFilter, pageEvent: PageEvent): any {
+    const queryParams = { ...filters };
+    if (pageEvent.pageIndex === 0) {
+      queryParams['page'] = pageEvent.pageIndex + 1;
+      queryParams['limit'] = pageEvent.pageSize;
+    } else {
+      queryParams['page'] = pageEvent.pageIndex;
+      queryParams['limit'] = pageEvent.pageSize;
+    }
+    return queryParams;
   }
 }

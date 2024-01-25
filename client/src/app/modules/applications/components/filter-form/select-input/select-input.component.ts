@@ -105,7 +105,7 @@ export class SelectInputComponent implements OnInit {
           newFilter[key] = value;
         }
       }
-      this.applicationsService.setFilterItems(newFilter);
+      this.applicationsService.setFilterItems({ ...newFilter });
     }
   }
 
