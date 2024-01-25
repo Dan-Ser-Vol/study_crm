@@ -23,7 +23,9 @@ export class ApplicationRepository {
       );
 
       const { limit, page, ...searchObj } = queryObj;
-      const skip = limit * (page - 1);
+
+      const validPage = Math.max(1, +page);
+      const skip = limit * (validPage - 1);
 
       const queryBuilder = this.applicationModel
         .find(searchObj)
@@ -41,7 +43,6 @@ export class ApplicationRepository {
       const totalPages = Math.ceil(itemsFound / limit);
 
       return {
-        page,
         totalPages,
         limit,
         itemsFound,

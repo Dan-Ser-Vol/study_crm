@@ -11,4 +11,6 @@ export interface IFilter {
   status?: string;
   group?: string;
   course?: string;
+  page?: number;
+  limit?: number;
 }

@@ -4,7 +4,6 @@
   <app-applications-list [applications]="applications" />
   <div>
     <mat-paginator
-      class="demo-paginator"
       (page)="handlePageEvent($event)"
       [length]="length"
       [pageSize]="pageSize"
@@ -12,7 +11,7 @@
       [showFirstLastButtons]="true"
       [pageSizeOptions]="showPageSizeOptions ? pageSizeOptions : []"
       [hidePageSize]="hidePageSize"
-      [pageIndex]="pageIndex"
+      [pageIndex]="page"
       aria-label="Select page">
     </mat-paginator>
   </div>
