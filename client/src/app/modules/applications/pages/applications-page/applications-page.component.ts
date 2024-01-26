@@ -13,11 +13,17 @@ import {
 } from '@angular/material/paginator';
 import { FilterFormComponent } from '../../components/filter-form/filter-form.component';
 import { IFilter } from '../../../../interfaces';
+import { MatTableModule } from '@angular/material/table';
 
 @Component({
   selector: 'app-applications-page',
   standalone: true,
-  imports: [ApplicationsListComponent, MatPaginatorModule, FilterFormComponent],
+  imports: [
+    ApplicationsListComponent,
+    MatPaginatorModule,
+    FilterFormComponent,
+    MatTableModule,
+  ],
   providers: [{ provide: MatPaginatorIntl, useClass: PaginatorIntlService }],
   templateUrl: './applications-page.component.html',
 })
