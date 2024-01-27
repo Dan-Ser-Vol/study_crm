@@ -7,11 +7,16 @@ import {
   transition,
   trigger,
 } from '@angular/animations';
-import { IApplication } from '../../../../interfaces';
+import { IApplication, IFilter } from '../../../../interfaces';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatTableModule } from '@angular/material/table';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
+import { Router } from '@angular/router';
+import { ApplicationsService } from '../../../../services';
+import { MatInputModule } from '@angular/material/input';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-applications-list',
@@ -22,6 +27,9 @@ import { MatIconModule } from '@angular/material/icon';
     MatTableModule,
     MatButtonModule,
     MatIconModule,
+    FormsModule,
+    MatFormFieldModule,
+    MatInputModule,
   ],
   animations: [
     trigger('detailExpand', [
@@ -56,11 +64,46 @@ export class ApplicationsListComponent implements OnInit {
     'manager',
   ];
 
+  sortedBy: string | null;
+  sortSymbol: string;
+  filters: IFilter;
+
   expandedElement: PeriodicElement | null;
   columnsToDisplayWithExpand = [...this.columnsToDisplay, 'expand'];
 
+  constructor(
+    private router: Router,
+    private appService: ApplicationsService
+  ) {}
+
   ngOnInit() {
-    console.log(this.applications);
+    this.appService.getFilterItems().subscribe(value => {
+      this.filters = value;
+      const queryParams = { ...this.filters };
+      this.router.navigate([], { queryParams });
+    });
+  }
+
+  onSortBy(column: string) {
+    if (this.sortedBy === column) {
+      this.sortSymbol = this.sortSymbol === '' ? '-' : '';
+    } else {
+      this.sortedBy = column;
+      this.sortSymbol = '';
+    }
+
+    console.log(this.filters);
+
+    const queryParams = this.buildQueryParams(this.filters);
+    this.router.navigate([], {
+      queryParams,
+    });
+  }
+
+  private buildQueryParams(filters: IFilter): any {
+    const queryParams = { ...filters };
+    queryParams['sortedBy'] = `${this.sortSymbol}${this.sortedBy}`;
+    return queryParams;
   }
 }
 

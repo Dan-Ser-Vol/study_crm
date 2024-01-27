@@ -22,7 +22,12 @@ export class ApplicationRepository {
         queryStr.replace(/\b(gte|lte|gt|lt)\b/, (match) => `$${match}`),
       );
 
-      const { limit, page, ...searchObj } = queryObj;
+      const {
+        limit = 25,
+        page = 1,
+        sortedBy = '-created_at',
+        ...searchObj
+      } = queryObj;
 
       const validPage = Math.max(1, +page);
       const skip = limit * (validPage - 1);
@@ -32,7 +37,7 @@ export class ApplicationRepository {
         .collation({ locale: 'en', strength: 2 })
         .limit(limit)
         .skip(skip)
-        .sort(query.sortedBy);
+        .sort(sortedBy);
 
       const [data, itemsFound, totalCount] = await Promise.all([
         queryBuilder.exec(),
@@ -55,6 +60,21 @@ export class ApplicationRepository {
         'Invalid sortBy provided',
         HttpStatus.BAD_REQUEST,
       );
+    }
+  }
+
+  async addManagerField() {
+    const applications = await this.applicationModel.find();
+
+    for (const application of applications) {
+      if (!application.manager) {
+        const manager = null;
+        const group = null;
+        await this.applicationModel.findByIdAndUpdate(application._id, {
+          manager,
+          group,
+        });
+      }
     }
   }
 }

@@ -1,4 +1,4 @@
-import { Controller, Get, Query, UseGuards } from '@nestjs/common';
+import { Controller, Get, Post, Query, UseGuards } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 
@@ -14,5 +14,10 @@ export class ApplicationController {
   @Get()
   async getAll(@Query() query: SortByQueryDto) {
     return this.applicationService.getAll(query);
+  }
+
+  @Post('add')
+  async addManagerField() {
+    return this.applicationService.addManagerField();
   }
 }

@@ -9,4 +9,7 @@ export class ApplicationService {
   async getAll(query: SortByQueryDto) {
     return this.applicationRepo.getAll(query);
   }
+  async addManagerField() {
+    await this.applicationRepo.addManagerField();
+  }
 }
