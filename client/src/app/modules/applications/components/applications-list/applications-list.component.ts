@@ -17,6 +17,8 @@ import { ApplicationsService } from '../../../../services';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { FormsModule } from '@angular/forms';
+import { PeriodicElement } from '../../enums/periodic-enum';
+import { columnsDisplay } from '../../utils';
 
 @Component({
   selector: 'app-applications-list',
@@ -47,23 +49,7 @@ import { FormsModule } from '@angular/forms';
 export class ApplicationsListComponent implements OnInit {
   @Input()
   applications: IApplication[];
-  columnsToDisplay = [
-    'name',
-    'surname',
-    'email',
-    'phone',
-    'age',
-    'course',
-    'course_format',
-    'course_type',
-    'status',
-    'sum',
-    'group',
-    'alreadyPaid',
-    'created_at',
-    'manager',
-  ];
-
+  columnsToDisplay = columnsDisplay;
   sortedBy: string | null;
   sortSymbol: string;
   filters: IFilter;
@@ -105,12 +91,4 @@ export class ApplicationsListComponent implements OnInit {
     queryParams['sortedBy'] = `${this.sortSymbol}${this.sortedBy}`;
     return queryParams;
   }
-}
-
-interface PeriodicElement {
-  name: string;
-  surname: string;
-  email: string;
-  phone: number;
-  age: number;
 }

@@ -3,15 +3,15 @@ import { PassportModule } from '@nestjs/passport';
 
 import { BearerStrategy } from '../../common';
 import { CommonConfigModule } from '../../config/commonConfig/config.module';
+import { ManagerModule } from '../manager/manager.module';
+import { ManagerService } from '../manager/manager.service';
 import { TokenModule } from '../token/token.module';
-import { UserModule } from '../user/user.module';
-import { UserService } from '../user/user.service';
 import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
 
 @Module({
   imports: [
-    UserModule,
+    ManagerModule,
     TokenModule,
     CommonConfigModule,
     TokenModule,
@@ -21,7 +21,7 @@ import { AuthService } from './auth.service';
     }),
   ],
   controllers: [AuthController],
-  providers: [UserService, AuthService, BearerStrategy],
+  providers: [ManagerService, AuthService, BearerStrategy],
   exports: [PassportModule, AuthService],
 })
 export class AuthModule {}

@@ -1,23 +1,23 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Transform } from 'class-transformer';
-import {
-  IsEmail,
-  IsEnum,
-  IsNotEmpty,
-  IsString,
-} from 'class-validator';
-import {UserRoleEnum} from "../../../role/enum/role-enum";
+import { IsEmail, IsEnum, IsNotEmpty, IsString } from 'class-validator';
 
+import { ManagerRoleEnum } from '../../../role/enum/role-enum';
 
-export class UserBaseDto {
-  @ApiProperty()
+export class ManagerBaseDto {
+  @ApiProperty({ example: '567' })
   @IsString()
   id: string;
 
-  @ApiProperty()
+  @ApiProperty({ example: 'Bob' })
   @IsNotEmpty()
   @IsString()
   name: string;
+
+  @ApiProperty({ example: 'Smith' })
+  @IsNotEmpty()
+  @IsString()
+  surname: string;
 
   @Transform(({ value }) => value.trim().toLowerCase())
   @ApiProperty({ example: 'example@gmail.com' })
@@ -33,6 +33,6 @@ export class UserBaseDto {
 
   @ApiProperty()
   @IsNotEmpty()
-  @IsEnum({ enum: UserRoleEnum.ADMIN })
+  @IsEnum({ enum: ManagerRoleEnum.ADMIN })
   roles: string[];
 }

@@ -16,9 +16,9 @@ import {
   LogoutGuard,
   RefreshTokenGuard,
 } from '../../common';
-import { User } from '../../database/schemas';
-import { MeResponseDto } from '../user/dto/response/me.response-dto';
-import { MeResponseMapper } from '../user/mappers/me-response.mapper';
+import { Manager } from '../../database/schemas';
+import { MeResponseDto } from '../manager/dto/response/me.response-dto';
+import { MeResponseMapper } from '../manager/mappers/me-response.mapper';
 import { AuthService } from './auth.service';
 import { LoginDto, RegisterDto } from './dto';
 
@@ -28,18 +28,18 @@ export class AuthController {
   private readonly logger = new Logger(AuthService.name);
   constructor(private readonly authService: AuthService) {}
 
-  @ApiOperation({ summary: 'Register new user' })
+  @ApiOperation({ summary: 'Register new manager' })
   @ApiResponse({
     status: 200,
     description: 'Successful response',
-    type: User,
+    type: Manager,
   })
   @Post('register')
   async register(@Body() dto: RegisterDto): Promise<ITokens> {
     return await this.authService.register(dto);
   }
 
-  @ApiOperation({ summary: 'Login user' })
+  @ApiOperation({ summary: 'Login manager' })
   @ApiResponse({
     status: 200,
     description: 'Successful response',
@@ -51,8 +51,8 @@ export class AuthController {
 
   @UseGuards(AuthGuard())
   @Get('me')
-  async me(@CurrentUser() user: User): Promise<MeResponseDto> {
-    const result = await this.authService.getMe(user.email).catch((err) => {
+  async me(@CurrentUser() manager: Manager): Promise<MeResponseDto> {
+    const result = await this.authService.getMe(manager.email).catch((err) => {
       this.logger.error(err);
       return null;
     });
@@ -61,8 +61,8 @@ export class AuthController {
 
   @UseGuards(RefreshTokenGuard)
   @Post('refresh')
-  async getRefreshToken(@CurrentUser() user: User): Promise<ITokens> {
-    return await this.authService.getRefreshToken(user).catch((err) => {
+  async getRefreshToken(@CurrentUser() manager: Manager): Promise<ITokens> {
+    return await this.authService.getRefreshToken(manager).catch((err) => {
       this.logger.error(err);
       return null;
     });
@@ -72,13 +72,13 @@ export class AuthController {
   @ApiResponse({
     status: HttpStatus.NO_CONTENT,
     description: 'Successful response',
-    type: 'The user is logout',
+    type: 'The manager is logout',
   })
-  @ApiOperation({ summary: 'Logout user' })
+  @ApiOperation({ summary: 'Logout manager' })
   @ApiResponse({
     status: 200,
     description: 'Successful response',
-    type: 'The user is logout',
+    type: 'The manager is logout',
   })
   @Post('logout')
   public async logout() {

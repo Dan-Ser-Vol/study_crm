@@ -2,6 +2,7 @@ import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { SchemaTypes, Types } from 'mongoose';
 
 import { Manager } from '../manager.schema';
+import { Message } from '../message.schema';
 import { ECourses, ECursesFormat, ECursesType, EStatus } from './enums';
 
 @Schema({ timestamps: true })
@@ -63,8 +64,8 @@ export class Application {
   @Prop({ type: String })
   utm: string;
 
-  @Prop({ type: String })
-  msg: string;
+  @Prop({ type: SchemaTypes.ObjectId, ref: 'Message' })
+  msg: Message;
 
   @Prop({ type: String, enum: Object.values(EStatus), default: EStatus.NEW })
   status: EStatus;

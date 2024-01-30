@@ -4,8 +4,8 @@ import { PassportStrategy } from '@nestjs/passport';
 import { InjectRedisClient, RedisClient } from '@webeleon/nestjs-redis';
 import { Strategy } from 'passport-http-bearer';
 
-import { User } from '../../database/schemas/user.schema';
-import { UserService } from '../../modules/user/user.service';
+import { Manager } from '../../database/schemas';
+import { ManagerService } from '../../modules/manager/manager.service';
 
 @Injectable()
 export class BearerStrategy extends PassportStrategy(Strategy, 'bearer') {
@@ -13,13 +13,13 @@ export class BearerStrategy extends PassportStrategy(Strategy, 'bearer') {
     @InjectRedisClient()
     readonly redisClient: RedisClient,
     private readonly jwtService: JwtService,
-    private readonly userService: UserService,
+    private readonly managerService: ManagerService,
   ) {
     super();
   }
 
-  async validate(token: string): Promise<User> {
-    let user = null;
+  async validate(token: string): Promise<Manager> {
+    let manager = null;
     try {
       await this.jwtService.verifyAsync(token);
       const tokenPayload = this.jwtService.decode(token);
@@ -27,11 +27,11 @@ export class BearerStrategy extends PassportStrategy(Strategy, 'bearer') {
       if (!(await this.redisClient.exists(tokenPayload.email))) {
         throw new UnauthorizedException();
       }
-      user = await this.userService.validateUser(tokenPayload.email);
+      manager = await this.managerService.validateManager(tokenPayload.email);
     } catch (err) {
       Logger.error(err);
       throw new UnauthorizedException();
     }
-    return user;
+    return manager;
   }
 }

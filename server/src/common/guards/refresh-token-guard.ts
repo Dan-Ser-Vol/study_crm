@@ -2,13 +2,13 @@ import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { Observable } from 'rxjs';
 
-import { UserService } from '../../modules/user/user.service';
+import { ManagerService } from '../../modules/manager/manager.service';
 
 @Injectable()
 export class RefreshTokenGuard implements CanActivate {
   constructor(
     private readonly jwtService: JwtService,
-    private readonly userService: UserService,
+    private readonly userService: ManagerService,
   ) {}
 
   canActivate(
@@ -27,7 +27,7 @@ export class RefreshTokenGuard implements CanActivate {
     await this.jwtService.verifyAsync(refreshToken);
     const decoded = await this.jwtService.decode(refreshToken);
     if (decoded) {
-      const user = await this.userService.findUserByEmail(decoded.email);
+      const user = await this.userService.findManagerByEmail(decoded.email);
       if (user) {
         request.user = user;
         return true;

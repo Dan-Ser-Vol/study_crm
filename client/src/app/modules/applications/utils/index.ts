@@ -1,0 +1,16 @@
+export const columnsDisplay = [
+  'name',
+  'surname',
+  'email',
+  'phone',
+  'age',
+  'course',
+  'course_format',
+  'course_type',
+  'status',
+  'sum',
+  'group',
+  'alreadyPaid',
+  'created_at',
+  'manager',
+];

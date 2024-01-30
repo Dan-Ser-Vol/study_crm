@@ -3,7 +3,7 @@ import { JwtService } from '@nestjs/jwt';
 import { InjectRedisClient, RedisClient } from '@webeleon/nestjs-redis';
 
 import { ITokens } from '../../common';
-import { User } from '../../database/schemas/user.schema';
+import { Manager } from '../../database/schemas';
 
 @Injectable()
 export class TokenService {
@@ -13,7 +13,7 @@ export class TokenService {
     private readonly jwtService: JwtService,
   ) {}
 
-  public async signTokens(data: User): Promise<ITokens> {
+  public async signTokens(data: Manager): Promise<ITokens> {
     const accessToken = this.jwtService.sign({
       id: data._id,
       email: data.email,
@@ -36,11 +36,11 @@ export class TokenService {
     await this.redisClient.setEx(email, 604800, tokens.refreshToken);
   }
 
-  public async findToken(email): Promise<void> {
-    await this.redisClient.exists(email);
-  }
-
-  public async deleteToken(email: string): Promise<void> {
-    await this.redisClient.del(email);
-  }
+  // public async findToken(email: string): Promise<void> {
+  //   await this.redisClient.exists(email);
+  // }
+  //
+  // public async deleteToken(email: string): Promise<void> {
+  //   await this.redisClient.del(email);
+  // }
 }

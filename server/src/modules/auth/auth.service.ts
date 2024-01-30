@@ -2,37 +2,37 @@ import { HttpException, HttpStatus, Injectable, Logger } from '@nestjs/common';
 import * as bcrypt from 'bcrypt';
 
 import { ITokens } from '../../common';
-import { User } from '../../database/schemas';
+import { Manager } from '../../database/schemas';
+import { ManagerService } from '../manager/manager.service';
 import { TokenService } from '../token/token.service';
-import { UserService } from '../user/user.service';
 import { LoginDto, RegisterDto } from './dto';
 
 @Injectable()
 export class AuthService {
   constructor(
-    private userService: UserService,
+    private managerService: ManagerService,
     private tokenService: TokenService,
   ) {}
 
   public async register(dto: RegisterDto): Promise<ITokens> {
-    await this.userService.checkIfUserExists(dto.email);
-    const newUser = await this.userService.create({
+    await this.managerService.checkIfManagerExists(dto.email);
+    const newManager = await this.managerService.create({
       ...dto,
       password: await this.hashPassword(dto),
     });
-    const tokens = await this.tokenService.signTokens(newUser);
+    const tokens = await this.tokenService.signTokens(newManager);
     await this.tokenService.saveTokensToRedis(dto.email, tokens);
     return tokens;
   }
 
   public async login(dto: LoginDto): Promise<ITokens> {
-    const findUser = await this.userService.findUserByEmail(dto.email);
+    const findManager = await this.managerService.findManagerByEmail(dto.email);
     const isMatched = await this.comparePassword(
       dto.password,
-      findUser.password,
+      findManager.password,
     );
     if (isMatched) {
-      const tokens = await this.tokenService.signTokens(findUser);
+      const tokens = await this.tokenService.signTokens(findManager);
       await this.tokenService.saveTokensToRedis(dto.email, tokens);
       return tokens;
     } else {
@@ -43,11 +43,11 @@ export class AuthService {
     }
   }
 
-  public async getMe(email: string): Promise<User> {
-    return await this.userService.findUserByEmail(email);
+  public async getMe(email: string): Promise<Manager> {
+    return await this.managerService.findManagerByEmail(email);
   }
 
-  public async getRefreshToken(data: User): Promise<ITokens> {
+  public async getRefreshToken(data: Manager): Promise<ITokens> {
     return await this.tokenService.signTokens(data);
   }
 
