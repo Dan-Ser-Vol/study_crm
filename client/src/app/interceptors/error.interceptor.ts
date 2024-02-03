@@ -10,43 +10,44 @@ import {
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { Router } from '@angular/router';
+import {ToastrService} from "ngx-toastr";
 
 @Injectable()
 export class ErrorInterceptor implements HttpInterceptor {
-  constructor(private router: Router) {}
+  constructor(private router: Router,  protected toastr: ToastrService) {}
 
   intercept(
     request: HttpRequest<any>,
     next: HttpHandler
   ): Observable<HttpEvent<any>> {
     return next.handle(request).pipe(
-      catchError((error: HttpErrorResponse): Observable<HttpEvent<any>> => {
-        this.handleHttpError(error);
-        return throwError(error);
+      catchError((err: HttpErrorResponse): Observable<HttpEvent<any>> => {
+        this.handleHttpError(err);
+        return throwError(err);
       })
     );
   }
 
-  handleHttpError(error: any): void {
-    if (error.status === 400) {
+  handleHttpError(err: any): void {
+    if (err.status === 400) {
+      this.toastr.error(err.error.message);
+    }
+    if (err.status === 401) {
       this.router.navigate(['/login']);
     }
-    if (error.status === 401) {
-      this.router.navigate(['/login']);
+    if (err.status === 403) {
+      this.toastr.error(err.error.message);
     }
-    if (error.status === 403) {
-      this.router.navigate(['/login']);
-    }
-    if (error.status === 404) {
+    if (err.status === 404) {
       this.router.navigate(['/**']);
     }
-    if (error.status === 422) {
-      this.router.navigate(['/login']);
+    if (err.status === 422) {
+      this.toastr.error(err.error.message);
     }
-    if (error.status === 500) {
+    if (err.status === 500) {
       this.router.navigate(['/**']);
     }
-    if (error.status === 0) {
+    if (err.status === 0) {
       this.router.navigate(['/**'], {
         queryParams: { errorStatus: 'Unknown Error' },
       });

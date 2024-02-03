@@ -2,12 +2,8 @@ import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { PassportModule } from '@nestjs/passport';
 
-import {
-  Application,
-  ApplicationSchema,
-  Message,
-  MessageSchema,
-} from '../../database/schemas';
+import { Application, ApplicationSchema } from '../../database/schemas';
+import { ManagerModule } from '../manager/manager.module';
 import { ApplicationController } from './application.controller';
 import { ApplicationService } from './application.service';
 import { ApplicationRepository } from './application-repository';
@@ -16,12 +12,12 @@ import { ApplicationRepository } from './application-repository';
   imports: [
     MongooseModule.forFeature([
       { name: Application.name, schema: ApplicationSchema },
-      { name: Message.name, schema: MessageSchema },
     ]),
     PassportModule.register({
       defaultStrategy: 'bearer',
       property: 'user',
     }),
+    ManagerModule,
   ],
   controllers: [ApplicationController],
   providers: [ApplicationService, ApplicationRepository],

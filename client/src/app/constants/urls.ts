@@ -20,6 +20,7 @@ const urls = {
   applications: {
     getAll: applications,
     create: `${applications}/create`,
+    createMessage: (id: string) => `${applications}/message/${id}`,
     addImage: (orderId: number): string => `${applications}/image/${orderId}`,
     deleteImage: (orderId: number): string =>
       `${applications}/image/${orderId}`,

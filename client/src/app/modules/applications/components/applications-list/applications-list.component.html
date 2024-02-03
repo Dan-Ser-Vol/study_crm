@@ -105,10 +105,14 @@
           </div>
           <div class="flex flex-col w-full p-1">
             <div class="flex">
-              <form class="example-form ml-auto">
+              <form
+                class="example-form ml-auto"
+                (ngSubmit)="onSubmit(element._id)"
+                [formGroup]="messageForm">
                 <mat-form-field class="example-full-width">
                   <mat-label>Message</mat-label>
                   <input
+                    formControlName="message"
                     matInput
                     #message
                     maxlength="256"
@@ -119,11 +123,16 @@
                   >
                 </mat-form-field>
               </form>
-              <button class="ml-1" mat-button style="background-color: #fcd34d">
+              <button
+                (click)="onSubmit(element._id)"
+                class="ml-1"
+                mat-button
+                style="background-color: #fcd34d">
                 Submit
               </button>
             </div>
-            <div class="ml-auto">Message block</div>
+            <div>{{ messageForm.get('message').value }}</div>
+            <div>{{ element.msg }}</div>
           </div>
 
           <div class="example-button-row py-1">

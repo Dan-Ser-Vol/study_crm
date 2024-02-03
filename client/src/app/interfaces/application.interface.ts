@@ -7,17 +7,30 @@ import {
 
 export interface IApplication {
   _id: string;
-  age: number;
   name: string;
   surname: string;
   email: string;
   phone: string;
-  course: ECourses;
-  course_format: ECoursesFormat;
-  course_type: ECoursesType;
-  status: EStatus;
-  sum?: number;
-  already_paid?: number;
-  createdAt: Date;
-  updatedAt: Date;
+  age: number;
+  course: ECourses | null;
+  course_format: ECoursesFormat | null;
+  course_type: ECoursesType | null;
+  sum: number | null;
+  already_paid: number | null;
+  created_at: Date;
+  utm: string;
+  msg: IMessage[];
+  status: EStatus | null;
+  manager: string | null;
+  updated_at: Date;
+  group: string | null;
+}
+
+export interface IMessage {
+  _id: string;
+  manager: string;
+  content: string;
+  createdAt: string;
+  updatedAt: string;
+  __v: number;
 }

@@ -3,7 +3,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 
 import { ListItemsDto } from '../../common';
-import { Application } from '../../database/schemas';
+import { Application, Manager } from '../../database/schemas';
 import { SortByQueryDto } from './dto/request/sortBy-query-dto';
 
 @Injectable()
@@ -63,18 +63,28 @@ export class ApplicationRepository {
     }
   }
 
-  async addManagerField() {
-    const applications = await this.applicationModel.find();
-
-    for (const application of applications) {
-      if (!application.manager) {
-        const manager = null;
-        const group = null;
-        await this.applicationModel.findByIdAndUpdate(application._id, {
-          manager,
-          group,
-        });
+  async addMessage(
+    applicationId: string,
+    message: string,
+    manager: Manager,
+  ): Promise<Application> {
+    try {
+      const application = await this.applicationModel
+        .findByIdAndUpdate(
+          { _id: applicationId },
+          {
+            $push: { msg: message },
+            manager,
+          },
+          { new: true },
+        )
+        .populate('msg');
+      if (!application) {
+        throw new HttpException('Application not found', HttpStatus.NO_CONTENT);
       }
+      return application;
+    } catch (err) {
+      Logger.log(err);
     }
   }
 }

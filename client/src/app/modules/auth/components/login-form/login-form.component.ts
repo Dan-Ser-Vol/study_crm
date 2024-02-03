@@ -15,7 +15,6 @@ import { AuthService } from '../../../../services';
 import { Router } from '@angular/router';
 import { MatDialogRef } from '@angular/material/dialog';
 import { ToastrService } from 'ngx-toastr';
-import { min } from 'rxjs';
 
 @Component({
   selector: 'app-login-form',

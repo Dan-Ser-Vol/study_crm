@@ -5,6 +5,7 @@ import {
   HttpException,
   HttpStatus,
   Logger,
+  Param,
   Post,
   Query,
   UseGuards,
@@ -13,9 +14,8 @@ import { AuthGuard } from '@nestjs/passport';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 
 import { CurrentUser } from '../../common';
-import { Manager, Message } from '../../database/schemas';
+import { Application, Manager } from '../../database/schemas';
 import { ApplicationService } from './application.service';
-import { CreateMessageDto } from './dto/request/create-message.dto';
 import { SortByQueryDto } from './dto/request/sortBy-query-dto';
 
 @ApiTags('Applications')
@@ -29,13 +29,14 @@ export class ApplicationController {
     return this.applicationService.getAll(query);
   }
 
-  @Post('message')
+  @Post('message/:id')
   async createMessage(
-    @Body() dto: CreateMessageDto,
+    @Body() data: { [key: string]: string },
+    @Param('id') id: string,
     @CurrentUser() manager: Manager,
-  ): Promise<Message> {
+  ): Promise<Application> {
     try {
-      return this.applicationService.createMessage(dto, manager);
+      return this.applicationService.createMessage(id, data.message, manager);
     } catch (err) {
       Logger.log(err);
       throw new HttpException(err, HttpStatus.BAD_REQUEST);

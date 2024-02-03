@@ -44,6 +44,20 @@ export class ManagerService {
     return findManager;
   }
 
+  public async findManagerById(managerId: string): Promise<Manager> {
+    const findManager = await this.managerModel
+      .findById(managerId)
+      .populate({ path: 'roles' })
+      .exec();
+    if (!findManager) {
+      throw new UnprocessableEntityException(
+        'No manager found with these credentials',
+      );
+    }
+
+    return findManager;
+  }
+
   public async checkIfManagerExists(email: string): Promise<void> {
     const findManager = await this.managerModel.findOne({ email });
     if (findManager) {
