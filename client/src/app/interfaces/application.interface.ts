@@ -19,18 +19,9 @@ export interface IApplication {
   already_paid: number | null;
   created_at: Date;
   utm: string;
-  msg: IMessage[];
+  msg: string[];
   status: EStatus | null;
   manager: string | null;
   updated_at: Date;
   group: string | null;
-}
-
-export interface IMessage {
-  _id: string;
-  manager: string;
-  content: string;
-  createdAt: string;
-  updatedAt: string;
-  __v: number;
 }
