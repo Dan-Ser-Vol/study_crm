@@ -41,7 +41,7 @@ export class Application {
     required: true,
     default: ECursesFormat.ONLINE,
   })
-  course_format: string;
+  course_format: ECursesFormat;
 
   @Prop({
     type: String,
@@ -49,7 +49,7 @@ export class Application {
     default: ECursesType.PRO,
     required: true,
   })
-  course_type: string;
+  course_type: ECursesType;
 
   @Prop({ type: Number })
   sum: number;
@@ -63,8 +63,8 @@ export class Application {
   @Prop({ type: String })
   utm: string;
 
-  @Prop({ type: [{ type: String }] })
-  msg: string[];
+  @Prop({ type: [{ type: SchemaTypes.ObjectId, ref: 'Comment' }] })
+  msg: Comment[];
 
   @Prop({ type: String, enum: Object.values(EStatus), default: EStatus.NEW })
   status: EStatus;
@@ -73,7 +73,7 @@ export class Application {
   group: EStatus;
 
   @Prop({ type: SchemaTypes.ObjectId, ref: 'Manager' })
-  manager: Types.ObjectId | Manager;
+  manager: Manager;
 }
 
 export const ApplicationSchema = SchemaFactory.createForClass(Application);

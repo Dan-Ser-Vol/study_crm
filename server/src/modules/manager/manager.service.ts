@@ -54,7 +54,6 @@ export class ManagerService {
         'No manager found with these credentials',
       );
     }
-
     return findManager;
   }
 

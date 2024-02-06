@@ -19,6 +19,7 @@ import { PeriodicElement } from '../../enums/periodic-enum';
 import { Router } from '@angular/router';
 import { ApplicationsService } from '../../../../services';
 import { MessageFormComponent } from '../message-form/message-form.component';
+import { IUser } from '../../../../interfaces/user.interface';
 
 @Component({
   selector: 'app-application-item',
@@ -50,8 +51,8 @@ import { MessageFormComponent } from '../message-form/message-form.component';
   styleUrl: './application-item.component.scss',
 })
 export class ApplicationItemComponent implements OnInit {
-  @Input()
-  applications: IApplication[];
+  @Input() applications: IApplication[];
+  @Input() me!: IUser;
   messages: string[];
   columnsToDisplay: string[] = columnsDisplay;
   sortedBy: string | null;

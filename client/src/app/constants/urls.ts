@@ -3,7 +3,7 @@ import { environment } from '../environments';
 const { BASE_API } = environment;
 
 const auth: string = `${BASE_API}auth`;
-const users: string = `${BASE_API}users`;
+const managers: string = `${BASE_API}managers`;
 const applications: string = `${BASE_API}applications`;
 
 const urls = {
@@ -14,16 +14,16 @@ const urls = {
     register: `${auth}/register`,
     refresh: `${auth}/refresh`,
   },
-  users: {
-    base: users,
+  managers: {
+    base: managers,
+    getById: (managerId: string): string => `${managers}/${managerId}`,
+    deleteById: (managerId: string): string => `${managers}/${managerId}`,
   },
   applications: {
     getAll: applications,
     create: `${applications}/create`,
     createMessage: (id: string) => `${applications}/message/${id}`,
-    addImage: (orderId: number): string => `${applications}/image/${orderId}`,
-    deleteImage: (orderId: number): string =>
-      `${applications}/image/${orderId}`,
+    deleteMessage: (message: string) => `${applications}/message/${message}`,
     getById: (orderId: number): string => `${applications}/${orderId}`,
     deleteById: (orderId: number): string => `${applications}/${orderId}`,
     updateById: (orderId: number): string =>

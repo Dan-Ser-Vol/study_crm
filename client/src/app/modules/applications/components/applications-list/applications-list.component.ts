@@ -1,6 +1,8 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { ApplicationItemComponent } from '../application-item/application-item.component';
 import { IApplication } from '../../../../interfaces';
+import { AuthService } from '../../../../services';
+import { IUser } from '../../../../interfaces/user.interface';
 
 @Component({
   selector: 'app-applications-list',
@@ -9,7 +11,16 @@ import { IApplication } from '../../../../interfaces';
   templateUrl: './applications-list.component.html',
   styleUrl: './applications-list.component.scss',
 })
-export class ApplicationsListComponent {
+export class ApplicationsListComponent implements OnInit {
   @Input()
   applications: IApplication[];
+  me: IUser;
+
+  constructor(private authService: AuthService) {}
+
+  ngOnInit() {
+    this.authService.getMe().subscribe(value => {
+      this.me = value;
+    });
+  }
 }

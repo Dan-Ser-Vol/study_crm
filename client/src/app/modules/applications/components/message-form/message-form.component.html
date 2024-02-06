@@ -1,32 +1,47 @@
 <div class="flex flex-col p-1">
-  <div class="flex">
-    <form
-      class="example-form ml-auto"
-      (ngSubmit)="onSubmit(element._id)"
-      [formGroup]="messageForm">
-      <mat-form-field class="example-full-width">
-        <mat-label>Leave a comment</mat-label>
-        <textarea
-          formControlName="message"
-          matInput
-          placeholder="Write your message..."></textarea>
-      </mat-form-field>
-    </form>
-    <button
-      (click)="onSubmit(element._id)"
-      class="ml-1"
-      mat-button
-      [disabled]="!this.messageForm.value['message']"
-      style="background-color: #fcd34d">
-      Submit
-    </button>
-  </div>
+  @if (me.id === element._id || !element.manager) {
+    <div class="flex">
+      <form
+        class="example-form ml-auto"
+        (ngSubmit)="onSubmit(element._id)"
+        [formGroup]="messageForm">
+        <mat-form-field class="example-full-width">
+          <mat-label>Leave a comment</mat-label>
+          <textarea
+            formControlName="message"
+            matInput
+            placeholder="Write your message..."></textarea>
+        </mat-form-field>
+      </form>
+      <button
+        (click)="onSubmit(element._id)"
+        class="ml-1"
+        mat-button
+        [disabled]="!this.messageForm.value['message']"
+        style="background-color: #fcd34d">
+        Submit
+      </button>
+    </div>
+  } @else {
+    <div class="p-2 bg-slate-200 text-xl text-teal-700 rounded mb-1">
+      <p>You cannot leave comments</p>
+    </div>
+  }
+
   <div class="form-output">{{ messageForm.get('message').value }}</div>
   @for (message of messages; track message) {
     <div class="flex gap-1 w-full">
-      <div class="p-3 bg-slate-100 rounded mb-1 form-output">{{ message }}</div>
-      <div class="example-button-container">
-        <button mat-mini-fab color="warn">
+      <p class="flex p-3 bg-slate-200 rounded mb-1 items-center">
+        {{ this.manager.name }}
+      </p>
+      <p class="p-3 bg-slate-100 rounded mb-1 form-output">
+        {{ message }}
+      </p>
+      <div class="flex example-button-container items-center">
+        <button
+          mat-mini-fab
+          color="warn"
+          [disabled]="me.id !== element._id || element.manager">
           <mat-icon>delete</mat-icon>
         </button>
       </div>

@@ -1,10 +1,8 @@
 import { Injectable } from '@nestjs/common';
-import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
+import { application } from 'express';
 
-import { Application, Manager } from '../../database/schemas';
+import { Application, Comment, Manager } from '../../database/schemas';
 import { ApplicationRepository } from './application-repository';
-import { CreateMessageDto } from './dto/request/create-message.dto';
 import { SortByQueryDto } from './dto/request/sortBy-query-dto';
 
 @Injectable()
@@ -13,11 +11,15 @@ export class ApplicationService {
   async getAll(query: SortByQueryDto) {
     return this.applicationRepo.getAll(query);
   }
-  async createMessage(
-    id: string,
-    message: string,
+  async createComment(
+    applicationId: string,
+    comment: Comment,
     manager: Manager,
   ): Promise<Application> {
-    return this.applicationRepo.addMessage(id, message, manager);
+    return this.applicationRepo.addComment(applicationId, comment, manager);
+  }
+
+  async deleteComment(applicationId: string, commentId: string): Promise<void> {
+    await this.applicationRepo.deleteComment(applicationId, commentId);
   }
 }

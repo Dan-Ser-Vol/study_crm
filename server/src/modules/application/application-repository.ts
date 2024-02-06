@@ -3,7 +3,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 
 import { ListItemsDto } from '../../common';
-import { Application, Manager } from '../../database/schemas';
+import { Application, Comment, Manager } from '../../database/schemas';
 import { SortByQueryDto } from './dto/request/sortBy-query-dto';
 
 @Injectable()
@@ -11,6 +11,8 @@ export class ApplicationRepository {
   constructor(
     @InjectModel(Application.name)
     private readonly applicationModel: Model<Application>,
+    @InjectModel(Comment.name)
+    private readonly commentModel: Model<Comment>,
   ) {}
 
   public async getAll(
@@ -63,17 +65,18 @@ export class ApplicationRepository {
     }
   }
 
-  async addMessage(
+  async addComment(
     applicationId: string,
-    message: string,
+    comment: Comment,
     manager: Manager,
   ): Promise<Application> {
     try {
+      const newComment = await this.commentModel.create(comment);
       const application = await this.applicationModel
         .findByIdAndUpdate(
           { _id: applicationId },
           {
-            $push: { msg: message },
+            msg: newComment,
             manager,
           },
           { new: true },
@@ -85,6 +88,29 @@ export class ApplicationRepository {
       return application;
     } catch (err) {
       Logger.log(err);
+      throw new HttpException(
+        'Application with such ID not found',
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+  }
+
+  async deleteComment(applicationId: string, commentId: string): Promise<void> {
+    try {
+      const application = await this.applicationModel.findById(applicationId);
+      if (!application) {
+        throw new HttpException('Application not found', HttpStatus.NOT_FOUND);
+      }
+      application.msg = application.msg.filter(
+        (msgId) => msgId.toString() !== commentId,
+      );
+      await application.save();
+    } catch (err) {
+      Logger.error(err);
+      throw new HttpException(
+        'Error deleting comment from application',
+        HttpStatus.BAD_REQUEST,
+      );
     }
   }
 }

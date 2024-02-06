@@ -49,6 +49,11 @@ export class AuthController {
     return await this.authService.login(dto);
   }
 
+  @ApiOperation({ summary: 'get me' })
+  @ApiResponse({
+    status: 200,
+    description: 'Successful response',
+  })
   @UseGuards(AuthGuard())
   @Get('me')
   async me(@CurrentUser() manager: Manager): Promise<MeResponseDto> {
@@ -59,6 +64,11 @@ export class AuthController {
     return MeResponseMapper.meDto(result);
   }
 
+  @ApiOperation({ summary: 'get refresh token' })
+  @ApiResponse({
+    status: 200,
+    description: 'Successful response',
+  })
   @UseGuards(RefreshTokenGuard)
   @Post('refresh')
   async getRefreshToken(@CurrentUser() manager: Manager): Promise<ITokens> {
@@ -69,14 +79,9 @@ export class AuthController {
   }
 
   @UseGuards(AuthGuard(), LogoutGuard)
-  @ApiResponse({
-    status: HttpStatus.NO_CONTENT,
-    description: 'Successful response',
-    type: 'The manager is logout',
-  })
   @ApiOperation({ summary: 'Logout manager' })
   @ApiResponse({
-    status: 200,
+    status: HttpStatus.NO_CONTENT,
     description: 'Successful response',
     type: 'The manager is logout',
   })

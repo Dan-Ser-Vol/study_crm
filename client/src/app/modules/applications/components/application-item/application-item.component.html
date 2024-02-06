@@ -102,13 +102,17 @@
             </div>
           </div>
           <div class="flex ml-auto">
-            <app-message-form [element]="element" />
+            <app-message-form [element]="element" [me]="me"/>
           </div>
-          <div class="example-button-row py-1">
-            <button mat-button style="background-color: #0f766e; color: white">
-              Edit
-            </button>
-          </div>
+          @if (me.id === element._id || !element.manager) {
+            <div class="example-button-row py-1">
+              <button
+                mat-button
+                style="background-color: #0f766e; color: white">
+                Edit
+              </button>
+            </div>
+          }
         </div>
       </div>
     </td>

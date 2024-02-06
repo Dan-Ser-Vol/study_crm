@@ -1,18 +1,12 @@
 import { Module } from '@nestjs/common';
 import { JwtModule } from '@nestjs/jwt';
-import { PassportModule } from '@nestjs/passport';
 import { RedisModule } from '@webeleon/nestjs-redis';
 
-import { BearerStrategy } from '../../common';
 import { CommonConfigModule } from '../../config/commonConfig/config.module';
 import { CommonConfigService } from '../../config/commonConfig/config.service';
 
 @Module({
   imports: [
-    PassportModule.register({
-      defaultStrategy: 'bearer',
-      property: 'user',
-    }),
     JwtModule.registerAsync({
       imports: [CommonConfigModule],
       useFactory: async (commonConfigService: CommonConfigService) => ({
@@ -33,7 +27,7 @@ import { CommonConfigService } from '../../config/commonConfig/config.service';
       inject: [CommonConfigService],
     }),
   ],
-  providers: [BearerStrategy],
-  exports: [PassportModule, JwtModule, RedisModule],
+  providers: [RedisModule],
+  exports: [JwtModule, RedisModule],
 })
 export class AuthConfigModule {}

@@ -1,4 +1,26 @@
-import { Controller } from '@nestjs/common';
+import { Controller, Get, Logger, Param, UseGuards } from '@nestjs/common';
+import { AuthGuard } from '@nestjs/passport';
+import { ApiOperation, ApiResponse } from '@nestjs/swagger';
 
-@Controller('manager')
-export class ManagerController {}
+import { Manager } from '../../database/schemas';
+import { ManagerService } from './manager.service';
+
+@Controller('managers')
+export class ManagerController {
+  constructor(private managerService: ManagerService) {}
+
+  @ApiOperation({ summary: 'get manager' })
+  @ApiResponse({
+    status: 200,
+    description: 'Successful response',
+  })
+  @UseGuards(AuthGuard())
+  @Get(':id')
+  async manager(@Param('id') managerId: string): Promise<Manager> {
+    console.log(managerId)
+    return await this.managerService.findManagerById(managerId).catch((err) => {
+      Logger.error(err);
+      return null;
+    });
+  }
+}
