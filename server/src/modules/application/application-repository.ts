@@ -5,6 +5,7 @@ import { Model } from 'mongoose';
 import { ListItemsDto } from '../../common';
 import { Application, Comment, Manager } from '../../database/schemas';
 import { SortByQueryDto } from './dto/request/sortBy-query-dto';
+import { CommentResponseDto } from './dto/response/comment-response.dto';
 
 @Injectable()
 export class ApplicationRepository {
@@ -40,7 +41,6 @@ export class ApplicationRepository {
         .limit(limit)
         .skip(skip)
         .sort(sortedBy);
-
       const [data, itemsFound, totalCount] = await Promise.all([
         queryBuilder.exec(),
         this.applicationModel.countDocuments(searchObj),
@@ -65,27 +65,27 @@ export class ApplicationRepository {
     }
   }
 
-  async addComment(
+  async createComment(
     applicationId: string,
-    comment: Comment,
+    message: string,
     manager: Manager,
-  ): Promise<Application> {
+  ): Promise<CommentResponseDto> {
     try {
-      const newComment = await this.commentModel.create(comment);
+      const newComment = await this.commentModel.create({
+        message,
+        manager,
+      });
       const application = await this.applicationModel
         .findByIdAndUpdate(
           { _id: applicationId },
-          {
-            msg: newComment,
-            manager,
-          },
-          { new: true },
+          { $push: { msg: newComment }, manager },
+          { new: true, upsert: true },
         )
         .populate('msg');
       if (!application) {
         throw new HttpException('Application not found', HttpStatus.NO_CONTENT);
       }
-      return application;
+      return newComment;
     } catch (err) {
       Logger.log(err);
       throw new HttpException(
@@ -95,22 +95,23 @@ export class ApplicationRepository {
     }
   }
 
-  async deleteComment(applicationId: string, commentId: string): Promise<void> {
-    try {
-      const application = await this.applicationModel.findById(applicationId);
-      if (!application) {
-        throw new HttpException('Application not found', HttpStatus.NOT_FOUND);
-      }
-      application.msg = application.msg.filter(
-        (msgId) => msgId.toString() !== commentId,
-      );
-      await application.save();
-    } catch (err) {
-      Logger.error(err);
-      throw new HttpException(
-        'Error deleting comment from application',
-        HttpStatus.BAD_REQUEST,
-      );
+  async findCommentsById(ids: string[]): Promise<CommentResponseDto[]> {
+    const results = await this.commentModel.find({ _id: { $in: ids } }).lean();
+    if (!results.length) {
+      throw new HttpException('Comments do not exist', HttpStatus.NO_CONTENT);
     }
+    return results;
+  }
+
+  async deleteComment(applicationId: string, commentId: string): Promise<void> {
+    console.log(applicationId, commentId);
+    const result = await this.applicationModel.findByIdAndUpdate(
+      applicationId,
+      { $pull: { msg: commentId } },
+    );
+    if (!result) {
+      throw new HttpException('Application not found', HttpStatus.NOT_FOUND);
+    }
+    await this.commentModel.findByIdAndDelete(commentId);
   }
 }

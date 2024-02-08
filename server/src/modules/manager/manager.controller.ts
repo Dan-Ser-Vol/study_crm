@@ -17,7 +17,6 @@ export class ManagerController {
   @UseGuards(AuthGuard())
   @Get(':id')
   async manager(@Param('id') managerId: string): Promise<Manager> {
-    console.log(managerId)
     return await this.managerService.findManagerById(managerId).catch((err) => {
       Logger.error(err);
       return null;

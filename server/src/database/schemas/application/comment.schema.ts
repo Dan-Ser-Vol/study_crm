@@ -7,7 +7,6 @@ import { Manager } from '../manager.schema';
 export class Comment {
   @Prop({
     type: String,
-    required: true,
   })
   message: string;
 

@@ -3,6 +3,7 @@ import { ApplicationsListComponent } from '../../components/applications-list/ap
 import { IApplication } from '../../../../interfaces';
 import {
   ApplicationsService,
+  ManagersService,
   PaginatorIntlService,
 } from '../../../../services';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -40,7 +41,8 @@ export class ApplicationsPageComponent implements OnInit {
   constructor(
     private appService: ApplicationsService,
     private router: Router,
-    private activatedRoute: ActivatedRoute
+    private activatedRoute: ActivatedRoute,
+    private managersService: ManagersService
   ) {}
 
   ngOnInit() {
@@ -50,6 +52,13 @@ export class ApplicationsPageComponent implements OnInit {
       this.page = page;
       this.pageSize = limit;
       this.appService.getAll().subscribe(value => {
+        value.data.map(item => {
+          if (item.manager) {
+            this.managersService.getById(item.manager).subscribe(value => {
+              return (item.manager = value.name);
+            });
+          }
+        });
         this.applications = value.data;
         this.length = value.itemsFound;
       });

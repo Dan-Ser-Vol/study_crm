@@ -13,12 +13,12 @@ import {
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { application } from 'express';
 
 import { CurrentUser } from '../../common';
-import { Application, Comment, Manager } from '../../database/schemas';
+import { Manager } from '../../database/schemas';
 import { ApplicationService } from './application.service';
 import { SortByQueryDto } from './dto/request/sortBy-query-dto';
+import { CommentResponseDto } from './dto/response/comment-response.dto';
 
 @ApiTags('Applications')
 @UseGuards(AuthGuard())
@@ -39,19 +39,36 @@ export class ApplicationController {
     description: 'Successful response',
   })
   @Post('comment/:id')
-  async createMessage(
-    @Body() comment: Comment,
+  async createComment(
+    @Body('message') message: string,
     @Param('id') applicationId: string,
     @CurrentUser() manager: Manager,
-  ): Promise<Application> {
+  ): Promise<CommentResponseDto> {
     try {
       return this.applicationService.createComment(
         applicationId,
-        comment,
+        message,
         manager,
       );
     } catch (err) {
       Logger.log(err);
+      throw new HttpException(err, HttpStatus.BAD_REQUEST);
+    }
+  }
+
+  @ApiOperation({ summary: 'find comments by  array of id' })
+  @ApiResponse({
+    description: 'Successful response',
+    type: 'Successful deleted',
+  })
+  @Post('comments/ids')
+  async findCommentsById(
+    @Body('ids') ids: string[],
+  ): Promise<CommentResponseDto[]> {
+    try {
+      return await this.applicationService.findCommentsById(ids);
+    } catch (err) {
+      Logger.error(err);
       throw new HttpException(err, HttpStatus.BAD_REQUEST);
     }
   }

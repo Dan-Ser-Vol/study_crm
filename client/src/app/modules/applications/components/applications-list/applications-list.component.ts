@@ -1,7 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ApplicationItemComponent } from '../application-item/application-item.component';
 import { IApplication } from '../../../../interfaces';
-import { AuthService } from '../../../../services';
+import { AuthService, ManagersService } from '../../../../services';
 import { IUser } from '../../../../interfaces/user.interface';
 
 @Component({

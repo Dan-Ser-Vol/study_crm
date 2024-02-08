@@ -46,12 +46,10 @@ export class AuthService {
   }
 
   refresh(refreshToken: string): Observable<ITokens> {
-    console.log(refreshToken, 'service');
     return this.httpClient
       .post<ITokens>(urls.auth.refresh, { refreshToken })
       .pipe(
         tap(tokens => {
-          console.log('In service', tokens);
           this._setTokens(tokens);
         })
       );

@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { urls } from '../constants';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { IApplication, IPagination } from '../interfaces';
+import { IApplication, IComment, IPagination } from '../interfaces';
 import { IFilter } from '../interfaces';
 
 @Injectable({
@@ -21,10 +21,23 @@ export class ApplicationsService {
     );
   }
 
-  createMessage(id: string, message: string): Observable<IApplication> {
-    return this.httpClient.post<IApplication>(
-      urls.applications.createMessage(id),
+  findCommentsById(ids: string[]): Observable<IComment[]> {
+    return this.httpClient.post<IComment[]>(
+      urls.applications.getCommentsById(),
+      { ids }
+    );
+  }
+
+  createComment(applicationId: string, message: string): Observable<IComment> {
+    return this.httpClient.post<IComment>(
+      urls.applications.createComment(applicationId),
       message
+    );
+  }
+
+  deleteComment(applicationId: string, commentId: string): Observable<any> {
+    return this.httpClient.delete(
+      urls.applications.deleteComment(applicationId, commentId)
     );
   }
 

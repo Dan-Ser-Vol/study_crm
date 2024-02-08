@@ -1,4 +1,5 @@
 import { environment } from '../environments';
+import { IComment } from '../interfaces';
 
 const { BASE_API } = environment;
 
@@ -22,9 +23,11 @@ const urls = {
   applications: {
     getAll: applications,
     create: `${applications}/create`,
-    createMessage: (id: string) => `${applications}/message/${id}`,
-    deleteMessage: (message: string) => `${applications}/message/${message}`,
-    getById: (orderId: number): string => `${applications}/${orderId}`,
+    createComment: (applicationId: string) =>
+      `${applications}/comment/${applicationId}`,
+    deleteComment: (applicationId: string, commentId: string) =>
+      `${applications}/comment/${applicationId}/${commentId}`,
+    getCommentsById: (): string => `${applications}/comments/ids`,
     deleteById: (orderId: number): string => `${applications}/${orderId}`,
     updateById: (orderId: number): string =>
       `${applications}/update/${orderId}`,

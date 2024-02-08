@@ -1,9 +1,9 @@
 import { Injectable } from '@nestjs/common';
-import { application } from 'express';
 
-import { Application, Comment, Manager } from '../../database/schemas';
+import { Manager } from '../../database/schemas';
 import { ApplicationRepository } from './application-repository';
 import { SortByQueryDto } from './dto/request/sortBy-query-dto';
+import { CommentResponseDto } from './dto/response/comment-response.dto';
 
 @Injectable()
 export class ApplicationService {
@@ -13,13 +13,17 @@ export class ApplicationService {
   }
   async createComment(
     applicationId: string,
-    comment: Comment,
+    message: string,
     manager: Manager,
-  ): Promise<Application> {
-    return this.applicationRepo.addComment(applicationId, comment, manager);
+  ): Promise<CommentResponseDto> {
+    return this.applicationRepo.createComment(applicationId, message, manager);
   }
 
+  async findCommentsById(ids: string[]): Promise<CommentResponseDto[]> {
+    return await this.applicationRepo.findCommentsById(ids);
+  }
   async deleteComment(applicationId: string, commentId: string): Promise<void> {
+    console.log(applicationId, commentId);
     await this.applicationRepo.deleteComment(applicationId, commentId);
   }
 }
