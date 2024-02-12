@@ -10,11 +10,14 @@ import {
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { Router } from '@angular/router';
-import {ToastrService} from "ngx-toastr";
+import { ToastrService } from 'ngx-toastr';
 
 @Injectable()
 export class ErrorInterceptor implements HttpInterceptor {
-  constructor(private router: Router,  protected toastr: ToastrService) {}
+  constructor(
+    private router: Router,
+    protected toastr: ToastrService
+  ) {}
 
   intercept(
     request: HttpRequest<any>,

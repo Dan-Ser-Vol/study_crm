@@ -1,24 +1,11 @@
-import {
-  Body,
-  Controller,
-  Delete,
-  Get,
-  HttpException,
-  HttpStatus,
-  Logger,
-  Param,
-  Post,
-  Query,
-  UseGuards,
-} from '@nestjs/common';
+import { Body, Controller, Get, Post, Query, UseGuards } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 
 import { CurrentUser } from '../../common';
-import { Manager } from '../../database/schemas';
+import {Application, Manager} from '../../database/schemas';
 import { ApplicationService } from './application.service';
 import { SortByQueryDto } from './dto/request/sortBy-query-dto';
-import { CommentResponseDto } from './dto/response/comment-response.dto';
 
 @ApiTags('Applications')
 @UseGuards(AuthGuard())
@@ -34,62 +21,15 @@ export class ApplicationController {
     return this.applicationService.getAll(query);
   }
 
-  @ApiOperation({ summary: 'Create comment' })
+  @ApiOperation({ summary: 'Add manager to application' })
   @ApiResponse({
     description: 'Successful response',
   })
-  @Post('comment/:id')
-  async createComment(
-    @Body('message') message: string,
-    @Param('id') applicationId: string,
+  @Post('addManager')
+  async addManager(
     @CurrentUser() manager: Manager,
-  ): Promise<CommentResponseDto> {
-    try {
-      return this.applicationService.createComment(
-        applicationId,
-        message,
-        manager,
-      );
-    } catch (err) {
-      Logger.log(err);
-      throw new HttpException(err, HttpStatus.BAD_REQUEST);
-    }
-  }
-
-  @ApiOperation({ summary: 'find comments by  array of id' })
-  @ApiResponse({
-    description: 'Successful response',
-    type: 'Successful deleted',
-  })
-  @Post('comments/ids')
-  async findCommentsById(
-    @Body('ids') ids: string[],
-  ): Promise<CommentResponseDto[]> {
-    try {
-      return await this.applicationService.findCommentsById(ids);
-    } catch (err) {
-      Logger.error(err);
-      throw new HttpException(err, HttpStatus.BAD_REQUEST);
-    }
-  }
-
-  @ApiOperation({ summary: 'Delete comment' })
-  @ApiResponse({
-    description: 'Successful response',
-    type: 'Successful deleted',
-  })
-  @Delete('comment/:applicationId/:commentId')
-  async deleteComment(
-    @Param() param: { applicationId: string; commentId: string },
-  ): Promise<void> {
-    try {
-      await this.applicationService.deleteComment(
-        param.applicationId,
-        param.commentId,
-      );
-    } catch (err) {
-      Logger.log(err);
-      throw new HttpException(err, HttpStatus.BAD_REQUEST);
-    }
+    @Body('appId') appId: string,
+  ): Promise<Application> {
+    return await this.applicationService.addManager(appId, manager);
   }
 }

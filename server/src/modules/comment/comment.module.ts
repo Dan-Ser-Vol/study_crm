@@ -8,23 +8,25 @@ import {
   Comment,
   CommentSchema,
 } from '../../database/schemas';
+import { ApplicationModule } from '../application/application.module';
 import { ManagerModule } from '../manager/manager.module';
-import { ApplicationController } from './application.controller';
-import { ApplicationService } from './application.service';
-import { ApplicationRepository } from './application-repository';
+import { CommentController } from './comment.controller';
+import { CommentService } from './comment.service';
 
 @Module({
   imports: [
     MongooseModule.forFeature([
       { name: Application.name, schema: ApplicationSchema },
+      { name: Comment.name, schema: CommentSchema },
     ]),
     PassportModule.register({
       defaultStrategy: 'bearer',
       property: 'user',
     }),
     ManagerModule,
+    ApplicationModule,
   ],
-  controllers: [ApplicationController],
-  providers: [ApplicationService, ApplicationRepository],
+  providers: [CommentService],
+  controllers: [CommentController],
 })
-export class ApplicationModule {}
+export class CommentModule {}

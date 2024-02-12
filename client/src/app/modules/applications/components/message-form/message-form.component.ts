@@ -1,12 +1,17 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { ApplicationsService, ManagersService } from '../../../../services';
+import {
+  ApplicationsService,
+  CommentService,
+  ManagersService,
+} from '../../../../services';
 import { IApplication, IComment } from '../../../../interfaces';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
 import { IManager, IUser } from '../../../../interfaces/user.interface';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-message-form',
@@ -17,27 +22,30 @@ import { IManager, IUser } from '../../../../interfaces/user.interface';
     MatButtonModule,
     MatInputModule,
     MatIconModule,
+    DatePipe,
   ],
   templateUrl: './message-form.component.html',
   styleUrl: './message-form.component.scss',
 })
 export class MessageFormComponent implements OnInit {
   @Input() element: IApplication;
+  application: IApplication;
   @Input() me!: IUser;
   commentsId: string[] | null;
   comments: IComment[] = [];
-  manager: IManager;
+  manager: IManager | null;
   commentForm: FormGroup;
 
   constructor(
-    private appService: ApplicationsService,
-    private managersService: ManagersService
+    private commentService: CommentService,
+    private managersService: ManagersService,
+    private appService: ApplicationsService
   ) {}
 
   ngOnInit() {
     this.commentsId = this.element.msg?.map(item => item);
     if (this.commentsId && this.commentsId.length) {
-      this.appService.findCommentsById(this.commentsId).subscribe(value => {
+      this.commentService.findCommentsById(this.commentsId).subscribe(value => {
         this.comments = value;
       });
     }
@@ -48,7 +56,7 @@ export class MessageFormComponent implements OnInit {
 
     if (this.element.manager) {
       this.managersService.getById(this.element.manager).subscribe(value => {
-        this.manager = value;
+        this.manager = { ...value };
       });
     }
   }
@@ -56,7 +64,7 @@ export class MessageFormComponent implements OnInit {
   onSubmit(applicationId: string) {
     if (this.commentForm.valid && this.commentForm.value) {
       const message = this.commentForm.value;
-      this.appService
+      this.commentService
         .createComment(applicationId, message)
         .subscribe(value => (this.comments = [value, ...this.comments]));
       this.commentForm.reset();
@@ -65,13 +73,15 @@ export class MessageFormComponent implements OnInit {
   }
 
   deleteComment(applicationId: string, commentId: string) {
-    this.appService.deleteComment(applicationId, commentId).subscribe(() => {
-      const index = this.comments.findIndex(
-        comment => comment._id === commentId
-      );
-      if (index !== -1) {
-        this.comments.splice(index, 1);
-      }
-    });
+    this.commentService
+      .deleteComment(applicationId, commentId)
+      .subscribe(() => {
+        const index = this.comments.findIndex(
+          comment => comment._id === commentId
+        );
+        if (index !== -1) {
+          this.comments.splice(index, 1);
+        }
+      });
   }
 }

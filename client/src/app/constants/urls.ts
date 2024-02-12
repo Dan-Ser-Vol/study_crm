@@ -1,10 +1,9 @@
 import { environment } from '../environments';
-import { IComment } from '../interfaces';
-
 const { BASE_API } = environment;
 
 const auth: string = `${BASE_API}auth`;
 const managers: string = `${BASE_API}managers`;
+const comments: string = `${BASE_API}comments`;
 const applications: string = `${BASE_API}applications`;
 
 const urls = {
@@ -16,21 +15,22 @@ const urls = {
     refresh: `${auth}/refresh`,
   },
   managers: {
-    base: managers,
     getById: (managerId: string): string => `${managers}/${managerId}`,
     deleteById: (managerId: string): string => `${managers}/${managerId}`,
   },
+
+  comments: {
+    createComment: (applicationId: string) =>
+      `${comments}/create/${applicationId}`,
+    deleteComment: (applicationId: string, commentId: string) =>
+      `${comments}/${applicationId}/${commentId}`,
+    getCommentsById: (): string => `${comments}/ids`,
+  },
+
   applications: {
     getAll: applications,
     create: `${applications}/create`,
-    createComment: (applicationId: string) =>
-      `${applications}/comment/${applicationId}`,
-    deleteComment: (applicationId: string, commentId: string) =>
-      `${applications}/comment/${applicationId}/${commentId}`,
-    getCommentsById: (): string => `${applications}/comments/ids`,
-    deleteById: (orderId: number): string => `${applications}/${orderId}`,
-    updateById: (orderId: number): string =>
-      `${applications}/update/${orderId}`,
+    addManager: () => `${applications}/addManager`,
   },
 };
 

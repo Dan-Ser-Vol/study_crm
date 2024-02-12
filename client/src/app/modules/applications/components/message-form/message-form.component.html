@@ -5,22 +5,27 @@
         class="example-form ml-auto"
         (ngSubmit)="onSubmit(element._id)"
         [formGroup]="commentForm">
+        @if (!element.manager) {
+          <p class="text-amber-600">
+            If you leave a comment, you take the order to work!
+          </p>
+        }
         <mat-form-field class="example-full-width">
-          <mat-label>Leave a comment</mat-label>
-          <textarea
-            formControlName="message"
-            matInput
-            placeholder="Write your comment..."></textarea>
+          <mat-label> Leave a comment </mat-label>
+          <textarea formControlName="message" matInput></textarea>
         </mat-form-field>
       </form>
-      <button
-        (click)="onSubmit(element._id)"
-        class="ml-1"
-        mat-button
-        [disabled]="!this.commentForm.value['message']"
-        style="background-color: #fcd34d">
-        Submit
-      </button>
+      <div class="flex flex-col ml-1 gap-1">
+        @if (!element.manager || element.manager === me.name) {
+          <button
+            (click)="onSubmit(element._id)"
+            mat-button
+            [disabled]="!this.commentForm.value['message'] && !element.manager"
+            style="background-color: #fcd34d">
+            Submit
+          </button>
+        }
+      </div>
     </div>
   } @else {
     <div class="p-2 bg-slate-200 text-xl text-teal-700 rounded mb-1">
@@ -29,23 +34,29 @@
   }
 
   <div class="form-output">{{ commentForm.get('message').value }}</div>
-  @for (comment of comments; track comment) {
-    <div class="flex gap-1 w-full">
-      <p class="flex p-3 bg-slate-200 rounded mb-1 items-center">
-        {{ this.manager.name }}
-      </p>
-      <p class="p-3 bg-slate-100 rounded mb-1 form-output">
-        {{ comment.message }}
-      </p>
-      <div class="flex example-button-container items-center">
-        <button
-          (click)="deleteComment(element._id, comment._id)"
-          mat-mini-fab
-          color="warn"
-          [disabled]="me.id !== element.manager">
-          <mat-icon>delete</mat-icon>
-        </button>
+  @if (manager) {
+    @for (comment of comments; track comment) {
+      <div class="flex gap-1 w-full">
+        <p class="flex p-3 bg-slate-200 rounded mb-1 items-center">
+          {{ manager.name }}
+        </p>
+        <p class="p-3 bg-slate-100 rounded mb-1 form-output">
+          {{ comment.message }}
+        </p>
+        <p class="flex justify-end p-3 bg-slate-100 rounded mb-1">
+          {{ comment.created_at | date: 'dd-MM-yyyy HH:mm' }}
+        </p>
+
+        <div class="flex example-button-container items-center">
+          <button
+            (click)="deleteComment(element._id, comment._id)"
+            mat-mini-fab
+            color="warn"
+            [disabled]="me.name !== element.manager">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </div>
       </div>
-    </div>
+    }
   }
 </div>

@@ -10,6 +10,7 @@ import { ApplicationModule } from './modules/application/application.module';
 import { AuthModule } from './modules/auth/auth.module';
 import { ManagerModule } from './modules/manager/manager.module';
 import { TokenModule } from './modules/token/token.module';
+import { CommentModule } from './modules/comment/comment.module';
 
 const environment = process.env.NODE_ENV ?? '';
 dotenv.config({ path: `environments/${environment}.env` });
@@ -31,6 +32,7 @@ dotenv.config({ path: `environments/${environment}.env` });
     TokenModule,
     AuthModule,
     ApplicationModule,
+    CommentModule,
   ],
 })
 export class AppModule {}
