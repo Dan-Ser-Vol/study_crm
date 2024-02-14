@@ -40,71 +40,76 @@
         }
       </mat-panel-description>
     </mat-expansion-panel-header>
-    <mat-card class="example-card">
-      <mat-card-header>
-        <div mat-card-avatar class="example-header-image"></div>
-        <mat-card-title>{{
-          application.name || 'not established'
-        }}</mat-card-title>
-        <mat-card-subtitle>{{
-          application.surname || 'not established'
-        }}</mat-card-subtitle>
-      </mat-card-header>
-      <mat-card-content>
-        <hr />
-        <mat-list>
-          <mat-list-item>
-            <span matListItemTitle>Email</span>
-            <span matListItemLine>{{
-              application.email || 'not established'
-            }}</span>
-          </mat-list-item>
-          <mat-list-item style="margin-top: -15px">
-            <span matListItemTitle>Phone</span>
-            <span>{{ application.phone || 'not established' }}</span>
-          </mat-list-item>
-          <mat-list-item style="margin-top: -15px">
-            <span matListItemTitle>Age</span>
-            {{ application.age || 'not established' }}
-          </mat-list-item>
-          <mat-list-item style="margin-top: -15px">
-            <span matListItemTitle>Course</span>
-            {{ application.course || 'not established' }}
-          </mat-list-item>
-          <mat-list-item style="margin-top: -15px">
-            <span matListItemTitle>Course Format</span>
-            {{ application.course_format || 'not established' }}
-          </mat-list-item>
-          <mat-list-item style="margin-top: -15px">
-            <span matListItemTitle>Course Type</span>
-            {{ application.course_type || 'not established' }}
-          </mat-list-item>
-          <mat-list-item style="margin-top: -15px">
-            <span matListItemTitle>Sum</span>
-            {{ application.sum || 'not established' }}
-          </mat-list-item>
-          <mat-list-item style="margin-top: -15px">
-            <span matListItemTitle>Status</span>
-            {{ application.status || 'not established' }}
-          </mat-list-item>
-          <mat-list-item style="margin-top: -15px">
-            <span matListItemTitle>Group</span>
-            {{ application.group || 'not established' }}
-          </mat-list-item>
-          <mat-list-item style="margin-top: -15px">
-            <span matListItemTitle>Created</span>
-            {{ application.created_at || 'not established' }}
-          </mat-list-item>
-          <mat-list-item style="margin-top: -15px">
-            <span matListItemTitle>Updated</span>
-            {{ application.updated_at || 'not established' }}
-          </mat-list-item>
-          <mat-list-item style="margin-top: -15px">
-            <span matListItemTitle>Manager</span>
-            {{ manager?.name ? manager.name : 'free' }}
-          </mat-list-item>
-        </mat-list>
-      </mat-card-content>
-    </mat-card>
+    <div class="flex">
+      <mat-card class="example-card">
+        <mat-card-header>
+          <div mat-card-avatar class="example-header-image"></div>
+          <mat-card-title>{{
+              application.name || 'not established'
+            }}</mat-card-title>
+          <mat-card-subtitle>{{
+              application.surname || 'not established'
+            }}</mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>
+          <hr />
+          <mat-list>
+            <mat-list-item>
+              <span matListItemTitle>Email</span>
+              <span matListItemLine>{{
+                  application.email || 'not established'
+                }}</span>
+            </mat-list-item>
+            <mat-list-item style="margin-top: -15px">
+              <span matListItemTitle>Phone</span>
+              <span>{{ application.phone || 'not established' }}</span>
+            </mat-list-item>
+            <mat-list-item style="margin-top: -15px">
+              <span matListItemTitle>Age</span>
+              {{ application.age || 'not established' }}
+            </mat-list-item>
+            <mat-list-item style="margin-top: -15px">
+              <span matListItemTitle>Course</span>
+              {{ application.course || 'not established' }}
+            </mat-list-item>
+            <mat-list-item style="margin-top: -15px">
+              <span matListItemTitle>Course Format</span>
+              {{ application.course_format || 'not established' }}
+            </mat-list-item>
+            <mat-list-item style="margin-top: -15px">
+              <span matListItemTitle>Course Type</span>
+              {{ application.course_type || 'not established' }}
+            </mat-list-item>
+            <mat-list-item style="margin-top: -15px">
+              <span matListItemTitle>Sum</span>
+              {{ application.sum || 'not established' }}
+            </mat-list-item>
+            <mat-list-item style="margin-top: -15px">
+              <span matListItemTitle>Status</span>
+              {{ application.status || 'not established' }}
+            </mat-list-item>
+            <mat-list-item style="margin-top: -15px">
+              <span matListItemTitle>Group</span>
+              {{ application.group || 'not established' }}
+            </mat-list-item>
+            <mat-list-item style="margin-top: -15px">
+              <span matListItemTitle>Created</span>
+              {{ application.created_at || 'not established' }}
+            </mat-list-item>
+            <mat-list-item style="margin-top: -15px">
+              <span matListItemTitle>Updated</span>
+              {{ application.updated_at || 'not established' }}
+            </mat-list-item>
+            <mat-list-item style="margin-top: -15px">
+              <span matListItemTitle>Manager</span>
+              {{ manager?.name ? manager.name : 'free' }}
+            </mat-list-item>
+          </mat-list>
+        </mat-card-content>
+      </mat-card>
+      <div class="ml-auto">
+        <app-message-form [application]="application"   [me]="me"   [manager]="manager"/>
+      </div>
+    </div>
   </mat-expansion-panel>
 </mat-accordion>

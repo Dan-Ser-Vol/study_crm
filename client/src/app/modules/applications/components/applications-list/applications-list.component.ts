@@ -1,13 +1,12 @@
-import { Component, OnInit } from '@angular/core';
-import { ApplicationItemComponent } from '../application-item/application-item.component';
-import { IApplication, IFilter, IManager } from '../../../../interfaces';
-import { ApplicationsService, AuthService } from '../../../../services';
-import { MatTabsModule } from '@angular/material/tabs';
-import { MatTableModule } from '@angular/material/table';
-import { columnsDisplay } from '../../utils';
-import { PeriodicElement } from '../../enums/periodic-enum';
-import { Router } from '@angular/router';
-import { tap } from 'rxjs';
+import {Component, OnInit} from '@angular/core';
+import {ApplicationItemComponent} from '../application-item/application-item.component';
+import {IApplication, IFilter, IManager} from '../../../../interfaces';
+import {ApplicationsService, AuthService} from '../../../../services';
+import {MatTabsModule} from '@angular/material/tabs';
+import {MatTableModule} from '@angular/material/table';
+import {columnsDisplay} from '../../utils';
+import {Router} from '@angular/router';
+import {tap} from 'rxjs';
 import {MatChipsModule} from "@angular/material/chips";
 
 @Component({
@@ -32,16 +31,18 @@ export class ApplicationsListComponent implements OnInit {
 
   constructor(
     private router: Router,
-    private appService: ApplicationsService
-  ) {}
+    private appService: ApplicationsService,
+    private authService: AuthService
+  ) {
+  }
 
   ngOnInit() {
     this.appService.getFilterItems().subscribe(value => {
       this.filters = value;
-      const queryParams = { ...this.filters };
-      this.router.navigate([], { queryParams });
+      const queryParams = {...this.filters};
+      this.router.navigate([], {queryParams});
     });
-
+    this.authService.getMe().subscribe(value => this.me = value)
     this.appService
       .getApplicationsListSubj()
       .pipe(
@@ -69,7 +70,7 @@ export class ApplicationsListComponent implements OnInit {
   }
 
   private buildQueryParams(filters: IFilter): any {
-    const queryParams = { ...filters };
+    const queryParams = {...filters};
     queryParams['sortedBy'] = `${this.sortSymbol}${this.sortedBy}`;
     return queryParams;
   }

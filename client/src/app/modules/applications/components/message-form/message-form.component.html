@@ -1,11 +1,11 @@
-<div class="flex flex-col p-1">
-  @if (!element.manager || this.manager?._id === me._id) {
+<div class="flex flex-col p-1 ">
+  @if (manager && me && manager._id === me._id) {
     <div class="flex">
       <form
         class="example-form ml-auto"
-        (ngSubmit)="onSubmit(element._id)"
+        (ngSubmit)="onSubmit(application._id)"
         [formGroup]="commentForm">
-        @if (!element.manager) {
+        @if (!application.manager) {
           <p class="text-amber-600">
             If you leave a comment, you take the order to work!
           </p>
@@ -16,11 +16,11 @@
         </mat-form-field>
       </form>
       <div class="flex flex-col ml-1 gap-1">
-        @if (!element.manager || element.manager === me.name) {
+        @if (true) {
           <button
-            (click)="onSubmit(element._id)"
+            (click)="onSubmit(application._id)"
             mat-button
-            [disabled]="!this.commentForm.value['message'] && !element.manager"
+            [disabled]="!this.commentForm.value['message'] && !application.manager"
             style="background-color: #fcd34d">
             Submit
           </button>
@@ -49,10 +49,10 @@
 
         <div class="flex example-button-container items-center">
           <button
-            (click)="deleteComment(element._id, comment._id)"
+            (click)="deleteComment(application._id, comment._id)"
             mat-mini-fab
             color="warn"
-            [disabled]="me.name !== element.manager">
+            [disabled]="false">
             <mat-icon>delete</mat-icon>
           </button>
         </div>

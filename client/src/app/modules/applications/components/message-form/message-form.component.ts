@@ -1,10 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
-import {
-  ApplicationsService,
-  CommentService,
-  ManagersService,
-} from '../../../../services';
+import { AuthService, CommentService } from '../../../../services';
 import { IApplication, IComment, IManager } from '../../../../interfaces';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatButtonModule } from '@angular/material/button';
@@ -27,23 +23,21 @@ import { DatePipe } from '@angular/common';
   styleUrl: './message-form.component.scss',
 })
 export class MessageFormComponent implements OnInit {
-  @Input() element: IApplication;
-  application: IApplication;
-  @Input() me!: IManager;
+  @Input() me: IManager | null;
+  @Input() manager: IManager | null;
+  @Input() application!: IApplication;
   commentsId: string[] | null;
   comments: IComment[] = [];
-  manager: IManager | null;
   commentForm: FormGroup;
   showComments: boolean = false;
 
   constructor(
     private commentService: CommentService,
-    private managersService: ManagersService,
-    private appService: ApplicationsService
+    private authService: AuthService
   ) {}
 
   ngOnInit() {
-    this.commentsId = this.element.msg?.map(item => item);
+    this.commentsId = this.application.msg?.map(item => item);
     if (this.commentsId && this.commentsId.length) {
       this.commentService.findCommentsById(this.commentsId).subscribe(value => {
         this.comments = value;
@@ -53,8 +47,6 @@ export class MessageFormComponent implements OnInit {
     this.commentForm = new FormGroup({
       message: new FormControl(''),
     });
-
-    console.log(this.element);
   }
 
   onSubmit(applicationId: string) {

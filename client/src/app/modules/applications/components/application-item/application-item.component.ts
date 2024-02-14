@@ -5,8 +5,9 @@ import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import {MatCardModule} from "@angular/material/card";
-import {MatListModule} from "@angular/material/list";
+import { MatCardModule } from '@angular/material/card';
+import { MatListModule } from '@angular/material/list';
+import {MessageFormComponent} from "../message-form/message-form.component";
 
 @Component({
   selector: 'app-application-item',
@@ -21,6 +22,7 @@ import {MatListModule} from "@angular/material/list";
     MatInputModule,
     MatCardModule,
     MatListModule,
+    MessageFormComponent,
   ],
 })
 export class ApplicationItemComponent implements OnInit {
