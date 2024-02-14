@@ -34,6 +34,7 @@ export class ApplicationRepository {
 
       const queryBuilder = this.applicationModel
         .find(searchObj)
+        .populate('msg manager')
         .collation({ locale: 'en', strength: 2 })
         .limit(limit)
         .skip(skip)

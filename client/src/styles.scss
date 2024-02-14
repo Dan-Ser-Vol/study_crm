@@ -15,13 +15,16 @@
   }
   .header-bg {
     @apply flex h-14 justify-between items-center bg-gradient-to-b from-slate-800 via-cyan-900 to-slate-800 px-6;
-
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 999;
   }
   .form_bg {
     @apply  bg-slate-500;
   }
   .btn {
-    @apply text-sm p-2 px-2 rounded-sm text-white transition-colors disabled:bg-gray-300 disabled:cursor-not-allowed;
+    @apply flex justify-center text-sm  p-2 px-2 rounded-sm text-white transition-colors disabled:bg-gray-300 disabled:cursor-not-allowed;
   }
 }
 
@@ -32,6 +35,11 @@
   .btn-red {
     @apply bg-red-600  hover:bg-red-500;
   }
+
+  .btn-cyan {
+    @apply  bg-cyan-800   hover:bg-cyan-900;
+  }
+
 }
 
 .text-shadow {

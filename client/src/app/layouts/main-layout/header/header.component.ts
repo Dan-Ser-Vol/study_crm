@@ -3,10 +3,10 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { AuthService, NavigationService } from '../../../services';
 import { MatCardModule } from '@angular/material/card';
-import { IUser } from '../../../interfaces/user.interface';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import {IManager} from "../../../interfaces";
 
 @Component({
   selector: 'app-header',
@@ -23,7 +23,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
   templateUrl: './header.component.html',
 })
 export class HeaderComponent implements OnInit {
-  user: IUser;
+  manager: IManager;
   isAuth: boolean;
 
   constructor(
@@ -32,9 +32,9 @@ export class HeaderComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.authService.getMe().subscribe(value => (this.user = value));
+    this.authService.getMe().subscribe(value => (this.manager = value));
     this.authService.getIsAuth().subscribe(value => (this.isAuth = value));
-    if (this.isAuth && !this.user) {
+    if (this.isAuth && !this.manager) {
       this.authService.me().subscribe();
     }
   }

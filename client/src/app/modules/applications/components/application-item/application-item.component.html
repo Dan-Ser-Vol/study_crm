@@ -1,151 +1,110 @@
-<table
-  mat-table
-  [dataSource]="applications"
-  multiTemplateDataRows=""
-  class="mat-elevation-z8 rounded">
-  @for (column of columnsToDisplay; track column) {
-    <ng-container matColumnDef="{{ column }}">
-      <th
-        class="cursor-pointer hover:text-amber-400"
-        (click)="onSortBy(column)"
-        mat-header-cell
-        style="max-width: 80px"
-        *matHeaderCellDef>
-        {{ column }}
-      </th>
-      <td mat-cell style="max-width: 80px" *matCellDef="let element">
-        {{ element[column] ? element[column] : 'empty' }}
-      </td>
-    </ng-container>
-  }
-
-  <ng-container matColumnDef="expand">
-    <th mat-header-cell *matHeaderCellDef aria-label="row actions">&nbsp;</th>
-    <td mat-cell *matCellDef="let element">
-      <button
-        mat-icon-button
-        aria-label="expand row"
-        (click)="
-          expandedElement = expandedElement == element ? null : element;
-          $event.stopPropagation()
-        ">
-        @if (expandedElement == element) {
-          <mat-icon>keyboard_arrow_up</mat-icon>
+<div class="mt-1"></div>
+<mat-accordion class="example-headers-align">
+  <mat-expansion-panel>
+    <mat-expansion-panel-header class="flex-container">
+      <mat-panel-title class="flex-item">{{
+        application.name
+      }}</mat-panel-title>
+      <mat-panel-title class="flex-item">{{
+        application.surname
+      }}</mat-panel-title>
+      <mat-panel-title class="flex-item">{{
+        application.email
+      }}</mat-panel-title>
+      <mat-panel-title class="flex-item">{{ application.age }}</mat-panel-title>
+      <mat-panel-title class="flex-item">{{
+        application.course
+      }}</mat-panel-title>
+      <mat-panel-title class="flex-item">{{
+        application.course_format
+      }}</mat-panel-title>
+      <mat-panel-title class="flex-item">{{
+        application.course_type
+      }}</mat-panel-title>
+      <mat-panel-title class="flex-item">{{
+        application.status
+      }}</mat-panel-title>
+      <mat-panel-title class="flex-item">{{ application.sum }}</mat-panel-title>
+      <mat-panel-title class="flex-item">{{
+        application.group
+      }}</mat-panel-title>
+      <mat-panel-title class="flex-item">{{
+        application.created_at
+      }}</mat-panel-title>
+      <mat-panel-description class="flex-item">
+        <mat-icon class="">account_circle</mat-icon>
+        @if (manager && manager.name) {
+          <span class="text-sky-600 ml-2">{{ manager.name }}</span>
         } @else {
-          <mat-icon>keyboard_arrow_down</mat-icon>
+          <span class="text-teal-600 ml-2">Free</span>
         }
-      </button>
-    </td>
-  </ng-container>
-  <ng-container matColumnDef="expandedDetail">
-    <td
-      mat-cell
-      *matCellDef="let element"
-      [attr.colspan]="columnsToDisplayWithExpand.length">
-      <div
-        class="example-element-detail"
-        [@detailExpand]="
-          element === expandedElement ? 'expanded' : 'collapsed'
-        ">
-        <div class="flex justify-between w-full p-2">
-          <div class="example-element-diagram">
-            <div class="example-element-position">
-              <span class="text-sky-500 font-bold">name: </span>
-              <span class="text-teal-900 text-lg">{{ element.name }}</span>
-            </div>
-            <div class="example-element-position">
-              <span class="text-sky-500 font-bold">surname: </span>
-              <span class="text-teal-900 text-lg"> {{ element.surname }}</span>
-            </div>
-            <div class="example-element-position">
-              <span class="text-sky-500 font-bold">email: </span>
-              <span class="text-teal-900 text-lg"> {{ element.email }}</span>
-            </div>
-            <div class="example-element-position">
-              <span class="text-sky-500 font-bold">phone </span>
-              <span class="text-teal-900 text-lg"> {{ element.phone }}</span>
-            </div>
-            <div class="example-element-position">
-              <span class="text-sky-500 font-bold">age: </span>
-              <span class="text-teal-900 text-lg"> {{ element.age }}</span>
-            </div>
-            <div class="example-element-position">
-              <span class="text-sky-500 font-bold"> manager: </span>
-              <span class="text-teal-900 text-lg"> {{ element.manager }}</span>
-            </div>
-            <div class="example-element-position">
-              <span class="text-sky-500 font-bold"> course: </span>
-              <span class="text-teal-900 text-lg"> {{ element.course }}</span>
-            </div>
-            <div class="example-element-position">
-              <span class="text-sky-500 font-bold"> course format: </span>
-              <span class="text-teal-900 text-lg">
-                {{ element.course_format }}</span
-              >
-            </div>
-            <div class="example-element-position">
-              <span class="text-sky-500 font-bold"> course type: </span>
-              <span class="text-teal-900 text-lg">{{
-                element.course_type
-              }}</span>
-            </div>
-            <div class="example-element-position">
-              <span class="text-sky-500 font-bold"> status: </span>
-              <span class="text-teal-900 text-lg">
-                {{ element.status || 'no status' }}</span
-              >
-            </div>
-            <div class="example-element-position">
-              <span class="text-sky-500 font-bold">sum: </span>
-              <span class="text-teal-900 text-lg">{{
-                element.sum || '0'
-              }}</span>
-            </div>
-            <div class="example-element-position">
-              <span class="text-sky-500 font-bold">group: </span>
-              <span class="text-teal-900 text-lg">
-                {{ element.group || 'no group' }}</span
-              >
-            </div>
-            <div class="example-element-position">
-              <span class="text-sky-500 font-bold"> already paid: </span>
-              <span class="text-teal-900 text-lg">
-                {{ element.already_paid || 'no paid' }}</span
-              >
-            </div>
-            <div class="example-element-position">
-              <span class="text-sky-500 font-bold"> created at: </span>
-              <span class="text-teal-900 text-lg">
-                {{ element.created_at }}</span
-              >
-            </div>
-          </div>
-          @if (element.manager === me.name) {
-            <button
-              mat-button
-              style="background-color: #0f766e; color: white; margin-left: 4px">
-              Edit
-            </button>
-          }
-          <div class="flex ml-auto">
-            <app-message-form [element]="element" [me]="me" />
-          </div>
-        </div>
-      </div>
-    </td>
-  </ng-container>
-
-  <tr mat-header-row *matHeaderRowDef="columnsToDisplayWithExpand"></tr>
-  <tr
-    mat-row
-    *matRowDef="let element; columns: columnsToDisplayWithExpand"
-    class="example-element-row"
-    [class.example-expanded-row]="expandedElement === element"
-    (click)="
-      expandedElement = expandedElement === element ? null : element
-    "></tr>
-  <tr
-    mat-row
-    *matRowDef="let row; columns: ['expandedDetail']"
-    class="example-detail-row"></tr>
-</table>
+      </mat-panel-description>
+    </mat-expansion-panel-header>
+    <mat-card class="example-card">
+      <mat-card-header>
+        <div mat-card-avatar class="example-header-image"></div>
+        <mat-card-title>{{
+          application.name || 'not established'
+        }}</mat-card-title>
+        <mat-card-subtitle>{{
+          application.surname || 'not established'
+        }}</mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-content>
+        <hr />
+        <mat-list>
+          <mat-list-item>
+            <span matListItemTitle>Email</span>
+            <span matListItemLine>{{
+              application.email || 'not established'
+            }}</span>
+          </mat-list-item>
+          <mat-list-item style="margin-top: -15px">
+            <span matListItemTitle>Phone</span>
+            <span>{{ application.phone || 'not established' }}</span>
+          </mat-list-item>
+          <mat-list-item style="margin-top: -15px">
+            <span matListItemTitle>Age</span>
+            {{ application.age || 'not established' }}
+          </mat-list-item>
+          <mat-list-item style="margin-top: -15px">
+            <span matListItemTitle>Course</span>
+            {{ application.course || 'not established' }}
+          </mat-list-item>
+          <mat-list-item style="margin-top: -15px">
+            <span matListItemTitle>Course Format</span>
+            {{ application.course_format || 'not established' }}
+          </mat-list-item>
+          <mat-list-item style="margin-top: -15px">
+            <span matListItemTitle>Course Type</span>
+            {{ application.course_type || 'not established' }}
+          </mat-list-item>
+          <mat-list-item style="margin-top: -15px">
+            <span matListItemTitle>Sum</span>
+            {{ application.sum || 'not established' }}
+          </mat-list-item>
+          <mat-list-item style="margin-top: -15px">
+            <span matListItemTitle>Status</span>
+            {{ application.status || 'not established' }}
+          </mat-list-item>
+          <mat-list-item style="margin-top: -15px">
+            <span matListItemTitle>Group</span>
+            {{ application.group || 'not established' }}
+          </mat-list-item>
+          <mat-list-item style="margin-top: -15px">
+            <span matListItemTitle>Created</span>
+            {{ application.created_at || 'not established' }}
+          </mat-list-item>
+          <mat-list-item style="margin-top: -15px">
+            <span matListItemTitle>Updated</span>
+            {{ application.updated_at || 'not established' }}
+          </mat-list-item>
+          <mat-list-item style="margin-top: -15px">
+            <span matListItemTitle>Manager</span>
+            {{ manager?.name ? manager.name : 'free' }}
+          </mat-list-item>
+        </mat-list>
+      </mat-card-content>
+    </mat-card>
+  </mat-expansion-panel>
+</mat-accordion>

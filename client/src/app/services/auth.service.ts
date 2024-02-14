@@ -2,9 +2,9 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { urls } from '../constants';
 import { BehaviorSubject, catchError, Observable, tap } from 'rxjs';
-import { IAuth, ITokens } from '../interfaces';
-import { IUser } from '../interfaces/user.interface';
+import { IAuth, IManager, ITokens } from '../interfaces';
 import { Router } from '@angular/router';
+import { ManagersService } from './manager.service';
 
 @Injectable({
   providedIn: 'root',
@@ -14,11 +14,12 @@ export class AuthService {
   private readonly _refreshTokenKey: string = 'refreshToken';
   isAuthSubj = new BehaviorSubject<boolean>(false);
   trigger = new BehaviorSubject<boolean>(false);
-  meSubj = new BehaviorSubject<IUser>(null);
+  meSubj = new BehaviorSubject<IManager>(null);
   accessTokenSubj = new BehaviorSubject<string>(null);
 
   constructor(
     private httpClient: HttpClient,
+    private managersService: ManagersService,
     private router: Router
   ) {
     this.isAuthSubj.next(!!this.getAccessToken());
@@ -39,10 +40,13 @@ export class AuthService {
     );
   }
 
-  me(): Observable<IUser> {
-    return this.httpClient
-      .get<IUser>(urls.auth.me)
-      .pipe(tap(value => this.meSubj.next(value)));
+  me(): Observable<IManager> {
+    return this.httpClient.get<IManager>(urls.auth.me).pipe(
+      tap(value => {
+        this.meSubj.next(value);
+        this.managersService.setCurrentManager(value);
+      })
+    );
   }
 
   refresh(refreshToken: string): Observable<ITokens> {

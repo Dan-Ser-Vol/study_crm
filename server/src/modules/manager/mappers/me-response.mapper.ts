@@ -7,10 +7,13 @@ export class MeResponseMapper {
       return null;
     }
     return {
-      id: managerObject._id,
+      _id: managerObject._id,
       name: managerObject.name,
+      surname: managerObject.surname,
       email: managerObject.email,
       roles: managerObject.roles,
+      isActive: managerObject.isActive,
+      last_login: managerObject.last_login,
     };
   }
 }

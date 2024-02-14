@@ -1,17 +1,13 @@
 
-.example-form {
-  min-width: 400px;
-  max-width: 400px;
-  width: 100%;
+.example-action-buttons {
+  padding-bottom: 20px;
 }
 
-
-.form-output{
-  max-width: 400px;
-  min-width: 400px;
-  word-wrap: break-word;
+.example-headers-align .mat-expansion-panel-header-description {
+  justify-content: space-between;
+  align-items: center;
 }
 
-.example-full-width {
-  width: 100%;
+.example-headers-align .mat-mdc-form-field + .mat-mdc-form-field {
+  margin-top: 8px;
 }

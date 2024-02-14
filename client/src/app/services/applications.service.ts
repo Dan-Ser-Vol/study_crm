@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { urls } from '../constants';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, Observable, tap } from 'rxjs';
 import { IApplication, IFilter, IPagination } from '../interfaces';
 
 @Injectable({
@@ -9,34 +9,29 @@ import { IApplication, IFilter, IPagination } from '../interfaces';
 })
 export class ApplicationsService {
   filterItemsSubj = new BehaviorSubject<IFilter>(null);
-  triggerSubj = new BehaviorSubject<boolean>(false);
+  applicationsListSubj = new BehaviorSubject<IPagination<IApplication>>(null);
 
   constructor(private httpClient: HttpClient) {}
 
   getAll(page = 1, limit = 25): Observable<IPagination<IApplication>> {
-    return this.httpClient.get<IPagination<IApplication>>(
-      urls.applications.getAll,
-      { params: { page, limit, ...this.filterItemsSubj.value } }
-    );
+    return this.httpClient
+      .get<IPagination<IApplication>>(urls.applications.getAll, {
+        params: { page, limit, ...this.filterItemsSubj.value },
+      })
+      .pipe(tap(value => this.applicationsListSubj.next(value)));
   }
 
-  addManager(appId: string): Observable<IApplication> {
-    return this.httpClient.post<IApplication>(urls.applications.addManager(), {
-      appId,
-    });
-  }
-
-  getFilterItems() {
+  getFilterItems(): Observable<IFilter> {
     return this.filterItemsSubj.asObservable();
   }
   setFilterItems(filters: IFilter) {
     return this.filterItemsSubj.next(filters);
   }
-
-  getTriggerSubj() {
-    return this.triggerSubj.asObservable();
+  setApplicationsListSubj(applications: IPagination<IApplication>) {
+    return this.applicationsListSubj.next(applications);
   }
-  setTriggerSubj() {
-    return this.triggerSubj.next(!this.triggerSubj.value);
+
+  getApplicationsListSubj(): Observable<IPagination<IApplication>> {
+    return this.applicationsListSubj.asObservable();
   }
 }

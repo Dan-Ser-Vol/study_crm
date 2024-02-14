@@ -1,3 +1,16 @@
 <div>
-  <app-application-item [applications]="applications" [me]="me" />
+  <div class="grid grid-cols-12 gap-1">
+    @for (column of appLabels; track column.name) {
+      <button (click)="onSortBy(column.name)" class="col-span-1 btn btn-cyan">
+        {{ column.label }}
+      </button>
+    }
+  </div>
+
+  @for (application of applications; track application) {
+    <app-application-item
+      [me]="me"
+      [application]="application"
+      [applications]="applications" />
+  }
 </div>

@@ -1,12 +1,5 @@
 import { IApplication } from './application.interface';
 
-export interface IUser {
-  id: string;
-  name: string;
-  email: string;
-  roles: string[];
-}
-
 export interface IManager {
   _id: string;
   applications: IApplication[];

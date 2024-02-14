@@ -1,13 +1,21 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Transform } from 'class-transformer';
-import { IsEmail, IsEnum, IsNotEmpty, IsString } from 'class-validator';
+import {
+  IsBoolean,
+  IsDate,
+  IsEmail,
+  IsEnum,
+  IsNotEmpty,
+  IsString,
+} from 'class-validator';
 
+import { Application } from '../../../../database/schemas';
 import { ManagerRoleEnum } from '../../../role/enum/role-enum';
 
 export class ManagerBaseDto {
   @ApiProperty({ example: '567' })
   @IsString()
-  id: string;
+  _id: string;
 
   @ApiProperty({ example: 'Bob' })
   @IsNotEmpty()
@@ -33,6 +41,19 @@ export class ManagerBaseDto {
 
   @ApiProperty()
   @IsNotEmpty()
+  @IsBoolean()
+  isActive: boolean;
+
+  @ApiProperty()
+  @IsNotEmpty()
   @IsEnum({ enum: ManagerRoleEnum.ADMIN })
   roles: string[];
+
+  @ApiProperty()
+  @IsDate()
+  last_login: Date;
+
+  @ApiProperty()
+  @IsDate()
+  applications: Application[];
 }

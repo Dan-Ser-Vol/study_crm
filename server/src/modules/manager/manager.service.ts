@@ -47,7 +47,7 @@ export class ManagerService {
   public async findManagerById(managerId: string): Promise<Manager> {
     const findManager = await this.managerModel
       .findById(managerId)
-      .populate({ path: 'roles' })
+      .populate(['roles', 'applications'])
       .exec();
     if (!findManager) {
       throw new UnprocessableEntityException(

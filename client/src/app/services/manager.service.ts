@@ -2,13 +2,14 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { urls } from '../constants';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { IManager } from '../interfaces/user.interface';
+import { IManager } from '../interfaces';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ManagersService {
   triggerSubj = new BehaviorSubject<boolean>(false);
+  currentManagerSubj = new BehaviorSubject<IManager>(null);
 
   constructor(private httpClient: HttpClient) {}
 
@@ -18,6 +19,13 @@ export class ManagersService {
 
   deleteById(id: string): Observable<IManager> {
     return this.httpClient.delete<IManager>(urls.managers.deleteById(id));
+  }
+
+  getCurrentManager() {
+    return this.currentManagerSubj.asObservable();
+  }
+  setCurrentManager(manager: IManager) {
+    return this.currentManagerSubj.next(manager);
   }
 
   getTriggerSubj() {

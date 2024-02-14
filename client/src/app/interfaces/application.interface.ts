@@ -4,6 +4,7 @@ import {
   ECoursesType,
   EStatus,
 } from '../enums/application-enums';
+import {IManager} from "./manager.interface";
 
 export interface IApplication {
   _id: string;
@@ -21,7 +22,7 @@ export interface IApplication {
   utm: string;
   msg: IComment[] | string[];
   status: EStatus | null;
-  manager: string | null;
+  manager: IManager | null;
   updated_at: Date;
   group: string | null;
 }

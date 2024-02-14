@@ -5,12 +5,11 @@ import {
   CommentService,
   ManagersService,
 } from '../../../../services';
-import { IApplication, IComment } from '../../../../interfaces';
+import { IApplication, IComment, IManager } from '../../../../interfaces';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
-import { IManager, IUser } from '../../../../interfaces/user.interface';
 import { DatePipe } from '@angular/common';
 
 @Component({
@@ -30,11 +29,12 @@ import { DatePipe } from '@angular/common';
 export class MessageFormComponent implements OnInit {
   @Input() element: IApplication;
   application: IApplication;
-  @Input() me!: IUser;
+  @Input() me!: IManager;
   commentsId: string[] | null;
   comments: IComment[] = [];
   manager: IManager | null;
   commentForm: FormGroup;
+  showComments: boolean = false;
 
   constructor(
     private commentService: CommentService,
@@ -54,11 +54,7 @@ export class MessageFormComponent implements OnInit {
       message: new FormControl(''),
     });
 
-    if (this.element.manager) {
-      this.managersService.getById(this.element.manager).subscribe(value => {
-        this.manager = { ...value };
-      });
-    }
+    console.log(this.element);
   }
 
   onSubmit(applicationId: string) {
@@ -67,6 +63,7 @@ export class MessageFormComponent implements OnInit {
       this.commentService
         .createComment(applicationId, message)
         .subscribe(value => (this.comments = [value, ...this.comments]));
+      this.showComments = true;
       this.commentForm.reset();
     }
     return;

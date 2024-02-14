@@ -1,9 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ApplicationsListComponent } from '../../components/applications-list/applications-list.component';
-import { IApplication } from '../../../../interfaces';
 import {
   ApplicationsService,
-  ManagersService,
   PaginatorIntlService,
 } from '../../../../services';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -29,7 +27,6 @@ import { MatTableModule } from '@angular/material/table';
   templateUrl: './applications-page.component.html',
 })
 export class ApplicationsPageComponent implements OnInit {
-  applications: IApplication[];
   length: number;
   pageSize: number = 25;
   hidePageSize = false;
@@ -41,8 +38,7 @@ export class ApplicationsPageComponent implements OnInit {
   constructor(
     private appService: ApplicationsService,
     private router: Router,
-    private activatedRoute: ActivatedRoute,
-    private managersService: ManagersService
+    private activatedRoute: ActivatedRoute
   ) {}
 
   ngOnInit() {
@@ -52,14 +48,6 @@ export class ApplicationsPageComponent implements OnInit {
       this.page = page;
       this.pageSize = limit;
       this.appService.getAll().subscribe(value => {
-        value.data.map(item => {
-          if (item.manager) {
-            this.managersService.getById(item.manager).subscribe(value => {
-              return (item.manager = value.name);
-            });
-          }
-        });
-        this.applications = value.data;
         this.length = value.itemsFound;
       });
     });

@@ -1,65 +1,24 @@
-
-.demo-paginator {
-  width: 600px;
-  color: red;
-}
-
-table {
-  width: 100%;
-}
-textarea {
-  width: 300px;
-  height: 150px;
-}
-tr.example-detail-row {
-  height: 0;
-}
-
-tr.example-element-row:not(.example-expanded-row):hover {
-  background: whitesmoke;
-}
-
-tr.example-element-row:not(.example-expanded-row):active {
-  background: #efefef;
-}
-
-.example-element-row td {
-  border-bottom-width: 0;
-}
-
-.example-element-detail {
-  overflow: hidden;
+.flex-container {
   display: flex;
 }
 
-.example-element-diagram {
-  min-width: 40px;
-  border-radius: 3px;
-  background-color: #F5F5F5;
-  padding: 8px;
+.flex-item {
+  flex-grow: 1;
+  color:#747474;
+  justify-content: start;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  padding: 5px;
+}
+.example-card {
+  max-width: 400px;
 }
 
-.example-element-symbol {
-  font-weight: bold;
-  font-size: 40px;
-  line-height: normal;
+.example-header-image {
+  background-image: url('https://www.iconarchive.com/download/i48697/custom-icon-design/pretty-office-2/man.ico');
+  background-size: cover;
 }
-
-.example-element-description {
-  padding: 16px;
-}
-
-.example-element-description-attribution {
-  opacity: 0.5;
-}
-
-.example-form {
-  min-width: 150px;
+.example-list-wrapping {
   max-width: 500px;
-  width: 100%;
-}
-
-.example-full-width {
-  width: 100%;
 }
 
