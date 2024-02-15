@@ -11,3 +11,19 @@
 .example-headers-align .mat-mdc-form-field + .mat-mdc-form-field {
   margin-top: 8px;
 }
+
+.form-output {
+  max-width: 400px;
+  min-width: 400px;
+  word-wrap: break-word;
+  white-space: pre-wrap;
+}
+
+.message-block {
+  max-width: 300px;
+  min-width: 300px;
+  word-wrap: break-word;
+}
+
+
+

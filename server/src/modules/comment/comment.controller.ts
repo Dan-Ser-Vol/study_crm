@@ -7,14 +7,17 @@ import {
   Logger,
   Param,
   Post,
+  UseGuards,
 } from '@nestjs/common';
+import { AuthGuard } from '@nestjs/passport';
 import { ApiOperation, ApiResponse } from '@nestjs/swagger';
 
 import { CurrentUser } from '../../common';
-import { Manager } from '../../database/schemas';
+import {Application, Manager} from '../../database/schemas';
 import { CommentService } from './comment.service';
 import { CommentResponseDto } from './dto/response/comment-response.dto';
 
+@UseGuards(AuthGuard())
 @Controller('comments')
 export class CommentController {
   constructor(private commentService: CommentService) {}
@@ -28,7 +31,7 @@ export class CommentController {
     @Body('message') message: string,
     @Param('id') applicationId: string,
     @CurrentUser() manager: Manager,
-  ): Promise<CommentResponseDto> {
+  ): Promise<Application> {
     try {
       return this.commentService.createComment(applicationId, message, manager);
     } catch (err) {

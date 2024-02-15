@@ -8,7 +8,6 @@ import { IManager } from '../interfaces';
   providedIn: 'root',
 })
 export class ManagersService {
-  triggerSubj = new BehaviorSubject<boolean>(false);
   currentManagerSubj = new BehaviorSubject<IManager>(null);
 
   constructor(private httpClient: HttpClient) {}
@@ -26,12 +25,5 @@ export class ManagersService {
   }
   setCurrentManager(manager: IManager) {
     return this.currentManagerSubj.next(manager);
-  }
-
-  getTriggerSubj() {
-    return this.triggerSubj.asObservable();
-  }
-  setTriggerSubj() {
-    return this.triggerSubj.next(!this.triggerSubj.value);
   }
 }

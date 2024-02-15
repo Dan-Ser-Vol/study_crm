@@ -45,11 +45,11 @@
         <mat-card-header>
           <div mat-card-avatar class="example-header-image"></div>
           <mat-card-title>{{
-              application.name || 'not established'
-            }}</mat-card-title>
+            application.name || 'not established'
+          }}</mat-card-title>
           <mat-card-subtitle>{{
-              application.surname || 'not established'
-            }}</mat-card-subtitle>
+            application.surname || 'not established'
+          }}</mat-card-subtitle>
         </mat-card-header>
         <mat-card-content>
           <hr />
@@ -57,8 +57,8 @@
             <mat-list-item>
               <span matListItemTitle>Email</span>
               <span matListItemLine>{{
-                  application.email || 'not established'
-                }}</span>
+                application.email || 'not established'
+              }}</span>
             </mat-list-item>
             <mat-list-item style="margin-top: -15px">
               <span matListItemTitle>Phone</span>
@@ -108,7 +108,12 @@
         </mat-card-content>
       </mat-card>
       <div class="ml-auto">
-        <app-message-form [application]="application"   [me]="me"   [manager]="manager"/>
+        <app-message-form
+          [application]="application"
+          [me]="me"
+          [manager]="manager"
+          (managerUpdated)="onManagerUpdated($event)"
+        />
       </div>
     </div>
   </mat-expansion-panel>

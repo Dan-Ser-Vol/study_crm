@@ -1,12 +1,13 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { AuthService, CommentService } from '../../../../services';
+import { CommentService } from '../../../../services';
 import { IApplication, IComment, IManager } from '../../../../interfaces';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
 import { DatePipe } from '@angular/common';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-message-form',
@@ -23,26 +24,22 @@ import { DatePipe } from '@angular/common';
   styleUrl: './message-form.component.scss',
 })
 export class MessageFormComponent implements OnInit {
+  @Output() managerUpdated: EventEmitter<IManager> = new EventEmitter<IManager>(
+    null
+  );
   @Input() me: IManager | null;
   @Input() manager: IManager | null;
   @Input() application!: IApplication;
-  commentsId: string[] | null;
   comments: IComment[] = [];
   commentForm: FormGroup;
-  showComments: boolean = false;
 
   constructor(
     private commentService: CommentService,
-    private authService: AuthService
+    private toastrService: ToastrService
   ) {}
 
   ngOnInit() {
-    this.commentsId = this.application.msg?.map(item => item);
-    if (this.commentsId && this.commentsId.length) {
-      this.commentService.findCommentsById(this.commentsId).subscribe(value => {
-        this.comments = value;
-      });
-    }
+    this.comments = this.application.msg?.map(item => item);
 
     this.commentForm = new FormGroup({
       message: new FormControl(''),
@@ -54,8 +51,12 @@ export class MessageFormComponent implements OnInit {
       const message = this.commentForm.value;
       this.commentService
         .createComment(applicationId, message)
-        .subscribe(value => (this.comments = [value, ...this.comments]));
-      this.showComments = true;
+        .subscribe(value => {
+          this.application = value;
+          this.manager = value.manager;
+          this.updateComments();
+          this.comments = this.application.msg?.map(item => item);
+        });
       this.commentForm.reset();
     }
     return;
@@ -72,5 +73,9 @@ export class MessageFormComponent implements OnInit {
           this.comments.splice(index, 1);
         }
       });
+  }
+
+  updateComments() {
+    this.managerUpdated.emit(this.manager);
   }
 }

@@ -19,23 +19,24 @@ export class CommentService {
     applicationId: string,
     message: string,
     manager: Manager,
-  ): Promise<CommentResponseDto> {
+  ): Promise<Application> {
     try {
       const newComment = await this.commentModel.create({
         message,
         manager,
       });
+
       const application = await this.applicationModel
         .findByIdAndUpdate(
           { _id: applicationId },
           { $push: { msg: newComment }, manager, status: EStatus.IN_WORK },
           { new: true, upsert: true },
         )
-        .populate('msg');
+        .populate('msg manager');
       if (!application) {
         throw new HttpException('Application not found', HttpStatus.NO_CONTENT);
       }
-      return newComment;
+      return application;
     } catch (err) {
       Logger.log(err);
       throw new HttpException(
