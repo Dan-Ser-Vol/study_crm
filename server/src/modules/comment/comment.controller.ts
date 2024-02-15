@@ -13,7 +13,7 @@ import { AuthGuard } from '@nestjs/passport';
 import { ApiOperation, ApiResponse } from '@nestjs/swagger';
 
 import { CurrentUser } from '../../common';
-import {Application, Manager} from '../../database/schemas';
+import { Application, Manager } from '../../database/schemas';
 import { CommentService } from './comment.service';
 import { CommentResponseDto } from './dto/response/comment-response.dto';
 
