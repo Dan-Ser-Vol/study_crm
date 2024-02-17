@@ -13,6 +13,7 @@
 }
 
 .form-output {
+  margin-top: 5px;
   max-width: 400px;
   min-width: 400px;
   word-wrap: break-word;
@@ -24,6 +25,17 @@
   min-width: 300px;
   word-wrap: break-word;
 }
+
+
+textarea {
+  padding: 10px;
+  border-radius: 3px;
+  width: 555px;
+  height: 50px;
+  background-color: #E2E8F0;
+  outline: none;
+}
+
 
 
 

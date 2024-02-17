@@ -1,5 +1,5 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { SchemaTypes, Types } from 'mongoose';
+import { SchemaTypes } from 'mongoose';
 
 import { Manager } from '../manager.schema';
 import { ECourses, ECursesFormat, ECursesType, EStatus } from './enums';

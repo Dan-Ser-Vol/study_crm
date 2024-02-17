@@ -9,6 +9,7 @@ import { IApplication, IFilter, IPagination } from '../interfaces';
 })
 export class ApplicationsService {
   filterItemsSubj = new BehaviorSubject<IFilter>(null);
+  isLoadSubj = new BehaviorSubject<boolean>(false);
   applicationsListSubj = new BehaviorSubject<IPagination<IApplication>>(null);
 
   constructor(private httpClient: HttpClient) {}
@@ -18,7 +19,22 @@ export class ApplicationsService {
       .get<IPagination<IApplication>>(urls.applications.getAll, {
         params: { page, limit, ...this.filterItemsSubj.value },
       })
-      .pipe(tap(value => this.applicationsListSubj.next(value)));
+      .pipe(
+        tap(value => {
+          this.setApplicationsListSubj(value);
+          this.isLoadSubj.next(true);
+        })
+      );
+  }
+
+  getById(appId: string): Observable<IApplication> {
+    return this.httpClient
+      .get<IApplication>(urls.applications.byId(appId))
+      .pipe(
+        tap(() => {
+          this.isLoadSubj.next(true);
+        })
+      );
   }
 
   getFilterItems(): Observable<IFilter> {
@@ -26,6 +42,13 @@ export class ApplicationsService {
   }
   setFilterItems(filters: IFilter) {
     return this.filterItemsSubj.next(filters);
+  }
+
+  getIsLoad(): Observable<boolean> {
+    return this.isLoadSubj.asObservable();
+  }
+  setIsLoad() {
+    return this.isLoadSubj.next(!this.isLoadSubj.value);
   }
   setApplicationsListSubj(applications: IPagination<IApplication>) {
     return this.applicationsListSubj.next(applications);

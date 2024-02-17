@@ -1,11 +1,10 @@
-<form [formGroup]="formData" class="flex flex-col gap-1">
-  <div class="flex gap-1 m-auto">
+<form [formGroup]="formData" class="flex gap-1 p-2">
+  <div class="flex flex-col gap-2">
     <mat-form-field style="margin-bottom: -22px; width: 170px">
       <mat-label id="name">Name</mat-label>
       <input
         type="text"
         formControlName="name"
-        (input)="onSubmit()"
         matInput
         #input
         maxlength="50" />
@@ -15,7 +14,6 @@
       <input
         type="text"
         formControlName="surname"
-        (input)="onSubmit()"
         matInput
         #input
         maxlength="50" />
@@ -25,7 +23,6 @@
       <input
         type="tel"
         formControlName="phone"
-        (input)="onSubmit()"
         matInput
         #input
         maxlength="15" />
@@ -35,7 +32,6 @@
       <input
         type="number"
         formControlName="age"
-        (input)="onSubmit()"
         matInput
         #input
         maxlength="10" />
@@ -45,7 +41,6 @@
       <input
         type="date"
         formControlName="startDate"
-        (input)="onSubmit()"
         matInput
         #input
         maxlength="15" />
@@ -55,26 +50,25 @@
       <input
         type="date"
         formControlName="endDate"
-        (input)="onSubmit()"
         matInput
         #input
         maxlength="15" />
     </mat-form-field>
     <div class="flex gap-1">
       <button
-        class="p-2 bg-amber-300 rounded shadow text-slate-600 text-xl hover:bg-amber-400"
+        class="px-2.5 btn bg-amber-300 rounded shadow text-slate-600 text-xl hover:bg-amber-400"
         (click)="onSubmit()">
-        Search
+        Submit
       </button>
       <button
-        class="p-3.5 bg-cyan-800 text-white rounded text-xl hover:bg-cyan-900"
-        (click)="resetForm()">
-        Reset
+        class="px-4 btn bg-cyan-800 text-white rounded text-xl hover:bg-cyan-900"
+        (click)="closeModal()">
+        Close
       </button>
     </div>
   </div>
-  <div class="flex gap-1 m-auto">
-    <mat-form-field>
+  <div class="flex flex-col">
+    <mat-form-field style="margin-bottom: -14px">
       <mat-label id="all formats">Formats</mat-label>
       <mat-select
         formControlName="course_format"
@@ -87,7 +81,7 @@
       </mat-select>
     </mat-form-field>
 
-    <mat-form-field>
+    <mat-form-field style="margin-bottom: -14px">
       <mat-label id="all types">Types</mat-label>
       <mat-select
         formControlName="course_type"
@@ -100,7 +94,7 @@
       </mat-select>
     </mat-form-field>
 
-    <mat-form-field>
+    <mat-form-field style="margin-bottom: -14px">
       <mat-label id="All statuses">Statuses</mat-label>
       <mat-select formControlName="status" (selectionChange)="onselect($event)">
         @for (status of getEnumValues('Statuses'); track status) {
@@ -110,17 +104,8 @@
         }
       </mat-select>
     </mat-form-field>
-    <mat-form-field>
-      <mat-label id="All groups">Groups</mat-label>
-      <mat-select formControlName="group" (selectionChange)="onselect($event)">
-        @for (group of getEnumValues('Groups'); track group) {
-          <mat-option (click)="onSubmit()" [value]="group"
-            >{{ group }}
-          </mat-option>
-        }
-      </mat-select>
-    </mat-form-field>
-    <mat-form-field>
+
+    <mat-form-field style="margin-bottom: -14px">
       <mat-label id="All courses">Courses</mat-label>
       <mat-select formControlName="course" (selectionChange)="onselect($event)">
         @for (course of getEnumValues('Courses'); track course) {
@@ -130,5 +115,20 @@
         }
       </mat-select>
     </mat-form-field>
+    <mat-form-field style="margin-bottom: -14px">
+      <mat-label id="All groups">Groups</mat-label>
+      <mat-select formControlName="group" (selectionChange)="onselect($event)">
+        @for (group of getEnumValues('Groups'); track group) {
+          <mat-option (click)="onSubmit()" [value]="group"
+            >{{ group }}
+          </mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field style="margin-bottom: -14px">
+      <mat-label id="Add group">Groups</mat-label>
+      <input matInput #input maxlength="15" formControlName="group" />
+    </mat-form-field>
+    <button class="btn btn-green text-xl">Add Group</button>
   </div>
 </form>

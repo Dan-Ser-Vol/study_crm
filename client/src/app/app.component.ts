@@ -22,5 +22,4 @@ export class AppComponent {
         this.matDialog.closeAll();
       });
   }
-
 }

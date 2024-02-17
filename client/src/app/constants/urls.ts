@@ -1,4 +1,5 @@
 import { environment } from '../environments';
+import { update } from '@angular-devkit/build-angular/src/tools/esbuild/angular/compilation/parallel-worker';
 const { BASE_API } = environment;
 
 const auth: string = `${BASE_API}auth`;
@@ -31,6 +32,8 @@ const urls = {
     getAll: applications,
     create: `${applications}/create`,
     addManager: () => `${applications}/addManager`,
+    update: (appId: string) => `${applications}/update/${appId}`,
+    byId: (appId: string) => `${applications}/${appId}`,
   },
 };
 

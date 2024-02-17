@@ -1,13 +1,15 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable, Logger } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 
 import { ListItemsDto } from '../../common';
-import { Application, Manager } from '../../database/schemas';
+import { Application } from '../../database/schemas';
 import { EStatus } from '../../database/schemas/application/enums';
+import { ManagerDto } from '../manager/dto/manager-dto';
 import { ManagerService } from '../manager/manager.service';
 import { ApplicationRepository } from './application-repository';
 import { SortByQueryDto } from './dto/request/sortBy-query-dto';
+import { ApplicationResponseDto } from './dto/response/application-response.dto';
 
 @Injectable()
 export class ApplicationService {
@@ -17,7 +19,9 @@ export class ApplicationService {
     private readonly applicationRepo: ApplicationRepository,
     private readonly managersService: ManagerService,
   ) {}
-  async getAll(query: SortByQueryDto): Promise<ListItemsDto<Application>> {
+  async getAll(
+    query: SortByQueryDto,
+  ): Promise<ListItemsDto<ApplicationResponseDto>> {
     try {
       return this.applicationRepo.getAll(query);
     } catch (err) {
@@ -25,7 +29,10 @@ export class ApplicationService {
     }
   }
 
-  async addManager(appId: string, manager: Manager): Promise<Application> {
+  async addManager(
+    appId: string,
+    manager: ManagerDto,
+  ): Promise<ApplicationResponseDto> {
     try {
       const application = await this.applicationModel
         .findByIdAndUpdate({ _id: appId }, { manager, status: EStatus.IN_WORK })
@@ -37,10 +44,24 @@ export class ApplicationService {
           HttpStatus.BAD_REQUEST,
         );
       }
-      console.log(application)
+      console.log(application);
       return application;
     } catch (err) {
       throw new HttpException(err, HttpStatus.BAD_REQUEST);
     }
+  }
+
+  async getById(appId: string) {
+    try {
+      return this.applicationRepo.getById(appId);
+    } catch (err) {
+      Logger.log(err);
+    }
+  }
+  async updateById(
+    appId: string,
+    data: Application,
+  ): Promise<ApplicationResponseDto> {
+    return await this.applicationRepo.updateById(appId, data);
   }
 }

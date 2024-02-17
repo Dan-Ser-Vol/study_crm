@@ -10,13 +10,12 @@
             If you leave a comment, you take the order to work!
           </p>
         }
-        <mat-form-field class="example-full-width">
-          <mat-label> Leave a comment </mat-label>
+        <div class="flex flex-col">
           <textarea formControlName="message" matInput></textarea>
-        </mat-form-field>
+        </div>
       </form>
       <div class="flex flex-col ml-1 gap-1">
-        @if (true) {
+        @if (commentForm.value['message']) {
           <button
             (click)="onSubmit(application._id)"
             mat-button
@@ -32,11 +31,9 @@
       <p>You cannot leave comments</p>
     </div>
   }
-
-  <div class="form-output">{{ commentForm.get('message').value }}</div>
   @if (manager) {
     @for (comment of comments; track comment) {
-      <div class="flex gap-1">
+      <div class="flex gap-1 mt-1">
         <p class="flex p-3 bg-slate-200 rounded mb-1 items-center">
           {{ manager.name }}
         </p>

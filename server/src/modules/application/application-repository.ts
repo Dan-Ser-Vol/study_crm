@@ -1,10 +1,17 @@
-import { HttpException, HttpStatus, Injectable, Logger } from '@nestjs/common';
+import {
+  Body,
+  HttpException,
+  HttpStatus,
+  Injectable,
+  Logger,
+} from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 
 import { ListItemsDto } from '../../common';
 import { Application } from '../../database/schemas';
 import { SortByQueryDto } from './dto/request/sortBy-query-dto';
+import { ApplicationResponseDto } from './dto/response/application-response.dto';
 
 @Injectable()
 export class ApplicationRepository {
@@ -15,7 +22,7 @@ export class ApplicationRepository {
 
   public async getAll(
     query: SortByQueryDto,
-  ): Promise<ListItemsDto<Application>> {
+  ): Promise<ListItemsDto<ApplicationResponseDto>> {
     try {
       const queryStr = JSON.stringify(query);
       const queryObj = JSON.parse(
@@ -59,6 +66,41 @@ export class ApplicationRepository {
       throw new HttpException(
         'Invalid sortBy provided',
         HttpStatus.BAD_REQUEST,
+      );
+    }
+  }
+
+  async getById(appId: string): Promise<ApplicationResponseDto> {
+    try {
+      return this.applicationModel.findById(appId);
+    } catch (err) {
+      throw new HttpException(
+        'application with such id not exist ',
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+  }
+
+  async updateById(
+    appId: string,
+    data: Application,
+  ): Promise<ApplicationResponseDto> {
+    try {
+      const updatedApplication = await this.applicationModel
+        .findByIdAndUpdate(appId, data, { new: true })
+        .exec();
+
+      if (!updatedApplication) {
+        throw new HttpException(
+          'Application with such id not found',
+          HttpStatus.NOT_FOUND,
+        );
+      }
+      return updatedApplication;
+    } catch (err) {
+      throw new HttpException(
+        'Failed to update application',
+        HttpStatus.INTERNAL_SERVER_ERROR,
       );
     }
   }

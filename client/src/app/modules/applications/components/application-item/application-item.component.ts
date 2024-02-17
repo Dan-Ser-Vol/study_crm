@@ -9,6 +9,8 @@ import { MatCardModule } from '@angular/material/card';
 import { MatListModule } from '@angular/material/list';
 import { MessageFormComponent } from '../message-form/message-form.component';
 import { CommentService } from '../../../../services';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-application-item',
@@ -24,6 +26,7 @@ import { CommentService } from '../../../../services';
     MatCardModule,
     MatListModule,
     MessageFormComponent,
+    MatTooltipModule,
   ],
 })
 export class ApplicationItemComponent implements OnInit {
@@ -33,7 +36,10 @@ export class ApplicationItemComponent implements OnInit {
   @Input() applications!: IApplication[];
   manager: IManager | null;
 
-  constructor(private commentService: CommentService) {}
+  constructor(
+    private router: Router,
+    private activatedRoute: ActivatedRoute
+  ) {}
 
   ngOnInit() {
     if (this.application.manager && this.application.manager.name) {
@@ -42,5 +48,9 @@ export class ApplicationItemComponent implements OnInit {
   }
   onManagerUpdated(updatedManager: IManager) {
     this.manager = updatedManager;
+  }
+
+  edit() {
+    this.router.navigate(['update', this.application._id]);
   }
 }

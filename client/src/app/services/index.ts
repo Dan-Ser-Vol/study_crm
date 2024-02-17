@@ -4,3 +4,4 @@ export * from './applications.service';
 export * from './paginator-intl.service';
 export * from './manager.service';
 export * from './comment.service';
+export * from './resolvers';

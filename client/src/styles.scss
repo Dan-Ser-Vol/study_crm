@@ -24,7 +24,7 @@
     @apply  bg-slate-500;
   }
   .btn {
-    @apply flex justify-center text-sm  p-2 px-2 rounded-sm text-white transition-colors disabled:bg-gray-300 disabled:cursor-not-allowed;
+    @apply flex justify-center text-sm  p-2 px-2 rounded text-white transition-colors disabled:bg-gray-300 disabled:cursor-not-allowed;
   }
 }
 

@@ -47,8 +47,8 @@ export class ApplicationsPageComponent implements OnInit {
       const { page, limit } = queryObj;
       this.page = page;
       this.pageSize = limit;
-      this.appService.getAll().subscribe(value => {
-        this.length = value.itemsFound;
+      this.activatedRoute.data.subscribe(({ appData }) => {
+        this.length = appData.itemsFound;
       });
     });
 
