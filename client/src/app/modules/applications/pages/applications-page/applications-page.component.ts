@@ -45,7 +45,6 @@ export class ApplicationsPageComponent implements OnInit {
     this.activatedRoute.queryParams.subscribe(queryObj => {
       this.appService.setFilterItems(queryObj);
       const { page, limit } = queryObj;
-      this.page = page;
       this.pageSize = limit;
       this.appService.getAll(page, limit).subscribe(appData => {
         this.length = appData.itemsFound;
@@ -59,6 +58,7 @@ export class ApplicationsPageComponent implements OnInit {
     });
   }
 
+
   handlePageEvent(event: PageEvent) {
     const queryParams = this.buildQueryParams(this.filters, event);
     this.router.navigate([], { queryParams });
@@ -66,10 +66,7 @@ export class ApplicationsPageComponent implements OnInit {
 
   private buildQueryParams(filters: IFilter, pageEvent: PageEvent): any {
     const queryParams = { ...filters };
-    if (pageEvent.pageIndex === 0) {
-      queryParams['page'] = pageEvent.pageIndex + 1;
-      queryParams['limit'] = pageEvent.pageSize;
-    } else {
+    if (pageEvent.pageIndex) {
       queryParams['page'] = pageEvent.pageIndex;
       queryParams['limit'] = pageEvent.pageSize;
     }

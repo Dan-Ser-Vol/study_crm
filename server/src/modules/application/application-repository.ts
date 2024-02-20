@@ -25,7 +25,7 @@ export class ApplicationRepository {
 
       const {
         limit = 25,
-        page = 1,
+        page,
         sortedBy = '-created_at',
         ...searchObj
       } = queryObj;

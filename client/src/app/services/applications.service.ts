@@ -14,7 +14,7 @@ export class ApplicationsService {
 
   constructor(private httpClient: HttpClient) {}
 
-  getAll(page = 1, limit = 25): Observable<IPagination<IApplication>> {
+  getAll(page=1, limit = 25): Observable<IPagination<IApplication>> {
     return this.httpClient
       .get<IPagination<IApplication>>(urls.applications.getAll, {
         params: { page, limit, ...this.filterItemsSubj.value },
