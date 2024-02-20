@@ -77,3 +77,9 @@ export class Application {
 }
 
 export const ApplicationSchema = SchemaFactory.createForClass(Application);
+
+ApplicationSchema.index({
+  name: 'text',
+  surname: 'text',
+  email: 'text',
+});

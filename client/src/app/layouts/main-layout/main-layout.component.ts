@@ -24,6 +24,7 @@ export class MainLayoutComponent implements OnInit {
   ngOnInit(): void {
     this.appService.getIsLoad().subscribe(value => {
       if (value) {
+        console.log(value)
         this.isLoaded = value;
       }
     });

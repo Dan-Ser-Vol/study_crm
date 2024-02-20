@@ -2,12 +2,7 @@ import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { PassportModule } from '@nestjs/passport';
 
-import {
-  Application,
-  ApplicationSchema,
-  Comment,
-  CommentSchema,
-} from '../../database/schemas';
+import { Application, ApplicationSchema } from '../../database/schemas';
 import { ManagerModule } from '../manager/manager.module';
 import { ApplicationController } from './application.controller';
 import { ApplicationService } from './application.service';

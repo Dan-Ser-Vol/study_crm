@@ -15,6 +15,7 @@ import {
 import { IApplication } from '../../../../../interfaces';
 import { MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-update-form',
@@ -44,24 +45,27 @@ export class UpdateFormComponent implements OnInit {
     private formBuilder: FormBuilder,
     private matDialog: MatDialog,
     private router: Router,
+    private toastrService: ToastrService,
     private applicationsService: ApplicationsService,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {}
 
   ngOnInit(): void {
+    this.application = this.data.application;
     this.formData = this.formBuilder.group({
-      course_format: [this.data.application.course_format],
-      course_type: [this.data.application.course_type],
-      status: [this.data.application.status],
-      group: [this.data.application.group],
-      course: [this.data.application.course],
-      name: [this.data.application.name],
-      surname: [this.data.application.surname],
-      email: [this.data.application.email],
-      phone: [this.data.application.phone],
-      age: [this.data.application.age],
-      startDate: [this.data.application.startDate],
-      endDate: [this.data.application.endDate],
+      course_format: [this.application.course_format],
+      course_type: [this.application.course_type],
+      already_paid: [this.application.already_paid],
+      status: [this.application.status],
+      group: [this.application.group],
+      addGroup: [''],
+      course: [this.application.course],
+      name: [this.application.name],
+      surname: [this.application.surname],
+      email: [this.application.email],
+      phone: [this.application.phone],
+      age: [this.application.age],
+      sum: [this.application.sum],
     });
   }
 
@@ -95,8 +99,30 @@ export class UpdateFormComponent implements OnInit {
     }
   }
   onSubmit() {
-    if (this.formData.valid) {
-      // this.applicationsService.setFilterItems({ });
+    if (this.formData.value && this.application) {
+      this.applicationsService
+        .update(this.application._id, this.formData.value)
+        .subscribe(value => (this.application = value));
+      this.closeModal();
+    }
+  }
+
+  addGroup() {
+    const valueFromForm = this.formData.value['addGroup'];
+    if (
+      valueFromForm &&
+      !Object.values(EGroups).includes(valueFromForm.toUpperCase())
+    ) {
+      Object.defineProperty(EGroups, valueFromForm.toUpperCase(), {
+        value: valueFromForm,
+        enumerable: true,
+        writable: false,
+        configurable: true,
+      });
+
+      this.formData.patchValue({ group: valueFromForm });
+      this.formData.patchValue({ addGroup: '' });
+      this.toastrService.success('The group has been added');
     }
   }
 

@@ -6,7 +6,6 @@ import { ErrorPageComponent } from './modules/error-page/error-page.component';
 import { AdminPageComponent } from './modules/admin/pages/admin-page/admin-page.component';
 import { authGuard } from './guards/auth-guard';
 import { ApplicationUpdatePageComponent } from './modules/applications/pages/application-update-page/application-update-page.component';
-import { applicationsResolver } from './services';
 
 export const routes: Routes = [
   {
@@ -16,7 +15,6 @@ export const routes: Routes = [
   },
   {
     path: 'applications',
-    resolve: { appData: applicationsResolver },
     component: ApplicationsPageComponent,
     canActivate: [authGuard()],
   },

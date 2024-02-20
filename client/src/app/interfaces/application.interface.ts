@@ -19,11 +19,13 @@ export interface IApplication {
   sum: number | null;
   already_paid: number | null;
   created_at: Date;
+  createdAt: Date;
   utm: string;
   msg: IComment[] | string[];
   status: EStatus | null;
   manager: IManager | null;
   updated_at: Date;
+  updatedAt: Date;
   group: string | null;
 }
 

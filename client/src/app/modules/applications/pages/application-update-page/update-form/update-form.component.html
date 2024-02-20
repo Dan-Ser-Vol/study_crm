@@ -37,19 +37,19 @@
         maxlength="10" />
     </mat-form-field>
     <mat-form-field style="margin-bottom: -22px; width: 170px">
-      <mat-label id="start">Start date</mat-label>
+      <mat-label id="email">Email</mat-label>
       <input
-        type="date"
-        formControlName="startDate"
+        type="email"
+        formControlName="email"
         matInput
         #input
         maxlength="15" />
     </mat-form-field>
     <mat-form-field style="margin-bottom: -22px; width: 170px">
-      <mat-label id="end">End date</mat-label>
+      <mat-label id="course">Course</mat-label>
       <input
-        type="date"
-        formControlName="endDate"
+        type="text"
+        formControlName="course"
         matInput
         #input
         maxlength="15" />
@@ -61,7 +61,7 @@
         Submit
       </button>
       <button
-        class="px-4 btn bg-cyan-800 text-white rounded text-xl hover:bg-cyan-900"
+        class="px-4 btn bg-red-600 text-white rounded text-xl hover:bg-red-700"
         (click)="closeModal()">
         Close
       </button>
@@ -74,9 +74,7 @@
         formControlName="course_format"
         (selectionChange)="onselect($event)">
         @for (format of getEnumValues('Formats'); track format) {
-          <mat-option (click)="onSubmit()" [value]="format"
-            >{{ format }}
-          </mat-option>
+          <mat-option [value]="format">{{ format }} </mat-option>
         }
       </mat-select>
     </mat-form-field>
@@ -87,9 +85,7 @@
         formControlName="course_type"
         (selectionChange)="onselect($event)">
         @for (type of getEnumValues('Types'); track type) {
-          <mat-option (click)="onSubmit()" [value]="type">{{
-            type
-          }}</mat-option>
+          <mat-option [value]="type">{{ type }}</mat-option>
         }
       </mat-select>
     </mat-form-field>
@@ -98,9 +94,7 @@
       <mat-label id="All statuses">Statuses</mat-label>
       <mat-select formControlName="status" (selectionChange)="onselect($event)">
         @for (status of getEnumValues('Statuses'); track status) {
-          <mat-option (click)="onSubmit()" [value]="status"
-            >{{ status }}
-          </mat-option>
+          <mat-option [value]="status">{{ status }} </mat-option>
         }
       </mat-select>
     </mat-form-field>
@@ -109,9 +103,7 @@
       <mat-label id="All courses">Courses</mat-label>
       <mat-select formControlName="course" (selectionChange)="onselect($event)">
         @for (course of getEnumValues('Courses'); track course) {
-          <mat-option (click)="onSubmit()" [value]="course"
-            >{{ course }}
-          </mat-option>
+          <mat-option [value]="course">{{ course }} </mat-option>
         }
       </mat-select>
     </mat-form-field>
@@ -119,16 +111,16 @@
       <mat-label id="All groups">Groups</mat-label>
       <mat-select formControlName="group" (selectionChange)="onselect($event)">
         @for (group of getEnumValues('Groups'); track group) {
-          <mat-option (click)="onSubmit()" [value]="group"
-            >{{ group }}
-          </mat-option>
+          <mat-option [value]="group">{{ group }} </mat-option>
         }
       </mat-select>
     </mat-form-field>
     <mat-form-field style="margin-bottom: -14px">
-      <mat-label id="Add group">Groups</mat-label>
-      <input matInput #input maxlength="15" formControlName="group" />
+      <mat-label id="Add group">Add Group</mat-label>
+      <input matInput #input maxlength="15" formControlName="addGroup" />
     </mat-form-field>
-    <button class="btn btn-green text-xl">Add Group</button>
+    <button (click)="addGroup()" class="btn btn-green text-xl">
+      Add Group
+    </button>
   </div>
 </form>

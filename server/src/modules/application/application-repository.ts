@@ -1,10 +1,4 @@
-import {
-  Body,
-  HttpException,
-  HttpStatus,
-  Injectable,
-  Logger,
-} from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable, Logger } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 
@@ -35,12 +29,11 @@ export class ApplicationRepository {
         sortedBy = '-created_at',
         ...searchObj
       } = queryObj;
-
       const validPage = Math.max(1, +page);
       const skip = limit * (validPage - 1);
 
       const queryBuilder = this.applicationModel
-        .find(searchObj)
+        .find(this.regexBuilder(searchObj))
         .populate('msg manager')
         .collation({ locale: 'en', strength: 2 })
         .limit(limit)
@@ -103,5 +96,18 @@ export class ApplicationRepository {
         HttpStatus.INTERNAL_SERVER_ERROR,
       );
     }
+  }
+
+  regexBuilder(obj: SortByQueryDto): SortByQueryDto {
+    const regexQueries = {};
+    for (const objKey in obj) {
+      if (objKey !== 'age') {
+        const value = obj[objKey];
+        regexQueries[objKey] = { $regex: value, $options: 'i' };
+      } else {
+        regexQueries[objKey] = obj[objKey];
+      }
+    }
+    return regexQueries;
   }
 }

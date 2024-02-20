@@ -22,7 +22,7 @@ export class ApplicationsService {
       .pipe(
         tap(value => {
           this.setApplicationsListSubj(value);
-          this.isLoadSubj.next(true);
+          this.setIsLoad(false);
         })
       );
   }
@@ -32,7 +32,18 @@ export class ApplicationsService {
       .get<IApplication>(urls.applications.byId(appId))
       .pipe(
         tap(() => {
-          this.isLoadSubj.next(true);
+          this.isLoadSubj.next(false);
+        })
+      );
+  }
+
+  update(appId: string, application: IApplication): Observable<IApplication> {
+    return this.httpClient
+      .put<IApplication>(urls.applications.update(appId), application)
+      .pipe(
+        tap((value) => {
+          console.log(value)
+          this.isLoadSubj.next(false);
         })
       );
   }
@@ -47,8 +58,8 @@ export class ApplicationsService {
   getIsLoad(): Observable<boolean> {
     return this.isLoadSubj.asObservable();
   }
-  setIsLoad() {
-    return this.isLoadSubj.next(!this.isLoadSubj.value);
+  setIsLoad(value: boolean) {
+    return this.isLoadSubj.next(value);
   }
   setApplicationsListSubj(applications: IPagination<IApplication>) {
     return this.applicationsListSubj.next(applications);

@@ -6,7 +6,6 @@ import { ListItemsDto } from '../../common';
 import { Application } from '../../database/schemas';
 import { EStatus } from '../../database/schemas/application/enums';
 import { ManagerDto } from '../manager/dto/manager-dto';
-import { ManagerService } from '../manager/manager.service';
 import { ApplicationRepository } from './application-repository';
 import { SortByQueryDto } from './dto/request/sortBy-query-dto';
 import { ApplicationResponseDto } from './dto/response/application-response.dto';
@@ -17,7 +16,6 @@ export class ApplicationService {
     @InjectModel(Application.name)
     private readonly applicationModel: Model<Application>,
     private readonly applicationRepo: ApplicationRepository,
-    private readonly managersService: ManagerService,
   ) {}
   async getAll(
     query: SortByQueryDto,
@@ -44,7 +42,6 @@ export class ApplicationService {
           HttpStatus.BAD_REQUEST,
         );
       }
-      console.log(application);
       return application;
     } catch (err) {
       throw new HttpException(err, HttpStatus.BAD_REQUEST);

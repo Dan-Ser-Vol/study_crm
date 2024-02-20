@@ -1,0 +1,546 @@
+{
+	"info": {
+		"_postman_id": "c0535935-e8f9-467c-ba43-cbd42ba0d50c",
+		"name": "study_crm",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "14575278"
+	},
+	"item": [
+		{
+			"name": "manager",
+			"item": [
+				{
+					"name": "create manager",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "\r\n    {\r\n        \"name\": \"Gigi\",\r\n        \"role\": \"ADMIN\",\r\n        \"password\": \"user\",\r\n        \"email\": \"gigi@gmail.com\"\r\n    }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/managers",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"managers"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get manager by id",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1YjkzNzFmYjExMDVlNWViNjliNjFjMyIsImVtYWlsIjoiYWRtaW5AZ21haWwuY29tIiwicm9sZXMiOiJBRE1JTiIsImlhdCI6MTcwNjk4Mjc4M30.-7xv4v4XKS8AnaIBBtC4d1Ao-ld9Ttiabb8h0R5ZUPU",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "\r\n    {\r\n        \"name\": \"Gigi\",\r\n        \"role\": \"ADMIN\",\r\n        \"password\": \"user\",\r\n        \"email\": \"gigi@gmail.com\"\r\n    }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/managers/65b9371fb1105e5eb69b61c3",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"managers",
+								"65b9371fb1105e5eb69b61c3"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "auth",
+			"item": [
+				{
+					"name": "register manager",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "\r\n    {\r\n        \"name\": \"Dan\",\r\n        \"roles\": \"ADMIN\",\r\n         \"email\": \"danservoll1984@gmail.com\",\r\n        \"password\": \"Danservoll5\"\r\n       \r\n    }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{API_HOST}}/auth/register",
+							"host": [
+								"{{API_HOST}}"
+							],
+							"path": [
+								"auth",
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "login manager",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const body = JSON.parse(responseBody);\r",
+									"\r",
+									"pm.environment.set(\"accessToken\", body.accessToken)\r",
+									"pm.environment.set(\"refreshToken\", body.refreshToken)"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.ZGFuc2Vydm9sbDE5ODRAZ21haWwuY29t.lv0w0eQ9CL3KfSyd3KsVfDDCsivg-DZ34A85YchgWy4",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "\r\n    {\r\n         \"email\": \"danservoll1984@gmail.com\",\r\n        \"password\": \"Danservoll5\"\r\n       \r\n    }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{API_HOST}}/auth/login",
+							"host": [
+								"{{API_HOST}}"
+							],
+							"path": [
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "logout manager",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const body = JSON.parse(responseBody);\r",
+									"\r",
+									"pm.environment.set(\"accessToken\", body.accessToken)\r",
+									"pm.environment.set(\"refreshToken\", body.refreshToken)"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.ZGFuc2Vydm9sbDE5ODRAZ21haWwuY29t.lv0w0eQ9CL3KfSyd3KsVfDDCsivg-DZ34A85YchgWy4",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "\r\n    {\r\n       \r\n       \r\n    }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{API_HOST}}/auth/logout",
+							"host": [
+								"{{API_HOST}}"
+							],
+							"path": [
+								"auth",
+								"logout"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "me",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1YjkzNzFmYjExMDVlNWViNjliNjFjMyIsImVtYWlsIjoiYWRtaW5AZ21haWwuY29tIiwicm9sZXMiOiJBRE1JTiIsImlhdCI6MTcwNjYzNzA4N30.sDFsVeQ5ZOn3VgfodbZRNdyAxlevg87jrT2oDQV_4gM",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "\r\n    {\r\n        \"password\": \"user12345\",\r\n        \"email\": \"bobicu@gmail.com\"\r\n    }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{API_HOST}}/auth/me",
+							"host": [
+								"{{API_HOST}}"
+							],
+							"path": [
+								"auth",
+								"me"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "refresh",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.ZGFuc2Vydm9sbDE5ODRAZ21haWwuY29t.lv0w0eQ9CL3KfSyd3KsVfDDCsivg-DZ34A85YchgWy4",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "\r\n    {\r\n        \"password\": \"user12345\",\r\n        \"email\": \"bobicu@gmail.com\"\r\n    }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{API_HOST}}/auth/refresh",
+							"host": [
+								"{{API_HOST}}"
+							],
+							"path": [
+								"auth",
+								"refresh"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "applications",
+			"item": [
+				{
+					"name": "get all",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1YjkzNzFmYjExMDVlNWViNjliNjFjMyIsImVtYWlsIjoiYWRtaW5AZ21haWwuY29tIiwicm9sZXMiOiJBRE1JTiIsImlhdCI6MTcwNjk4Mjc4M30.-7xv4v4XKS8AnaIBBtC4d1Ao-ld9Ttiabb8h0R5ZUPU",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{API_HOST}}/applications?",
+							"host": [
+								"{{API_HOST}}"
+							],
+							"path": [
+								"applications"
+							],
+							"query": [
+								{
+									"key": "",
+									"value": null
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "byId",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1YjkzNzFmYjExMDVlNWViNjliNjFjMyIsImVtYWlsIjoiYWRtaW5AZ21haWwuY29tIiwicm9sZXMiOiJBRE1JTiIsImlhdCI6MTcwNjk4Mjc4M30.-7xv4v4XKS8AnaIBBtC4d1Ao-ld9Ttiabb8h0R5ZUPU",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{API_HOST}}/applications/65aaccb3ac47eedaf5695975",
+							"host": [
+								"{{API_HOST}}"
+							],
+							"path": [
+								"applications",
+								"65aaccb3ac47eedaf5695975"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "updateById",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1YjkzNzFmYjExMDVlNWViNjliNjFjMyIsImVtYWlsIjoiYWRtaW5AZ21haWwuY29tIiwicm9sZXMiOiJBRE1JTiIsImlhdCI6MTcwNjk4Mjc4M30.-7xv4v4XKS8AnaIBBtC4d1Ao-ld9Ttiabb8h0R5ZUPU",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"_id\": \"65aaccb3ac47eedaf5695975\",\r\n    \"name\": \"Bob\",\r\n    \"surname\": \"Sur\",\r\n    \"email\": \"good@gmail.com\",\r\n    \"phone\": \"380393098298\",\r\n    \"age\": 25,\r\n    \"course\": \"PCX\",\r\n    \"course_format\": \"online\",\r\n    \"course_type\": \"incubator\",\r\n    \"sum\": null,\r\n    \"already_paid\": null,\r\n    \"created_at\": \"2022-06-02T11:02:23.000Z\",\r\n    \"utm\": \"\",\r\n    \"msg\": [\r\n        \"65ce346b49745101a7999b73\"\r\n    ],\r\n    \"status\": \"In work\",\r\n    \"manager\": \"65b9371fb1105e5eb69b61c3\",\r\n    \"updatedAt\": \"2024-02-17T11:44:21.034Z\",\r\n    \"group\": null,\r\n    \"__v\": 1\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{API_HOST}}/applications/update/65aaccb3ac47eedaf5695975",
+							"host": [
+								"{{API_HOST}}"
+							],
+							"path": [
+								"applications",
+								"update",
+								"65aaccb3ac47eedaf5695975"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "comments",
+			"item": [
+				{
+					"name": "create comment",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1YjkzNzFmYjExMDVlNWViNjliNjFjMyIsImVtYWlsIjoiYWRtaW5AZ21haWwuY29tIiwicm9sZXMiOiJBRE1JTiIsImlhdCI6MTcwNjk4Mjc4M30.-7xv4v4XKS8AnaIBBtC4d1Ao-ld9Ttiabb8h0R5ZUPU",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\r\n    \"message\": \"This next message\",\r\n    \"manager\": \"65b9371fb1105e5eb69b61c3\"\r\n\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{API_HOST}}/comments/create/65aaccb3ac47eedaf5695975",
+							"host": [
+								"{{API_HOST}}"
+							],
+							"path": [
+								"comments",
+								"create",
+								"65aaccb3ac47eedaf5695975"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete  comment",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1YjkzNzFmYjExMDVlNWViNjliNjFjMyIsImVtYWlsIjoiYWRtaW5AZ21haWwuY29tIiwicm9sZXMiOiJBRE1JTiIsImlhdCI6MTcwNjk5MDI4MX0.5pMdYVo2UCflcyf2AolrWakozd2FdANLSxHZheaXc0I",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n     \"applicationId\": \"65aaccb3ac47eedaf5695975\",\r\n     \"message\": null\r\n\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{API_HOST}}/applications/comment/65aaccb3ac47eedaf5695975/65c3ab1bb3188479c6b780f8",
+							"host": [
+								"{{API_HOST}}"
+							],
+							"path": [
+								"applications",
+								"comment",
+								"65aaccb3ac47eedaf5695975",
+								"65c3ab1bb3188479c6b780f8"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get comments  by  array id",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1YjkzNzFmYjExMDVlNWViNjliNjFjMyIsImVtYWlsIjoiYWRtaW5AZ21haWwuY29tIiwicm9sZXMiOiJBRE1JTiIsImlhdCI6MTcwNjk5MDI4MX0.5pMdYVo2UCflcyf2AolrWakozd2FdANLSxHZheaXc0I",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n     \"commentsId\": [\"65c3c34cde4633764a48ee62\", \"65c3c67eb74506faaf862030\" ]\r\n\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{API_HOST}}/applications/comments",
+							"host": [
+								"{{API_HOST}}"
+							],
+							"path": [
+								"applications",
+								"comments"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

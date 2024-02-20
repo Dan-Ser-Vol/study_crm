@@ -76,7 +76,6 @@ export class ApplicationController {
     @Param('appId') appId: string,
     @Body() data: Application,
   ): Promise<ApplicationResponseDto> {
-    console.log(appId);
     return await this.applicationService.updateById(appId, data);
   }
 }

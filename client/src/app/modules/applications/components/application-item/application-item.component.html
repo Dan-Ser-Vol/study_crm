@@ -29,7 +29,7 @@
         application.group
       }}</mat-panel-title>
       <mat-panel-title class="flex-item">{{
-        application.created_at
+        application.created_at | date: 'dd-MM-yyyy HH:mm'
       }}</mat-panel-title>
       <mat-panel-description class="flex-item">
         <mat-icon class="">account_circle</mat-icon>
@@ -106,11 +106,19 @@
             </mat-list-item>
             <mat-list-item style="margin-top: -20px">
               <span matListItemTitle>Created</span>
-              {{ application.created_at || 'not established' }}
+              {{
+                (application.created_at | date: 'dd-MM-yyyy HH:mm') ||
+                  (application.createdAt | date: 'dd-MM-yyyy HH:mm') ||
+                  'not established'
+              }}
             </mat-list-item>
             <mat-list-item style="margin-top: -20px">
               <span matListItemTitle>Updated</span>
-              {{ application.updated_at || 'not established' }}
+              {{
+                (application.updated_at | date: 'dd-MM-yyyy HH:mm') ||
+                  (application.updatedAt | date: 'dd-MM-yyyy HH:mm') ||
+                  'not established'
+              }}
             </mat-list-item>
             <mat-list-item style="margin-top: -20px">
               <span matListItemTitle>Manager</span>

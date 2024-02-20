@@ -26,8 +26,8 @@ export class ApplicationUpdatePageComponent implements OnInit {
         this.application = value;
         this.matDialog.open(UpdateFormComponent, {
           disableClose: true,
-          enterAnimationDuration: '1s',
-          exitAnimationDuration: '1s',
+          enterAnimationDuration: '0.5s',
+          exitAnimationDuration: '0.5s',
           hasBackdrop: false,
           data: {
             application: this.application,

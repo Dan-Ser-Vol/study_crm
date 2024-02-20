@@ -11,6 +11,7 @@ import { MessageFormComponent } from '../message-form/message-form.component';
 import { CommentService } from '../../../../services';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { ActivatedRoute, Router } from '@angular/router';
+import {DatePipe} from "@angular/common";
 
 @Component({
   selector: 'app-application-item',
@@ -27,6 +28,7 @@ import { ActivatedRoute, Router } from '@angular/router';
     MatListModule,
     MessageFormComponent,
     MatTooltipModule,
+    DatePipe,
   ],
 })
 export class ApplicationItemComponent implements OnInit {
