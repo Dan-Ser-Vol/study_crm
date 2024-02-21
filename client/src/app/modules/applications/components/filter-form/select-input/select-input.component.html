@@ -1,6 +1,6 @@
 <form [formGroup]="formData" class="flex flex-col gap-1">
-  <div class="flex gap-1 m-auto">
-    <mat-form-field style="margin-bottom: -22px; width: 170px">
+  <div class="flex gap-1 m-auto w-full">
+    <mat-form-field style="margin-bottom: -22px">
       <mat-label id="name">Name</mat-label>
       <input
         type="text"
@@ -10,7 +10,7 @@
         #input
         maxlength="50" />
     </mat-form-field>
-    <mat-form-field style="margin-bottom: -22px; width: 170px">
+    <mat-form-field style="margin-bottom: -22px">
       <mat-label id="surname">Surname</mat-label>
       <input
         type="text"
@@ -20,7 +20,7 @@
         #input
         maxlength="50" />
     </mat-form-field>
-    <mat-form-field style="margin-bottom: -22px; width: 170px">
+    <mat-form-field style="margin-bottom: -22px">
       <mat-label id="phone">Phone</mat-label>
       <input
         type="tel"
@@ -30,7 +30,7 @@
         #input
         maxlength="15" />
     </mat-form-field>
-    <mat-form-field style="margin-bottom: -22px; width: 170px">
+    <mat-form-field style="margin-bottom: -22px">
       <mat-label id="age">Age</mat-label>
       <input
         type="number"
@@ -40,7 +40,7 @@
         #input
         maxlength="10" />
     </mat-form-field>
-    <mat-form-field style="margin-bottom: -22px; width: 170px">
+    <mat-form-field style="margin-bottom: -22px">
       <mat-label id="start">Start date</mat-label>
       <input
         type="date"
@@ -50,7 +50,7 @@
         #input
         maxlength="15" />
     </mat-form-field>
-    <mat-form-field style="margin-bottom: -22px; width: 170px">
+    <mat-form-field style="margin-bottom: -22px">
       <mat-label id="end">End date</mat-label>
       <input
         type="date"
@@ -61,19 +61,23 @@
         maxlength="15" />
     </mat-form-field>
     <div class="flex gap-1">
-      <button
-        class="p-2 bg-amber-300 rounded shadow text-slate-600 text-xl hover:bg-amber-400"
-        (click)="onSubmit()">
-        Search
-      </button>
-      <button
-        class="p-3.5 bg-cyan-800 text-white rounded text-xl hover:bg-cyan-900"
-        (click)="resetForm()">
-        Reset
-      </button>
+      <div>
+        <button
+          class="btn btn-amber rounded shadow"
+          (click)="onSubmit()">
+          Search
+        </button>
+      </div>
+      <div>
+        <button
+          class="btn btn-cyan text-white rounded hover:bg-cyan-90"
+          (click)="resetForm()">
+          Reset
+        </button>
+      </div>
     </div>
   </div>
-  <div class="flex gap-1 m-auto">
+  <div class="flex gap-1 m-auto w-full">
     <mat-form-field>
       <mat-label id="all formats">Formats</mat-label>
       <mat-select
@@ -130,5 +134,13 @@
         }
       </mat-select>
     </mat-form-field>
+    <div class="flex items-start gap-1">
+      <div>
+        <button class="btn btn-amber">Show my</button>
+      </div>
+      <div>
+        <button class="btn btn-cyan">Excel table</button>
+      </div>
+    </div>
   </div>
 </form>

@@ -16,6 +16,7 @@ import {
 } from '@angular/forms';
 import { ApplicationsService } from '../../../../../services';
 import { MatInputModule } from '@angular/material/input';
+import {MatChipsModule} from "@angular/material/chips";
 
 @Component({
   selector: 'app-select-input',
@@ -26,6 +27,7 @@ import { MatInputModule } from '@angular/material/input';
     FormsModule,
     ReactiveFormsModule,
     MatInputModule,
+    MatChipsModule,
   ],
   templateUrl: './select-input.component.html',
 })

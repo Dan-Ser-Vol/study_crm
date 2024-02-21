@@ -40,6 +40,14 @@
     @apply  bg-cyan-800   hover:bg-cyan-900;
   }
 
+  .btn-purple {
+    @apply  bg-purple-800   hover:bg-purple-900;
+  }
+
+  .btn-amber {
+    @apply  bg-amber-300   hover:bg-amber-400 text-teal-900 hover:text-white;
+  }
+
 }
 
 .text-shadow {

@@ -58,7 +58,6 @@ export class ApplicationsPageComponent implements OnInit {
     });
   }
 
-
   handlePageEvent(event: PageEvent) {
     const queryParams = this.buildQueryParams(this.filters, event);
     this.router.navigate([], { queryParams });
@@ -66,7 +65,7 @@ export class ApplicationsPageComponent implements OnInit {
 
   private buildQueryParams(filters: IFilter, pageEvent: PageEvent): any {
     const queryParams = { ...filters };
-    if (pageEvent.pageIndex) {
+    if (pageEvent.pageIndex >= 1) {
       queryParams['page'] = pageEvent.pageIndex;
       queryParams['limit'] = pageEvent.pageSize;
     }
