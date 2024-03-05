@@ -18,6 +18,5 @@ export class RegisterDto {
   @ApiProperty()
   @IsNotEmpty()
   @IsString()
-  @MinLength(4)
   password: string;
 }

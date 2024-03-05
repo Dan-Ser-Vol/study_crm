@@ -82,19 +82,19 @@ export class LoginFormComponent implements OnInit {
 
   errorHandler() {
     if (this.form.controls['email'].hasError('required')) {
-      this.toastr.error('Email is required', 'Login Error');
+      this.toastr.error('Email is required');
     }
     if (this.form.controls['email'].hasError('email')) {
-      this.toastr.error(' Please enter a valid email address', 'Login Error');
+      this.toastr.error('Password or email address is wrong');
     }
     if (this.form.controls['password'].hasError('required')) {
-      this.toastr.error('Password is required', 'Login Error');
+      this.toastr.error('Password is required');
     }
     if (this.form.controls['password'].hasError('min')) {
-      this.toastr.error('Password must have min 4 symbol', 'Login Error');
+      this.toastr.error('Password or email address is wrong');
     }
     if (this.form.controls['password'].hasError('max')) {
-      this.toastr.error('Password must have max 8 symbol', 'Login Error');
+      this.toastr.error('Password or email address is wrong');
     }
   }
 }

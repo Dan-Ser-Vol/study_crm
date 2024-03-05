@@ -47,6 +47,9 @@
   .btn-amber {
     @apply  bg-amber-300   hover:bg-amber-400 text-teal-900 hover:text-white;
   }
+  .app-info-item {
+    @apply  text-xs text-sky-700;
+  }
 
 }
 
@@ -57,31 +60,6 @@
 .custom-dialog-class {
   background-color: #dc1212;
 }
-
-//.custom-file-input::-webkit-file-upload-button {
-//  visibility: hidden;
-//}
-//.custom-file-input::before {
-//  content: 'Select some files';
-//  display: inline-block;
-//  background: #1E293B;
-//  border: 1px solid #334155;
-//  border-radius: 2px;
-//  padding: 5px 8px;
-//  outline: none;
-//  color: #758294;
-//  white-space: nowrap;
-//  -webkit-user-select: none;
-//  cursor: pointer;
-//  text-shadow: 1px 1px #d1c1c1;
-//  font-size: 14px;
-//}
-//.custom-file-input:hover::before {
-//  border-color: #60A5FA;
-//}
-//.custom-file-input:active::before {
-//  background: -webkit-linear-gradient( top,  #e3e3e3,  #f9f9f9);
-//}
 
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }

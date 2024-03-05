@@ -10,14 +10,10 @@ import {
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { Router } from '@angular/router';
-import { ToastrService } from 'ngx-toastr';
 
 @Injectable()
 export class ErrorInterceptor implements HttpInterceptor {
-  constructor(
-    private router: Router,
-    protected toastr: ToastrService
-  ) {}
+  constructor(private router: Router) {}
 
   intercept(
     request: HttpRequest<any>,
@@ -32,21 +28,13 @@ export class ErrorInterceptor implements HttpInterceptor {
   }
 
   handleHttpError(err: any): void {
-    if (err.status === 400) {
-      this.toastr.error(err.error.message);
-    }
     if (err.status === 401) {
       this.router.navigate(['/login']);
-    }
-    if (err.status === 403) {
-      this.toastr.error(err.error.message);
     }
     if (err.status === 404) {
       this.router.navigate(['/**']);
     }
-    if (err.status === 422) {
-      this.toastr.error(err.error.message);
-    }
+
     if (err.status === 500) {
       this.router.navigate(['/**']);
     }

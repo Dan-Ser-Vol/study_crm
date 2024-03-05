@@ -37,7 +37,7 @@ export class AuthService {
       return tokens;
     } else {
       throw new HttpException(
-        'Wrong email  or password ',
+        'Wrong email or password ',
         HttpStatus.UNAUTHORIZED,
       );
     }

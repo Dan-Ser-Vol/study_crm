@@ -23,6 +23,7 @@ import { MatChipsModule } from '@angular/material/chips';
 })
 export class ApplicationsListComponent implements OnInit {
   applications: IApplication[];
+  showMy: boolean = true;
   me: IManager;
   appLabels = columnsDisplay;
   sortedBy: string | null;
